@@ -30,10 +30,25 @@
     * Version 5.0.0
     > Note: use sudo privileges
 
+## Kubernetes
+* ???????
+
 
 # Hadoop for container
-* Docker --> https://hadoop.apache.org/docs/r3.3.5/hadoop-yarn/hadoop-yarn-site/DockerContainers.html
-
+* Docker 
+    * https://hadoop.apache.org/docs/r3.3.5/hadoop-yarn/hadoop-yarn-site/DockerContainers.html
+    * https://github.com/kiwenlau/hadoop-cluster-docker/tree/master
+    * https://github.com/sequenceiq/hadoop-docker/tree/master
+    * https://github.com/big-data-europe/docker-hadoop
+    * https://hub.docker.com/r/apache/hadoop
+    * https://github.com/bigdatafoundation/docker-hadoop/tree/master
+    * https://phpfog.com/creating-hadoop-docker-image/
+    * Docker compose ??????
+* Lxc 
+    * https://www.adaltas.com/en/2020/08/04/installing-hadoop-from-source/
+* Kubernetes
+    * ??????
+    * https://medium.com/@big_data_landscape/deploying-a-hadoop-cluster-with-docker-and-kubernetes-a-modern-approach-3d0803ba80d6
 
 # Notes
 * To start/stop hdfs/yarn deamons

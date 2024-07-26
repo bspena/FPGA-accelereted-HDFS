@@ -154,11 +154,14 @@ To run the single-node cluster in pseudo-distributed mode, set the **-site.xml* 
 
 # Fully distributed
 * https://hadoop.apache.org/docs/r3.3.5/hadoop-project-dist/hadoop-common/ClusterSetup.html
-* Set JAVA_HOME and HADOOP_HOME into hadoop-env.sh 
-* Uncomment HADOOP_LOG_DIR into hadoop-env.sh 
+* Into hadoop-env.sh:
+    * set JAVA_HOME and HADOOP_HOME
+    * Uncomment HADOOP_LOG_DIR 
+* Into yarn-site.xml (for WebServerProxy):
+    <property>
+        <name>yarn.web-proxy.address</name>
+        <value>localhost:9090</value>
+    </property>
+* Set HADOOP_HDFS_HOME/HADOOP_MAPRED_HOME/HADOOP_YARN_HOME=HADOOP_HOME
 
-> Note: to use the WebServerProxy (a yarn deamon) set the property into yarn-site:
->    <property>
->        <name>yarn.web-proxy.address</name>
->        <value>localhost:9090</value>
->    </property>
+* https://www.michael-noll.com/tutorials/running-hadoop-on-ubuntu-linux-multi-node-cluster/#tutorial-approach-and-structure
