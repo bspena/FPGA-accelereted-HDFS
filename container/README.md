@@ -9,11 +9,11 @@
     * sudo docker attach container_name --> attach session to container console
 > Note: All the containers share the host kernel
 * Build the docker image from Dockerfile
-    * sudo docker build /path/to/image
+    * sudo docker build -t image_name:tag_name /path/to/image
 * Change name to the image
     * sudo docker tag image_id image_name:tag_name
 * Run a docker container with the custom image
-    * sudo docker run -ti image_name /bin/bash
+    * sudo docker run -ti image_name:tag /bin/bash
 * Remove containers --> https://linuxize.com/post/how-to-remove-docker-images-containers-volumes-and-networks/
 * https://docs.docker.com/reference/cli/docker/system/prune/
 * Info of the docker image:

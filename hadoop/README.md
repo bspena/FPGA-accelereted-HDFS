@@ -97,6 +97,7 @@ $ chmod 0600 ~/.ssh/authorized_keys
 To build Hadoop from within the build enviroment run the following command :
 
 ```bash
+$ cd hadoop
 $ mvn package -Pdist,native -DskipTests -Dtar
 ```
 * `-DskipTests` flag : Makes a build without running the unit tests. 
