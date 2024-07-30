@@ -26,7 +26,7 @@ export HADOOP_MAPRED_HOME="$HADOOP_HOME"
 export HADOOP_YARN_HOME="$HADOOP_HOME"
 ```
 
-* Into /home/$(whoami)/hadoop/hadoop-dist/target/hadoop-3.3.5/etc/hadoop/hadoop-env.sh:
+* Into $HADOOP_HOME/etc/hadoop/hadoop-env.sh:
     * Add `JAVA_HOME` and `HADOOP_HOME` environment variables
     * Uncomment `HADOOP_LOG_DIR` environment variable
     * Set `HADOOP_CLASSPATH` environment variable as follow

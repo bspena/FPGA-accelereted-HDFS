@@ -7,7 +7,7 @@ import requests                                           # Module to execute ht
 import csv
 import pandas
 import multiprocessing as mp                              # Module to spaw new processes
-import config_file as conf   
+import hadoop_test_config as conf   
 
 
 ############################# STEP 1 FUNCTIONS ######################################

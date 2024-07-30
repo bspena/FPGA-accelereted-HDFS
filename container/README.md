@@ -3,6 +3,8 @@
 * Doc --> https://docs.docker.com/guides/docker-overview/
 * Install --> https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
     * Version 27.0.3
+* Docker compose --> https://docs.docker.com/compose/intro/features-uses/
+    * Version v2.29.1
 * Commands 
     * sudo docker run -ti ubuntu:jammy /bin/bash --> start an ubuntu container (?)
     * sudo docker start container_name --> start a container
@@ -38,16 +40,13 @@
 * Docker 
     * https://hadoop.apache.org/docs/r3.3.5/hadoop-yarn/hadoop-yarn-site/DockerContainers.html
     * https://github.com/kiwenlau/hadoop-cluster-docker/tree/master
-    * https://github.com/sequenceiq/hadoop-docker/tree/master
-    * https://github.com/big-data-europe/docker-hadoop
-    * https://hub.docker.com/r/apache/hadoop
+    * https://github.com/apache/hadoop/tree/docker-hadoop-3
     * https://github.com/bigdatafoundation/docker-hadoop/tree/master
     * https://phpfog.com/creating-hadoop-docker-image/
-    * Docker compose ??????
+    * https://github.com/big-data-europe/docker-hadoop
 * Lxc 
     * https://www.adaltas.com/en/2020/08/04/installing-hadoop-from-source/
 * Kubernetes
-    * ??????
     * https://medium.com/@big_data_landscape/deploying-a-hadoop-cluster-with-docker-and-kubernetes-a-modern-approach-3d0803ba80d6
 
 # Notes

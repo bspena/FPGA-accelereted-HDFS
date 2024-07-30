@@ -1,5 +1,5 @@
-import config_file as conf                       # Variables module
-import functions as func                         # Functions module
+import hadoop_test_config as conf                       # Variables module
+import hadoop_test_utils as func                         # Functions module
 import os
 
 if __name__=='__main__':

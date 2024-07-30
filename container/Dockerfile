@@ -55,11 +55,9 @@ RUN chmod 0600 ~/.ssh/authorized_keys
 ### Clone Hadoop repository
 RUN git clone https://github.com/apache/hadoop.git --branch rel/release-3.3.5 --single-branch
 
-# Copy pom file to avoid an error when building with maven
+### Copy pom file to avoid an error when building with maven
 WORKDIR /home/hadoop
-#ENV POM_PATH=hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-applications/hadoop-yarn-applications-catalog/hadoop-yarn-applications-catalog-webapp
-COPY pom.xml /home/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-applications/hadoop-yarn-applications-catalog/hadoop-yarn-applications-catalog-webapp/pom.xml 
-#COPY pom.xml /home/${POM_PATH}/pom.xml 
+COPY config/pom.xml /home/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-applications/hadoop-yarn-applications-catalog/hadoop-yarn-applications-catalog-webapp/pom.xml 
 
 ### Build Hadoop
 RUN mvn package -Pdist,native -DskipTests -Dtar
@@ -69,13 +67,13 @@ ENV HADOOP_HOME=/home/hadoop/hadoop-dist/target/hadoop-3.3.5
 ENV HADOOP_HDFS_HOME=/home/hadoop/hadoop-dist/target/hadoop-3.3.5
 ENV HADOOP_MAPRED_HOME=/home/hadoop/hadoop-dist/target/hadoop-3.3.5
 ENV HADOOP_YARN_HOME=/home/hadoop/hadoop-dist/target/hadoop-3.3.5
-#ENV HADOOP_XML_SITE=hadoop/hadoop-dist/target/hadoop-3.3.5/etc/hadoop
 
-# Copy *-site.xml
-COPY core-site.xml ${HADOOP_HOME}/etc/hadoop/core-site.xml
-COPY hdfs-site.xml ${HADOOP_HOME}/etc/hadoop/hdfs-site.xml
-COPY mapred-site.xml ${HADOOP_HOME}/etc/hadoop/mapred-site.xml
-COPY yarn-site.xml ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+### Copy the configuration file into the container
+COPY config/core-site.xml ${HADOOP_HOME}/etc/hadoop/core-site.xml
+COPY config/hdfs-site.xml ${HADOOP_HOME}/etc/hadoop/hdfs-site.xml
+COPY config/mapred-site.xml ${HADOOP_HOME}/etc/hadoop/mapred-site.xml
+COPY config/yarn-site.xml ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+COPY config/hadoop-env.sh ${HADOOP_HOME}/etc/hadoop/hadoop-env.sh
 
 ### Expose daemons ports
 # NameNode: 9870
