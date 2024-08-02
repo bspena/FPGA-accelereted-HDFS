@@ -1,0 +1,18 @@
+#version: "3.7"
+services:
+  # The master container will run the namenode, resourcemanager, mapreduce jobHistory server and webappproxy server
+  master: 
+    hostname: master
+    #build: .
+    ports:
+      - 9870:9870       # namenode port
+      - 8088:8088       # resourcemanager port
+      - 19888:19888     # mapreduce jobHistory server
+      - 9090:9090       # webappproxy server
+    #command:  ["/bin/bash", "-c", "/home/start_daemons.sh"]
+
+  # The slave container will run the datanode and the nodemanager
+  slave: 
+    hostname: slave
+    #build: .
+    #command: ["/bin/bash", "-c", "/home/start_daemons.sh"]

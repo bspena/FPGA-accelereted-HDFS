@@ -1,10 +1,12 @@
 # Hadoop
 
+## Install
 * Install Hadoop by running the bash script:
 ```bash
 $ source hadoop_build.sh
 ```
 
+## Build
 * Set JAVA_HOME environment variable:
 ```bash
 $ nano .bashrc                    
@@ -17,6 +19,7 @@ $ cd /home/$(whoami)/hadoop
 $ mvn package -Pdist,native -DskipTests -Dtar
 ```
 
+## Configure 
 * Set Hadoop environment variables:
 ```bash
 $ nano .bashrc                                    
@@ -34,6 +37,8 @@ export HADOOP_YARN_HOME="$HADOOP_HOME"
     export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:/home/$(whoami)/hadoop/hadoop-dist/target/hadoop-3.3.5/share/hadoop/tools/lib/junit-4.13.2.jar
     ```
 
+* *-site.xml ????
+
 
 ## Fully Distributed Mode ?????
 * https://hadoop.apache.org/docs/r3.3.5/hadoop-project-dist/hadoop-common/ClusterSetup.html
@@ -43,3 +48,7 @@ export HADOOP_YARN_HOME="$HADOOP_HOME"
         <name>yarn.web-proxy.address</name>
         <value>localhost:9090</value>
     </property>
+
+
+## Downlaod
+* https://dlcdn.apache.org/hadoop/common/hadoop-3.3.5/hadoop-3.3.5.tar.gz

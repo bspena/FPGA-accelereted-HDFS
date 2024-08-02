@@ -15,3 +15,7 @@
 * Run a lxc container
 * Import intel-ofs-hitek repository 
     * Import Dockerfile from intel-ofs-hitek repository into container directory
+* Modify /home/spena/hadoop/dev-support/docker
+* Add troubleshootings (?)
+    * pom.xml file
+* Build my docker image
