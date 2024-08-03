@@ -19,6 +19,8 @@ $ cd /home/$(whoami)/hadoop
 $ mvn package -Pdist,native -DskipTests -Dtar
 ```
 
+* pom.xml ???
+
 ## Configure 
 * Set Hadoop environment variables:
 ```bash

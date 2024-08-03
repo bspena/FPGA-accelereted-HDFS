@@ -32,6 +32,10 @@ ARG USER_NAME
 ARG USER_ID
 ARG GROUP_ID
 
+# ARG USER_NAME=spena
+# ARG USER_ID=1000
+# ARG GROUP_ID=1000
+
 #####
 # Disable suggests/recommends
 #####
@@ -81,15 +85,17 @@ RUN apt-get -q update \
         pkg-config \
         python3 \
         python3-pip \
-        #python3-pkg-resources \
+        python3-pkg-resources \
         python3-setuptools \
-        #python3-wheel \
+        python3-wheel \
         rsync \
         shellcheck \
-        #software-properties-common \
+        software-properties-common \
         sudo \
         valgrind \
         zlib1g-dev \
+        ssh \
+        pdsh \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -211,12 +217,26 @@ RUN chmod 755 /root/hadoop_env_checks.sh
 # hadolint ignore=SC2016
 RUN echo '${HOME}/hadoop_env_checks.sh' >> /root/.bashrc
 
-# Remove log files
+# Remove log files and add both group and user
 RUN rm -f /var/log/faillog /var/log/lastlog \
     && groupadd --non-unique -g ${GROUP_ID} ${USER_NAME} \
     && useradd -g ${GROUP_ID} -u ${USER_ID} -k /root -m ${USER_NAME} -d /home/${USER_NAME} \
     # The user will use sudo without password
     && echo "${USER_NAME} ALL=NOPASSWD: ALL" > "/etc/sudoers.d/hadoop-build-${USER_ID}"
 
+# Setup passphraseless ssh
+RUN ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa \
+    && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys \
+    && chmod 0600 ~/.ssh/authorized_keys
+
 # Set HOME environment variable
 ENV HOME /home/${USER_NAME}
+ENV HADOOP_HOME /home/${USER_NAME}/hadoop/hadoop-dist/target/hadoop-3.3.5
+
+### Expose daemons ports
+# NameNode: 9870
+# ResourceManager: 8088
+# MapReduce JobHistory Server: 19888
+EXPOSE 9870 8088 19888
+
+WORKDIR /home

@@ -1,10 +1,12 @@
 # Container Tecnology ?????
 
+# Build Hadoop Image
 * source start-build-env.sh
+* id -u --> user_id
+* id -g --> group_id
 
-* Run docker without sudo privileges
-    * sudo usermod -aG docker $USER
 
+# ????
 * Run multiple cotainers (in background)
     * sudo docker compose up -d
 *  Acess to container
@@ -42,6 +44,8 @@
     * sudo docker system prune -a --> remove all images
 * Info of the docker image:
     * into the container --> cat /etc/os-release
+* Run docker without sudo privileges
+    * sudo usermod -aG docker $USER
 
 ### Podman
 * Doc --> https://docs.podman.io/en/latest/
