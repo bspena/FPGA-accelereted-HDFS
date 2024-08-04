@@ -1,5 +1,5 @@
 # Run the daemons for the master container
-if [ "$HOSTNAME" == "master" ]; then
+if [ "$HOSTNAME" == "master_container" ]; then
     rm -rf /tmp/hadoop-root/dfs/data/*
     echo Y | $HADOOP_HOME/bin/hdfs namenode -format     
     $HADOOP_HOME/bin/hdfs --daemon start namenode
@@ -9,11 +9,8 @@ if [ "$HOSTNAME" == "master" ]; then
 fi
 
 # Run the daemons for the slave container
-if [ "$HOSTNAME" == "slave" ]; then
+if [ "$HOSTNAME" == "slave_container" ]; then
     rm -rf /tmp/hadoop-root/dfs/data/*
     $HADOOP_HOME/bin/hdfs --daemon start datanode
     $HADOOP_HOME/bin/yarn --daemon start nodemanager
 fi
-
-# ????
-#tail -f /dev/null

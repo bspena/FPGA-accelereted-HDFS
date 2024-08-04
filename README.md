@@ -11,6 +11,7 @@
 > Note: Step 2 is not necessary if you do not want to use the host as the master node for the Hadoop cluster.
 
 # To Do
+* Chages directory tree
 * Write docker-compose.yml --> multi container application (?)
 * Run a lxc container
 * Import intel-ofs-hitek repository 

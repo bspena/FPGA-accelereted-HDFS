@@ -239,4 +239,4 @@ ENV HADOOP_HOME /home/${USER_NAME}/hadoop/hadoop-dist/target/hadoop-3.3.5
 # MapReduce JobHistory Server: 19888
 EXPOSE 9870 8088 19888
 
-WORKDIR /home
+WORKDIR /home/${USER_NAME}

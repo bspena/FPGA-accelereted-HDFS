@@ -78,12 +78,9 @@ DOCKER_HOME_DIR=${DOCKER_HOME_DIR:-/home/${USER_NAME}}
 # ENV HOME "${DOCKER_HOME_DIR}"
 # UserSpecificDocker
 
-# Build the Docker Image
-docker build --build-arg USER_NAME="${USER_NAME}" --build-arg USER_ID="${USER_ID}" --build-arg GROUP_ID="${GROUP_ID}" -t "hadoop-build" -f $DOCKER_FILE $DOCKER_DIR
-
 #If this env varible is empty, docker will be started
 # in non interactive mode
-DOCKER_INTERACTIVE_RUN=${DOCKER_INTERACTIVE_RUN-"-i -t"}
+#DOCKER_INTERACTIVE_RUN=${DOCKER_INTERACTIVE_RUN-"-i -t"}
 
 # By mapping the .m2 directory you can do an mvn install from
 # within the container and use the result on your normal
@@ -98,14 +95,18 @@ DOCKER_INTERACTIVE_RUN=${DOCKER_INTERACTIVE_RUN-"-i -t"}
 #   -u "${USER_ID}" \
 #   "hadoop-build-${USER_ID}" "$@"
 
-docker run $DOCKER_INTERACTIVE_RUN \
+
+# Build the Docker Image via script
+docker build --build-arg USER_NAME="${USER_NAME}" --build-arg USER_ID="${USER_ID}" --build-arg GROUP_ID="${GROUP_ID}" -t "hadoop-build" -f $DOCKER_FILE $DOCKER_DIR
+
+# Run the contaiuner via script
+docker run -i -t -d \
   -p 9870:9870  \
   -p 8088:8080  \
   -p 19888:19888 \
   -v "${PWD}:${DOCKER_HOME_DIR}/hadoop${V_OPTS:-}" \
-  -w "${DOCKER_HOME_DIR}/hadoop" \
   -v "${HOME}/.m2:${DOCKER_HOME_DIR}/.m2${V_OPTS:-}" \
   -v "${HOME}/.gnupg:${DOCKER_HOME_DIR}/.gnupg${V_OPTS:-}" \
   -u "${USER_ID}" \
-  --name "hadoop_container" \
+  --name "hadoop_container_v4" \
   "hadoop-build" "$@"

@@ -1,24 +1,26 @@
 # Container Tecnology ?????
 
-# Build Hadoop Image
-* source start-build-env.sh
-* id -u --> user_id
-* id -g --> group_id
+## Build Hadoop Image
+* docker build --build-arg USER_NAME="${USER}" --build-arg USER_ID="$(id -u)" --build-arg GROUP_ID="$(id -g)" -t hadoop-build \
+  -f "/home/spena/hadoop/dev-support/docker/Dockerfile" /home/spena/hadoop/dev-support/docker
 
+## Run the Container
+* docker run -i -t \
+  -p 9870:9870  \
+  -p 8088:8080  \
+  -p 19888:19888 \
+  -v "/home/spena/hadoop:/home/spena/hadoop" \
+  -v "/home/spena/.m2:/home/spena/.m2" \
+  -v "/home/spena/.gnupg:/home/spena/.gnupg" \
+  -u "$(id -u)" \
+  --name "hadoop_container" \
+  "hadoop-build"
 
-# ????
+## ????
 * Run multiple cotainers (in background)
     * sudo docker compose up -d
 *  Acess to container
     * sudo docker compose exec service_name /bin/bash
-
-
-## Docker image for hadoop
-* hadoop_image:1.0 --> basic image
-* hadoop_image
-
-## Format namenode
-* rm -rf /tmp/hadoop-root/dfs/data/* 
 
 
 ## Container Tecnology
@@ -81,6 +83,8 @@
     * /sbin/start-dfs.sh --> start/stop all deamons
     * /bin/hdfs --daemon start namenode --> start each deamon separately
 > Note: After formatting start-dfs.sh returns error and doesn't allow starting hdfs daemons
+* format namenode (my_Dockerfil) --> rm -rf /tmp/hadoop-root/dfs/data/* 
+
 
 ## Troubleshooting
 ### Error 1
