@@ -200,7 +200,7 @@ ENV MAVEN_OPTS -Xms256m -Xmx1536m
 # Skip gpg verification when downloading Yetus via yetus-wrapper
 ENV HADOOP_SKIP_YETUS_VERIFICATION true
 
-###
+####################################
 # Everything past this point is either not needed for testing or breaks Yetus.
 # So tell Yetus not to read the rest of the file:
 # YETUS CUT HERE
@@ -216,6 +216,10 @@ COPY hadoop_env_checks.sh /root/hadoop_env_checks.sh
 RUN chmod 755 /root/hadoop_env_checks.sh
 # hadolint ignore=SC2016
 RUN echo '${HOME}/hadoop_env_checks.sh' >> /root/.bashrc
+
+
+####################################
+
 
 # Remove log files and add both group and user
 RUN rm -f /var/log/faillog /var/log/lastlog \

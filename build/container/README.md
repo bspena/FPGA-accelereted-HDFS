@@ -1,37 +1,39 @@
-# Container Tecnology ?????
-
-## Build Hadoop Image
-* docker build --build-arg USER_NAME="${USER}" --build-arg USER_ID="$(id -u)" --build-arg GROUP_ID="$(id -g)" -t hadoop-build \
-  -f "/home/spena/hadoop/dev-support/docker/Dockerfile" /home/spena/hadoop/dev-support/docker
-
-## Run the Container
-* docker run -i -t \
-  -p 9870:9870  \
-  -p 8088:8080  \
-  -p 19888:19888 \
-  -v "/home/spena/hadoop:/home/spena/hadoop" \
-  -v "/home/spena/.m2:/home/spena/.m2" \
-  -v "/home/spena/.gnupg:/home/spena/.gnupg" \
-  -u "$(id -u)" \
-  --name "hadoop_container" \
-  "hadoop-build"
+# Container
 
 ## ????
-* Run multiple cotainers (in background)
-    * sudo docker compose up -d
-*  Acess to container
-    * sudo docker compose exec service_name /bin/bash
+* Docker Version 27.0.3
+* Docker Compose Version 2.29.1
+* LXC Version 5.0.0
+
+## Docker
+### Build Hadoop Image
+```bash
+$ docker build \ 
+    --build-arg USER_NAME="${USER}" \ 
+    --build-arg USER_ID="$(id -u)" \ 
+    --build-arg GROUP_ID="$(id -g)" \ 
+    -t hadoop-build \ 
+    -f "/home/$(whoami)/hadoop/dev-support/docker/Dockerfile" /home/$(whoami)/hadoop/dev-support/docker
+```
+
+### Run
+* Run one master container and n slave containers
+```bash
+$ docker compose up -d --scale slave=n
+```
+> Note: Upon staring conatiners, will be executed bash script start_daemons. Remember to edit the paths into docker compose file.
+
+## Passing device to conatiner with docker compose
+* Passing devce to container --> https://stackoverflow.com/questions/73339141/docker-compose-devices-map-all-devices-from-local-to-container
 
 
-## Container Tecnology
+## LXC
+
+
+## Utils
 ### Docker 
-* Doc --> https://docs.docker.com/guides/docker-overview/
-* Install --> https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
-    * Version 27.0.3
-* Docker compose --> https://docs.docker.com/compose/intro/features-uses/
-    * Version v2.29.1
 * Commands 
-    * sudo docker run -ti ubuntu:jammy /bin/bash --> start an ubuntu container (?)
+    * sudo docker run -ti ubuntu:jammy /bin/bash --> start an ubuntu container
     * sudo docker start container_name --> start a container
     * sudo docker attach container_name --> attach session to container console
 > Note: All the containers share the host kernel
@@ -48,6 +50,8 @@
     * into the container --> cat /etc/os-release
 * Run docker without sudo privileges
     * sudo usermod -aG docker $USER
+*  Access to container built with docker compose
+    * sudo docker compose exec service_name /bin/bash
 
 ### Podman
 * Doc --> https://docs.podman.io/en/latest/
@@ -55,9 +59,7 @@
     * Version: 3.4.4
 
 ### Linux Container (LXC)
-* Reference --> https://linuxcontainers.org/lxc/introduction/
 * Install --> https://linuxcontainers.org/lxc/getting-started/
-    * Version 5.0.0
     > Note: use sudo privileges
 
 ### Kubernetes

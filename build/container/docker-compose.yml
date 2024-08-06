@@ -1,8 +1,9 @@
 services:
-  master_container: 
-    hostname: master_container
+  master: 
+    hostname: master
     image: hadoop-build
     ports:
+    #  - 50070:50070
       - 9870:9870       # namenode port
       - 8088:8088       # resourcemanager port
       - 19888:19888     # mapreduce jobHistory server
@@ -11,16 +12,16 @@ services:
       - /home/spena/hadoop:/home/spena/hadoop
       - /home/spena/.m2:/home/spena/.m2
       - /home/spena/.gnupg:/home/spena/.gnupg
-      #- start_daemons.sh:/home/spena/
+      - /home/spena/thesis/build/container/start_daemons.sh:/home/spena/start_daemons.sh
     user: "1000:1000"
-    command: /bin/bash -c "sleep infinity"
-  slave_container: 
-    hostname: slave_container
+    command: /bin/bash -c "./start_daemons.sh"
+  slave: 
+    hostname: slave
     image: hadoop-build
     volumes:
       - /home/spena/hadoop:/home/spena/hadoop
       - /home/spena/.m2:/home/spena/.m2
       - /home/spena/.gnupg:/home/spena/.gnupg
-      #- start_daemons.sh:/home/spena/
+      - /home/spena/thesis/build/container/start_daemons.sh:/home/spena/start_daemons.sh
     user: "1000:1000"
-    command: /bin/bash -c "sleep infinity"
+    command: /bin/bash -c "./start_daemons.sh"

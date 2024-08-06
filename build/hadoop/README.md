@@ -19,7 +19,11 @@ $ cd /home/$(whoami)/hadoop
 $ mvn package -Pdist,native -DskipTests -Dtar
 ```
 
-* pom.xml ???
+> Note: Hadoop build with maven might fail due to incompatibility of the node version. Go to the pom.xml file located in the /home/$(whoami)/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-applications/hadoop-yarn-applications-catalog/hadoop-yarn-applications-catalog-webapp path and set node and yarn version as follow:
+>```xml
+><nodeVersion>v14.15.0</nodeVersion>
+><yarnVersion>v1.22.5</yarnVersion>
+>```
 
 ## Configure 
 * Set Hadoop environment variables:
@@ -39,18 +43,10 @@ export HADOOP_YARN_HOME="$HADOOP_HOME"
     export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:/home/$(whoami)/hadoop/hadoop-dist/target/hadoop-3.3.5/share/hadoop/tools/lib/junit-4.13.2.jar
     ```
 
-* *-site.xml ????
 
-
-## Fully Distributed Mode ?????
+## Fully Distributed Mode
 * https://hadoop.apache.org/docs/r3.3.5/hadoop-project-dist/hadoop-common/ClusterSetup.html
 * https://www.michael-noll.com/tutorials/running-hadoop-on-ubuntu-linux-multi-node-cluster/#tutorial-approach-and-structure
-* Into yarn-site.xml (for WebServerProxy):
-    <property>
-        <name>yarn.web-proxy.address</name>
-        <value>localhost:9090</value>
-    </property>
-
 
 ## Downlaod
 * https://dlcdn.apache.org/hadoop/common/hadoop-3.3.5/hadoop-3.3.5.tar.gz

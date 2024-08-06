@@ -4,18 +4,12 @@
 * Ubuntu 22.04 LTS
 
 ## Enviroment Setup ???
-1) [Install Intel OFS on the host machine](intel_OFS/README.md)
-2) [Install Hadoop on the host machine](hadoop/README.md)
-3) [???](container/README.md)
-
-> Note: Step 2 is not necessary if you do not want to use the host as the master node for the Hadoop cluster.
+1) [Install Intel OFS on the host machine](build/intel_OFS/README.md)
+2) [Install Hadoop on the host machine](build/hadoop/README.md)
+3) [Build the Container](build/container/README.md)
 
 # To Do
-* Chages directory tree
-* Write docker-compose.yml --> multi container application (?)
 * Run a lxc container
 * Import intel-ofs-hitek repository 
     * Import Dockerfile from intel-ofs-hitek repository into container directory
-* Add troubleshootings (?)
-    * pom.xml file
-* Build my docker image
+* Update docker compose fiel by adding device flag
