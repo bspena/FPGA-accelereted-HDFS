@@ -12,4 +12,3 @@
 * Run a lxc container
 * Import intel-ofs-hitek repository 
     * Import Dockerfile from intel-ofs-hitek repository into container directory
-* Update docker compose fiel by adding device flag

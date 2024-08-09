@@ -1,3 +1,4 @@
 build/container/target/
 build/container/old_config/
 build/container/my_Dockerfile
+build/container/output

@@ -1,20 +1,22 @@
 services:
-  master: 
-    hostname: master
-    image: hadoop-build
-    ports:
-    #  - 50070:50070
-      - 9870:9870       # namenode port
-      - 8088:8088       # resourcemanager port
-      - 19888:19888     # mapreduce jobHistory server
-    #   - 9090:9090       # webappproxy server
-    volumes:
-      - /home/spena/hadoop:/home/spena/hadoop
-      - /home/spena/.m2:/home/spena/.m2
-      - /home/spena/.gnupg:/home/spena/.gnupg
-      - /home/spena/thesis/build/container/start_daemons.sh:/home/spena/start_daemons.sh
-    user: "1000:1000"
-    command: /bin/bash -c "./start_daemons.sh"
+  # master: 
+  #   hostname: master
+  #   image: hadoop-build
+  #   ports:
+  #   #  - 50070:50070
+  #     - 9870:9870       # namenode port
+  #     - 8088:8088       # resourcemanager port
+  #     - 19888:19888     # mapreduce jobHistory server
+  #   #   - 9090:9090       # webappproxy server
+  #   volumes:
+  #     - /home/spena/hadoop:/home/spena/hadoop
+  #     - /home/spena/.m2:/home/spena/.m2
+  #     - /home/spena/.gnupg:/home/spena/.gnupg
+  #     - /home/spena/thesis/build/container/start_daemons.sh:/home/spena/start_daemons.sh
+  #   user: "1000:1000"
+  #   command: /bin/bash -c "./start_daemons.sh"
+  #   #devices:
+  #   #  - /dev/
   slave: 
     hostname: slave
     image: hadoop-build
@@ -25,3 +27,6 @@ services:
       - /home/spena/thesis/build/container/start_daemons.sh:/home/spena/start_daemons.sh
     user: "1000:1000"
     command: /bin/bash -c "./start_daemons.sh"
+    #devices:
+    #  - /dev/
+    network_mode: host
