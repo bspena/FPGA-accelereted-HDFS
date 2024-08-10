@@ -106,7 +106,7 @@ docker run -i -t -d \
   -v "${HOME}/.gnupg:${DOCKER_HOME_DIR}/.gnupg${V_OPTS:-}" \
   -u "${USER_ID}" \
   --name "hadoop_container" \
-  "hadoop-build" "$@"
+  "hadoop-build_v2" "$@"
 
 #  -p 9870:9870  \
 #  -p 8088:8080  \

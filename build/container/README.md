@@ -1,5 +1,10 @@
 # Container
 
+
+docker run -i -t -v "/home/$(whoami)/hadoop:/home/$(whoami)/hadoop" -v "/home/$(whoami)/.m2:/home/$(whoami)/.m2" -v "/home/$(whoami)/.gnupg:/home/$(whoami)/.gnupg" -u "$(id -u)" --name "slave" --hostname "slave" hadoop-build /bin/bash -c "/home/$(whoami)/start_daemons.sh"
+
+
+
 ## ????
 * Docker Version 27.0.3
 * Docker Compose Version 2.29.1
@@ -12,7 +17,7 @@ $ docker build \
     --build-arg USER_NAME="${USER}" \
     --build-arg USER_ID="$(id -u)" \
     --build-arg GROUP_ID="$(id -g)" \
-    -t hadoop-build \
+    -t hadoop-build . \
     -f "/home/$(whoami)/hadoop/dev-support/docker/Dockerfile" \
     /home/$(whoami)/hadoop/dev-support/docker
 ```
@@ -31,7 +36,8 @@ $ docker compose up -d --scale slave=n
 ### Passing device to conatiner with docker compose
 * https://stackoverflow.com/questions/73339141/docker-compose-devices-map-all-devices-from-local-to-container
 * differnt containers different devices ????
-    * alternativelly uses doker run
+    * no --scale flag --> different services
+    * bash script --> for {doker run ...}
 
 ### Remove the Containers
 ```bash

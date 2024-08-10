@@ -212,10 +212,10 @@ RUN curl -L -o hugo.deb https://github.com/gohugoio/hugo/releases/download/v0.58
     && rm hugo.deb
 
 # Add a welcome message and environment checks.
-COPY hadoop_env_checks.sh /root/hadoop_env_checks.sh
-RUN chmod 755 /root/hadoop_env_checks.sh
+#COPY hadoop_env_checks.sh /root/hadoop_env_checks.sh
+#RUN chmod 755 /root/hadoop_env_checks.sh
 # hadolint ignore=SC2016
-RUN echo '${HOME}/hadoop_env_checks.sh' >> /root/.bashrc
+#RUN echo '${HOME}/hadoop_env_checks.sh' >> /root/.bashrc
 
 
 ####################################
