@@ -244,3 +244,5 @@ ENV HADOOP_HOME /home/${USER_NAME}/hadoop/hadoop-dist/target/hadoop-3.3.5
 EXPOSE 9870 8088 19888
 
 WORKDIR /home/${USER_NAME}
+
+#CMD [ "/bin/bash"]

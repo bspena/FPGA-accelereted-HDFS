@@ -8,7 +8,7 @@ if [ "$HOSTNAME" == "master" ]; then
     $HADOOP_HOME/bin/hdfs --daemon start secondarynamenode
     $HADOOP_HOME/bin/yarn --daemon start resourcemanager
     $HADOOP_HOME/bin/mapred --daemon start historyserver
-    $HADOOP_HOME/bin/yarn --daemon start proxyserver
+    #$HADOOP_HOME/bin/yarn --daemon start proxyserver
 # Run the daemons for the slave container
 elif [ "$HOSTNAME" == "slave" ]; then
     #rm -rf /tmp/hadoop-spena/dfs/data/*

@@ -12,6 +12,7 @@
 * Run a lxc container
 * Import intel-ofs-hitek repository 
     * Import Dockerfile from intel-ofs-hitek repository into container directory
+* Build docker image using docker compose build
 * Modify bash script start-build-env
     * Add flag hostname
     * Add flag --device

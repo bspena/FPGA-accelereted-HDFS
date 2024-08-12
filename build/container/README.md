@@ -1,8 +1,8 @@
 # Container
 
-
-docker run -i -t -v "/home/$(whoami)/hadoop:/home/$(whoami)/hadoop" -v "/home/$(whoami)/.m2:/home/$(whoami)/.m2" -v "/home/$(whoami)/.gnupg:/home/$(whoami)/.gnupg" -u "$(id -u)" --name "slave" --hostname "slave" hadoop-build /bin/bash -c "/home/$(whoami)/start_daemons.sh"
-
+* It works
+* docker run -i -t -d -v "/home/$(whoami)/hadoop:/home/$(whoami)/hadoop" -v "/home/$(whoami)/.m2:/home/$(whoami)/.m2" -v "/home/$(whoami)/.gnupg:/home/$(whoami)/.gnupg"  -v "/home/$(whoami)/thesis/build/container/start_daemons.sh:/home/$(whoami)/start_daemons.sh" -u "$(id -u)" --name "slave" --hostname "slave" --network host hadoop-build /bin/bash 
+* docker exec slave /bin/bash -c "./start_daemons.sh"
 
 
 ## ????
@@ -33,16 +33,22 @@ $ docker compose up -d --scale slave=n
 ```
 > Note: Upon staring conatiners, will be executed the bash script start_daemons. Remember to edit the paths into docker compose file.
 
+* docker compose stop
+
 ### Passing device to conatiner with docker compose
 * https://stackoverflow.com/questions/73339141/docker-compose-devices-map-all-devices-from-local-to-container
 * differnt containers different devices ????
     * no --scale flag --> different services
+    * bash script--> for {variable docker compose}
     * bash script --> for {doker run ...}
 
 ### Remove the Containers
 ```bash
 $ docker system prune
 ```
+
+### Network
+https://sophilabs.com/blog/communication-between-containers-and-host-machine
 
 
 ## LXC
