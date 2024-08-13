@@ -14,7 +14,7 @@ services:
   #     - /home/spena/hadoop:/home/spena/hadoop
   #     - /home/spena/.m2:/home/spena/.m2
   #     - /home/spena/.gnupg:/home/spena/.gnupg
-  #     - /home/spena/thesis/build/container/start_daemons.sh:/home/spena/start_daemons.sh
+  #     - /home/spena/thesis/build/container/daemons.sh:/home/spena/daemons.sh
   #   user: "1000:1000"
   #   command: /bin/bash -c "./start_daemons.sh"
   #   #devices:
@@ -26,7 +26,7 @@ services:
       - /home/spena/hadoop:/home/spena/hadoop
       - /home/spena/.m2:/home/spena/.m2
       - /home/spena/.gnupg:/home/spena/.gnupg
-      - /home/spena/thesis/build/container/start_daemons.sh:/home/spena/start_daemons.sh
+      - /home/spena/thesis/build/container/daemons.sh:/home/spena/daemons.sh
     user: "1000:1000"
     command: /bin/bash -c "sleep infinity"
     #command: /bin/bash -c "./start_daemons.sh"
@@ -41,7 +41,7 @@ services:
       - /home/spena/hadoop:/home/spena/hadoop
       - /home/spena/.m2:/home/spena/.m2
       - /home/spena/.gnupg:/home/spena/.gnupg
-      - /home/spena/thesis/build/container/start_daemons.sh:/home/spena/start_daemons.sh
+      - /home/spena/thesis/build/container/daemons.sh:/home/spena/daemons.sh
     user: "1000:1000"
     command: /bin/bash -c "sleep infinity"
     #command: /bin/bash -c "./start_daemons.sh"

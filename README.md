@@ -17,3 +17,4 @@
     * Add flag hostname
     * Add flag --device
     * Add multi-container
+* Modify bash script hadoop_build

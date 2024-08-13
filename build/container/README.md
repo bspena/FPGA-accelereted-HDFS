@@ -1,14 +1,24 @@
 # Container
 
 * It works
-* docker run -i -t -d -v "/home/$(whoami)/hadoop:/home/$(whoami)/hadoop" -v "/home/$(whoami)/.m2:/home/$(whoami)/.m2" -v "/home/$(whoami)/.gnupg:/home/$(whoami)/.gnupg"  -v "/home/$(whoami)/thesis/build/container/start_daemons.sh:/home/$(whoami)/start_daemons.sh" -u "$(id -u)" --name "slave" --hostname "slave" --network host hadoop-build /bin/bash 
+* docker run -i -t -d \
+    -v "/home/$(whoami)/hadoop:/home/$(whoami)/hadoop" \
+    -v "/home/$(whoami)/.m2:/home/$(whoami)/.m2" \
+    -v "/home/$(whoami)/.gnupg:/home/$(whoami)/.gnupg" \
+    -v "/home/$(whoami)/thesis/build/container/start_daemons.sh:/home/$(whoami)/start_daemons.sh" \
+    -u "$(id -u)" \
+    --name slave12 \
+    --hostname slave \
+    --network host \
+    hadoop-build \
+    /bin/bash 
 * docker exec slave /bin/bash -c "./start_daemons.sh"
-
+* docker stop $(docker ps -a -q)
 
 ## ????
 * Docker Version 27.0.3
 * Docker Compose Version 2.29.1
-* LXC Version 5.0.0
+* LXC Version 5.0.0 ??????
 
 ## Docker
 ### Build Hadoop Image
@@ -34,6 +44,8 @@ $ docker compose up -d --scale slave=n
 > Note: Upon staring conatiners, will be executed the bash script start_daemons. Remember to edit the paths into docker compose file.
 
 * docker compose stop
+* docker compose exec slave1 /bin/bash -c "./start_daemons.sh"
+* docker compose exec slave2 /bin/bash -c "./start_daemons.sh"
 
 ### Passing device to conatiner with docker compose
 * https://stackoverflow.com/questions/73339141/docker-compose-devices-map-all-devices-from-local-to-container
