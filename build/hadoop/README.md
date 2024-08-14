@@ -1,12 +1,10 @@
 # Hadoop
 
 ## Install
-* Install Hadoop by running the bash script:
+* To install Hadoop 3.3.5 from the [official repository](https://github.com/apache/hadoop.git), run:
 ```bash
 $ source hadoop_build.sh
 ```
-
-> Note: The bash script will clone hadoop 3.3.5 from the [official repository](https://github.com/apache/hadoop.git).
 
 ## Build
 * Set JAVA_HOME environment variable:
@@ -44,11 +42,3 @@ export HADOOP_YARN_HOME="$HADOOP_HOME"
     ```bash
     export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:/home/$(whoami)/hadoop/hadoop-dist/target/hadoop-3.3.5/share/hadoop/tools/lib/junit-4.13.2.jar
     ```
-
-
-## Fully Distributed Mode
-* https://hadoop.apache.org/docs/r3.3.5/hadoop-project-dist/hadoop-common/ClusterSetup.html
-* https://www.michael-noll.com/tutorials/running-hadoop-on-ubuntu-linux-multi-node-cluster/#tutorial-approach-and-structure
-
-## Downlaod
-* https://dlcdn.apache.org/hadoop/common/hadoop-3.3.5/hadoop-3.3.5.tar.gz

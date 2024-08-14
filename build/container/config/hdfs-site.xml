@@ -7,8 +7,7 @@
   </property>
   <property>
     <name>dfs.namenode.rpc-address</name>
-    <!--<value>master:8020</value>-->
-    <value>localhost:8020</value>
+    <value>master:8020</value>
     <description>Address of the NameNode Remote Procedure Call server</description>
   </property>
 </configuration>

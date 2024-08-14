@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Run the daemons for the master container or the host machine
-if [ "$HOSTNAME" == "master" ] || [ "$HOSTNAME" == "spena-VirtualBox" ]; then
+if [ "$HOSTNAME" == "master" ]; then
     
     # Stop the daemons
     $HADOOP_HOME/bin/hdfs --daemon stop namenode
@@ -27,12 +27,12 @@ elif [ "$HOSTNAME" == "slave" ]; then
     $HADOOP_HOME/bin/yarn --daemon stop nodemanager
     
     # Remove data
-    rm -rf /tmp/hadoop-spena/dfs/data/
+    #rm -rf /tmp/hadoop-spena/dfs/data/
 
     # Start daemons
     $HADOOP_HOME/bin/hdfs --daemon start datanode
     $HADOOP_HOME/bin/yarn --daemon start nodemanager
 fi
 
-# To keep the container alive
+# To keep the container alive (needed for docker compose)
 #sleep infinity

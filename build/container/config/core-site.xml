@@ -19,14 +19,12 @@
 <configuration>
     <property>
         <name>fs.defaultFS</name>
-        <!--<value>hdfs://master</value>-->
-        <value>hdfs://localhost</value>
+        <value>hdfs://master</value>
         <description>The default filesystem URI used by hadoop client to access the filesystem</description>
     </property>
     <property>
         <name>fs.default.name</name>
-        <!--<value>hdfs://master</value>-->
-        <value>hdfs://localhost</value>
+        <value>hdfs://master</value>
         <description>The default filesystem URI used by hadoop client to access the filesystem</description>
     </property>
 </configuration>

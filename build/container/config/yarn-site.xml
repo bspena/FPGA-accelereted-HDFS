@@ -20,8 +20,7 @@
     </property>
     <property>
         <name>yarn.resourcemanager.hostname</name>
-        <!--<value>master</value>-->
-        <value>localhost</value>
+        <value>master</value>
         <description>Hostname of the ResourceManager</description>
     </property>
     <property>

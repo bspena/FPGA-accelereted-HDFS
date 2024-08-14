@@ -1,24 +1,21 @@
 services:
-
-  # For "only containers architecture"
-  # master: 
-  #   hostname: master
-  #   image: hadoop-build
-  #   ports:
-  #   #  - 50070:50070
-  #     - 9870:9870       # namenode port
-  #     - 8088:8088       # resourcemanager port
-  #     - 19888:19888     # mapreduce jobHistory server
-  #   #   - 9090:9090       # webappproxy server
-  #   volumes:
-  #     - /home/spena/hadoop:/home/spena/hadoop
-  #     - /home/spena/.m2:/home/spena/.m2
-  #     - /home/spena/.gnupg:/home/spena/.gnupg
-  #     - /home/spena/thesis/build/container/daemons.sh:/home/spena/daemons.sh
-  #   user: "1000:1000"
-  #   command: /bin/bash -c "./start_daemons.sh"
-  #   #devices:
-  #   #  - /dev/
+  master: 
+    hostname: master
+    image: hadoop-build
+    ports:
+      - 9870:9870       # namenode port
+      - 8088:8088       # resourcemanager port
+      - 19888:19888     # mapreduce jobHistory server
+    #   - 9090:9090       # webappproxy server
+    volumes:
+      - /home/spena/hadoop:/home/spena/hadoop
+      - /home/spena/.m2:/home/spena/.m2
+      - /home/spena/.gnupg:/home/spena/.gnupg
+      - /home/spena/thesis/build/container/daemons.sh:/home/spena/daemons.sh
+    user: "1000:1000"
+    command: /bin/bash -c "sleep infinity"
+    #devices:
+    #  - /dev/
   slave1: 
     hostname: slave
     image: hadoop-build
@@ -29,11 +26,8 @@ services:
       - /home/spena/thesis/build/container/daemons.sh:/home/spena/daemons.sh
     user: "1000:1000"
     command: /bin/bash -c "sleep infinity"
-    #command: /bin/bash -c "./start_daemons.sh"
     #devices:
     #  - /dev/
-    # To add container to host's network stack
-    network_mode: host
   slave2: 
     hostname: slave
     image: hadoop-build
@@ -44,9 +38,6 @@ services:
       - /home/spena/thesis/build/container/daemons.sh:/home/spena/daemons.sh
     user: "1000:1000"
     command: /bin/bash -c "sleep infinity"
-    #command: /bin/bash -c "./start_daemons.sh"
     #devices:
     #  - /dev/
-    # To add container to host's network stack
-    network_mode: host
     

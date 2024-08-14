@@ -9,12 +9,7 @@
 3) [Build the Container](build/container/README.md)
 
 # To Do
-* Run a lxc container
+* Add settings_opae --> number of containers = number of vf
+* Create ad lxc image
 * Import intel-ofs-hitek repository 
     * Import Dockerfile from intel-ofs-hitek repository into container directory
-* Build docker image using docker compose build
-* Modify bash script start-build-env
-    * Add flag hostname
-    * Add flag --device
-    * Add multi-container
-* Modify bash script hadoop_build
