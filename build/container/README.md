@@ -1,13 +1,14 @@
-# Container
+# Hadoop Container
 
 ## ????
-* Docker Version 27.0.3
-* LXC Version 5.0.0 ???
-* Podman Version 3.4.4 ???
-* Kubernetes Version ???
+* Docker version 27.0.3
+* Docker Compose version ???
+* LXC version 5.0.0 ???
+* Podman version 3.4.4 ???
+* Kubernetes version ???
 
 ## Docker
-* To build and run bost hadoop master and slave containers, run:
+* To build docker image with hadoop, run:
 ```bash
 $ source hadoop_container build.sh
 ```

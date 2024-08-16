@@ -27,12 +27,12 @@ elif [ "$HOSTNAME" == "slave" ]; then
     $HADOOP_HOME/bin/yarn --daemon stop nodemanager
     
     # Remove data
-    #rm -rf /tmp/hadoop-spena/dfs/data/
+    rm -rf /tmp/hadoop-spena/dfs/data/
 
     # Start daemons
     $HADOOP_HOME/bin/hdfs --daemon start datanode
     $HADOOP_HOME/bin/yarn --daemon start nodemanager
 fi
 
-# To keep the container alive (needed for docker compose)
+# To keep the container alive ("docker compose" method)
 #sleep infinity

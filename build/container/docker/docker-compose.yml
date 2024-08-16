@@ -11,33 +11,34 @@ services:
       - /home/spena/hadoop:/home/spena/hadoop
       - /home/spena/.m2:/home/spena/.m2
       - /home/spena/.gnupg:/home/spena/.gnupg
-      - /home/spena/thesis/build/container/daemons.sh:/home/spena/daemons.sh
+      - /home/spena/thesis/build/container/script/hadoop_daemons.sh:/home/spena/hadoop_daemons.sh
+      - /home/spena/thesis/build/container/script/job_mapred.sh:/home/spena/job_mapred.sh
     user: "1000:1000"
-    command: /bin/bash -c "sleep infinity"
+    command: /bin/bash -c "./hadoop_daemons.sh"
     #devices:
     #  - /dev/
-  slave1: 
+  slave_0: 
     hostname: slave
     image: hadoop-build
     volumes:
       - /home/spena/hadoop:/home/spena/hadoop
       - /home/spena/.m2:/home/spena/.m2
       - /home/spena/.gnupg:/home/spena/.gnupg
-      - /home/spena/thesis/build/container/daemons.sh:/home/spena/daemons.sh
+      - /home/spena/thesis/build/container/script/hadoop_daemons.sh:/home/spena/hadoop_daemons.sh
     user: "1000:1000"
-    command: /bin/bash -c "sleep infinity"
+    command: /bin/bash -c "./hadoop_daemons.sh"
     #devices:
     #  - /dev/
-  slave2: 
+  slave_1: 
     hostname: slave
     image: hadoop-build
     volumes:
       - /home/spena/hadoop:/home/spena/hadoop
       - /home/spena/.m2:/home/spena/.m2
       - /home/spena/.gnupg:/home/spena/.gnupg
-      - /home/spena/thesis/build/container/daemons.sh:/home/spena/daemons.sh
+      - /home/spena/thesis/build/container/script/hadoop_daemons.sh:/home/spena/hadoop_daemons.sh
     user: "1000:1000"
-    command: /bin/bash -c "sleep infinity"
+    command: /bin/bash -c "./hadoop_daemons.sh"
     #devices:
     #  - /dev/
     

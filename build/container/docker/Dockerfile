@@ -26,15 +26,12 @@ FROM ubuntu:jammy
 
 WORKDIR /root
 
+# The commands within the Dockerfile are executed with bash
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ARG USER_NAME
 ARG USER_ID
 ARG GROUP_ID
-
-# ARG USER_NAME=spena
-# ARG USER_ID=1000
-# ARG GROUP_ID=1000
 
 #####
 # Disable suggests/recommends
