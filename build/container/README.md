@@ -2,8 +2,9 @@
 
 ## ????
 * Docker version 27.0.3
-* Docker Compose version ???
-* LXC version 5.0.0 ???
+* Docker Compose version 2.29.1
+* LXC version 5.0.0
+* Distrobuilder ????
 * Podman version 3.4.4 ???
 * Kubernetes version ???
 
@@ -17,9 +18,32 @@ $ source hadoop_container build.sh
 
 
 ## LXC
-* Hadoop
-    * https://www.adaltas.com/en/2020/08/04/installing-hadoop-from-source/
+* Troubleshooting
+    * https://discuss.linuxcontainers.org/t/2nd-system-upgraded-from-ubuntu-20-04-w-working-lxd-to-ubuntu-22-04-lxd-again-not-working/14009/7
+    * Add to /etc/default/lxc-net --> LXC_USE_NFT=false
 
+### Isntall distrobuilder
+* sudo apt-get remove --purge golang-go
+* sudo apt-get autoremove
+* wget https://go.dev/dl/go1.22.6.linux-amd64.tar.gz
+* sudo tar -C /usr/local -xzf go1.22.6.linux-amd64.tar.gz
+* echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+* echo 'export GOROOT=/usr/local/go' >> ~/.bashrc
+* echo 'export GOPATH=/home/spena/go' >> ~/.bashrc
+* echo 'export GOEXPERIMENT=none' >> ~/.bashrc
+* echo 'export GOFLAGS="-mod=readonly"' >> ~/.bashrc
+* echo 'export GO111MODULE=auto' >> ~/.bashrc
+* echo 'export GOPROXY=https://proxy.golang.org,direct' >> ~/.bashrc
+* sudo apt update
+* sudo apt install -y golang-go debootstrap rsync gpg squashfs-tools git make
+* mkdir -p $HOME/go/src/github.com/lxc/
+* cd $HOME/go/src/github.com/lxc/
+* git clone https://github.com/lxc/distrobuilder
+* cd ./distrobuilder
+* make
+
+### Create/Build lxc image
+* sudo $HOME/go/bin/distrobuilder build-lxc ubuntu.yaml
 
 ## Kubernetes
 * ???

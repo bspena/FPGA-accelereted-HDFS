@@ -52,47 +52,15 @@ ENV DEBCONF_TERSE true
 # hadolint ignore=DL3008
 RUN apt-get -q update \
     && apt-get -q install -y --no-install-recommends \
-        apt-utils \
-        bats \
-        build-essential \
-        bzip2 \
-        clang \
-        cmake \
-        curl \
-        doxygen \
-        fuse \
-        g++ \
-        gcc \
-        git \
-        gnupg-agent \
-        libbz2-dev \
-        libcurl4-openssl-dev \
-        libfuse-dev \
-        libprotobuf-dev \
-        libprotoc-dev \
-        libsasl2-dev \
-        libsnappy-dev \
-        libssl-dev \
-        libsnappy-dev \
-        libtool \
+        apt-utils bats build-essential bzip2 clang cmake curl doxygen fuse g++ gcc git gnupg-agent \
+        libbz2-dev libcurl4-openssl-dev libfuse-dev libprotobuf-dev libprotoc-dev libsasl2-dev \
+        libsnappy-dev libssl-dev libsnappy-dev libtool \
         #libzstd1-dev \
         locales \
         make \
-        pinentry-curses \
-        pkg-config \
-        python3 \
-        python3-pip \
-        python3-pkg-resources \
-        python3-setuptools \
-        python3-wheel \
-        rsync \
-        shellcheck \
-        software-properties-common \
-        sudo \
-        valgrind \
-        zlib1g-dev \
-        ssh \
-        pdsh \
+        pinentry-curses pkg-config python3 python3-pip python3-pkg-resources \
+        python3-setuptools python3-wheel rsync shellcheck software-properties-common sudo valgrind \
+        zlib1g-dev ssh pdsh \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -131,8 +99,7 @@ RUN apt-get -q update \
 ######
 # hadolint ignore=DL3003
 RUN mkdir -p /opt/protobuf-src \
-    && curl -L -s -S \
-      https://github.com/protocolbuffers/protobuf/releases/download/v3.7.1/protobuf-java-3.7.1.tar.gz \
+    && curl -L -s -S https://github.com/protocolbuffers/protobuf/releases/download/v3.7.1/protobuf-java-3.7.1.tar.gz \
       -o /opt/protobuf.tar.gz \
     && tar xzf /opt/protobuf.tar.gz --strip-components 1 -C /opt/protobuf-src \
     && cd /opt/protobuf-src \
@@ -162,8 +129,7 @@ RUN pip3 install pylint==2.6.0 python-dateutil==2.8.1
 ###
 # Install hadolint
 ####
-RUN curl -L -s -S \
-        https://github.com/hadolint/hadolint/releases/download/v1.11.1/hadolint-Linux-x86_64 \
+RUN curl -L -s -S https://github.com/hadolint/hadolint/releases/download/v1.11.1/hadolint-Linux-x86_64 \
         -o /bin/hadolint \
    && chmod a+rx /bin/hadolint \
    && shasum -a 512 /bin/hadolint | \
@@ -177,8 +143,7 @@ RUN mkdir -p /opt/isa-l-src \
     && apt-get -q update \
     && apt-get install -y --no-install-recommends automake yasm \
     && apt-get clean \
-    && curl -L -s -S \
-      https://github.com/intel/isa-l/archive/v2.29.0.tar.gz \
+    && curl -L -s -S https://github.com/intel/isa-l/archive/v2.29.0.tar.gz \
       -o /opt/isa-l.tar.gz \
     && tar xzf /opt/isa-l.tar.gz --strip-components 1 -C /opt/isa-l-src \
     && cd /opt/isa-l-src \

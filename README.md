@@ -9,6 +9,9 @@
 3) [Build the Hadoop Container](build/container/README.md)
 
 # To Do
+* Update hadoop_build bash script with 
+    * echo 'export hadoop_enviro_variables' >> ~/.bashrc
+* Add script to install go and distrobuilder
 * Create ad lxc image
 * Import intel-ofs-hitek repository 
     * Import Dockerfile from intel-ofs-hitek repository into container directory

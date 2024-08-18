@@ -16,4 +16,4 @@ cp ../hadoop_config/* $HADOOP_HOME/etc/hadoop/
 echo "############################"
 echo "[INFO] Create docker network"
 echo "############################"
-docker network create hadoop-networkS
+docker network create hadoop-network

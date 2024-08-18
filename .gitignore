@@ -2,3 +2,5 @@ build/container/target/
 build/container/old_config/
 build/container/my_Dockerfile
 build/container/output
+build/container/lxc/meta.tar.xz
+build/container/lxc/rootfs.tar.xz
