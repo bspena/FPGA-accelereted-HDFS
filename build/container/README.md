@@ -11,13 +11,23 @@
 ## Docker
 * To build docker image with hadoop, run:
 ```bash
-$ source hadoop_container build.sh
+$ source script/hadoop_container build.sh
 ```
 
 > Note: Set the correct paths 
 
 
 ## LXC
+* Hadoop
+    * sudo $HOME/go/bin/distrobuilder build-lxc ubuntu.yaml
+    * sudo lxc-create -n container_name -t local -- --metadata meta.tar.xz --fstree rootfs.tar.xz
+    * sudo lxc-start -n container_name
+    * sudo bash -c 'echo "lxc.mount.entry = /home/spena/hadoop home/spena/hadoop none bind,create=dir 0 0" >>/var/lib/lxc/hadoop_image/config'
+    * sudo bash -c 'echo "lxc.mount.entry = /home/spena/.m2 home/spena/.m2 none bind,create=dir 0 0" >>/var/lib/lxc/hadoop_image/config'
+    * sudo bash -c 'echo "lxc.mount.entry = /home/spena/.gnupg home/spena/.gnupg none bind,create=dir 0 0" >>/var/lib/lxc/hadoop_image/config'
+    * sudo bash -c 'echo "lxc.mount.entry = /home/spena/thesis/build/container/script/hadoop_daemons.sh home/spena/hadoop_daemons.sh none bind,create=dir 0 0" >>/var/lib/lxc/hadoop_image/config'
+* network ????
+* lxc-device    
 * Troubleshooting
     * https://discuss.linuxcontainers.org/t/2nd-system-upgraded-from-ubuntu-20-04-w-working-lxd-to-ubuntu-22-04-lxd-again-not-working/14009/7
     * Add to /etc/default/lxc-net --> LXC_USE_NFT=false
@@ -41,9 +51,6 @@ $ source hadoop_container build.sh
 * git clone https://github.com/lxc/distrobuilder
 * cd ./distrobuilder
 * make
-
-### Create/Build lxc image
-* sudo $HOME/go/bin/distrobuilder build-lxc ubuntu.yaml
 
 ## Kubernetes
 * ???

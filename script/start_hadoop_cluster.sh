@@ -7,12 +7,12 @@
 #docker compose -f /home/$(whoami)/thesis/build/container/docker/docker-compose.yml up -d
 
 ###########################
-# Only Docker File Method #
+# Only Dockerfile Method #
 ###########################
 # Check if master container already exist
 master_exist=$(docker ps -a --filter "name=hadoop-master" --format "{{.Names}}")
 # Check if master container is running
-master_running=$(docker ps -a --filter "name=hadoop-master" --format "{{.Names}}")
+master_running=$(docker ps --filter "name=hadoop-master" --format "{{.Names}}")
 
 # If master container does not exist
 if [ -z "$master_exist" ]; then
@@ -96,7 +96,9 @@ slave_containers=$(docker ps --filter "name=hadoop-slave-" --format "{{.Names}}"
 
 for s in $slave_containers;
 do
+    echo "#################################"
     echo "[INFO] Start slave damons for $s"
+    echo "#################################"
     docker exec "$s" /bin/bash -c "./hadoop_daemons.sh"
 done
 
