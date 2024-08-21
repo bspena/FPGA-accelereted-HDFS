@@ -27,7 +27,10 @@ $ source script/hadoop_container build.sh
     * sudo bash -c 'echo "lxc.mount.entry = /home/spena/.gnupg home/spena/.gnupg none bind,create=dir 0 0" >>/var/lib/lxc/hadoop_image/config'
     * sudo bash -c 'echo "lxc.mount.entry = /home/spena/thesis/build/container/script/hadoop_daemons.sh home/spena/hadoop_daemons.sh none bind,create=dir 0 0" >>/var/lib/lxc/hadoop_image/config'
 * network ????
-* lxc-device    
+* Change hostname
+    lxc-create -n container_name -- --hostname container_hostname
+* Pass a device 
+    * lxc-device -n container_name add /dev/device_name 
 * Troubleshooting
     * https://discuss.linuxcontainers.org/t/2nd-system-upgraded-from-ubuntu-20-04-w-working-lxd-to-ubuntu-22-04-lxd-again-not-working/14009/7
     * Add to /etc/default/lxc-net --> LXC_USE_NFT=false
