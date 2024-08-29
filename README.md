@@ -9,8 +9,6 @@
 3) [Build the Hadoop Container](build/container/README.md)
 
 # To Do
-* Update hadoop_build bash script with 
-    * echo 'export hadoop_enviro_variables' >> ~/.bashrc
 * Add script to install go and distrobuilder
 * Create ad lxc image
 * Update container reamde

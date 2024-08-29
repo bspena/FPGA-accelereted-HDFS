@@ -1,41 +1,19 @@
 # Hadoop
 
 ## Install
-* To install Hadoop 3.3.5 from the [official repository](https://github.com/apache/hadoop.git), run:
+* To install and build `Hadoop 3.3.5` from the [official repository](https://github.com/apache/hadoop.git), run:
 ```bash
 $ source hadoop_build.sh
 ```
 
-## Build
-* Set JAVA_HOME environment variable:
-```bash
-$ nano .bashrc                    
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-```
-
-* Build Hadoop using Maven:
-```bash
-$ cd /home/$(whoami)/hadoop
-$ mvn package -Pdist,native -DskipTests -Dtar
-```
-
-> Note: Hadoop build with maven might fail due to incompatibility of the node version. Go to /home/$(whoami)/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-applications/hadoop-yarn-applications-catalog/hadoop-yarn-applications-catalog-webapp/pom.xml file and set node and yarn version as follow:
+> Note: Hadoop build with maven might fail due to incompatibility of the node version. Go to `/home/$(whoami)/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-applications/hadoop-yarn-applications-catalog/hadoop-yarn-applications-catalog-webapp/pom.xml file` and set node and yarn version as follow:
 >```xml
 ><nodeVersion>v14.15.0</nodeVersion>
 ><yarnVersion>v1.22.5</yarnVersion>
 >```
 
 ## Configure 
-* Set Hadoop environment variables:
-```bash
-$ nano .bashrc                                    
-export HADOOP_HOME=/home/$(whoami)/hadoop/hadoop-dist/target/hadoop-3.3.5
-export HADOOP_HDFS_HOME="$HADOOP_HOME"
-export HADOOP_MAPRED_HOME="$HADOOP_HOME"
-export HADOOP_YARN_HOME="$HADOOP_HOME"
-```
-
-* In $HADOOP_HOME/etc/hadoop/hadoop-env.sh file:
+* In `$HADOOP_HOME/etc/hadoop/hadoop-env.sh file`:
     * Add `JAVA_HOME` and `HADOOP_HOME` environment variables
     * Uncomment `HADOOP_LOG_DIR` environment variable
     * Set `HADOOP_CLASSPATH` environment variable as follow

@@ -43,3 +43,16 @@ chmod 0600 ~/.ssh/authorized_keys
 # Hadoop 3.3.5
 cd /home/$(whoami)
 git clone https://github.com/apache/hadoop.git --branch rel/release-3.3.5 --single-branch
+
+# Set JAVA_HOME environment variable
+echo 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64' >> ~/.bashrc
+
+# Build Hadoop 3.3.5
+cd /home/$(whoami)/hadoop
+mvn package -Pdist,native -DskipTests -Dtar
+
+# Set environment variables
+echo 'export HADOOP_HOME=/home/$(whoami)/hadoop/hadoop-dist/target/hadoop-3.3.5' >> ~/.bashrc
+echo 'export HADOOP_HDFS_HOME="$HADOOP_HOME"' >> ~/.bashrc
+echo 'export HADOOP_MAPRED_HOME="$HADOOP_HOME"' >> ~/.bashrc
+echo 'export HADOOP_YARN_HOME="$HADOOP_HOME"' >> ~/.bashrc
