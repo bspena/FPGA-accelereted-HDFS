@@ -11,7 +11,7 @@
 ## Docker
 * To build docker image with hadoop, run:
 ```bash
-$ source script/hadoop_container build.sh
+$ source script/hadoop_container_build.sh
 ```
 
 > Note: Set the correct paths 
