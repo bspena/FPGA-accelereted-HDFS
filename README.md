@@ -9,8 +9,6 @@
 3) [Build the Hadoop Container](build/container/README.md)
 
 # To Do
-* Add script to install go and distrobuilder
-* Create ad lxc image
-* Update container reamde
+* Create in dinamically way hadoop-3.3.5/etc/hadoop/workers file
 * Import intel-ofs-hitek repository 
     * Import Dockerfile from intel-ofs-hitek repository into container directory

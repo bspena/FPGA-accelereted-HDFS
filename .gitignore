@@ -1,6 +1,8 @@
-build/container/target/
-build/container/old_config/
-build/container/my_Dockerfile
-build/container/output
-build/container/lxc/meta.tar.xz
-build/container/lxc/rootfs.tar.xz
+install/container/target/
+install/container/old_config/
+install/container/docker/my_Dockerfile
+install/container/docker/docker-compose.yml
+install/container/output
+install/container/lxc/meta.tar.xz
+install/container/lxc/rootfs.tar.xz
+install/container/script/hadoop_daemons.sh

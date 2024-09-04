@@ -17,6 +17,22 @@ $ source script/hadoop_container_build.sh
 > Note: Set the correct paths 
 
 
+## Passphraseless ssh
+* Set password on slave container (add to dockerfile)
+    * echo "user:newpassword" | sudo chpasswd
+* Start ssh in both master and slave container
+    * sudo service ssh start
+* Generate public ssh key on master container
+    * ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+* Copy public key to master    
+    * cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+* Copy public key to slave
+    * ssh-copy-id user@slave
+* Set PDSH_RCMD_TYPE=ssh in master container (not necessary ???)
+    * echo 'export PDSH_RCMD_TYPE=ssh' >> ~/.bashrc
+
+
+
 ## LXC
 * Hadoop
     * sudo $HOME/go/bin/distrobuilder build-lxc ubuntu.yaml
