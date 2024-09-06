@@ -8,8 +8,8 @@
 # Only Dockerfile Method #
 ###########################
 # Create a hadoop network to connect master and slave containers
-echo "[INFO] Create docker network"
-docker network create hadoop-network
+# echo "[INFO] Create docker network"
+# docker network create hadoop-network
 
 # Check if master container already exist
 # master_exist=$(docker ps -a --filter "name=hadoop-master" --format "{{.Names}}")
@@ -20,27 +20,12 @@ docker network create hadoop-network
 # if [ -z "$master_exist" ]; then
     
     # Run master container
-    echo "[INFO] Run master container"
-    docker run -i -t -d \
-        -v "/home/$(whoami)/hadoop:/home/$(whoami)/hadoop" \
-        -v "/home/$(whoami)/.m2:/home/$(whoami)/.m2" \
-        -v "/home/$(whoami)/.gnupg:/home/$(whoami)/.gnupg" \
-        -v "/home/$(whoami)/thesis/build/container/script/hadoop_daemons.sh:/home/$(whoami)/hadoop_daemons.sh" \
-        -v "/home/$(whoami)/thesis/build/container/script/job_mapred.sh:/home/$(whoami)/job_mapred.sh" \
-        -u "$(id -u)" \
-        -p 9870:9870  \
-        -p 8088:8088  \
-        -p 19888:19888 \
-        --name master \
-        --hostname master \
-        --network hadoop-network \
-        hadoop-build \
-        /bin/bash
-
+    #echo "[INFO] Run master container"
     # docker run -i -t -d \
     #     -v "/home/$(whoami)/hadoop:/home/$(whoami)/hadoop" \
     #     -v "/home/$(whoami)/.m2:/home/$(whoami)/.m2" \
     #     -v "/home/$(whoami)/.gnupg:/home/$(whoami)/.gnupg" \
+    #     -v "/home/$(whoami)/thesis/build/container/script/hadoop_daemons.sh:/home/$(whoami)/hadoop_daemons.sh" \
     #     -v "/home/$(whoami)/thesis/build/container/script/job_mapred.sh:/home/$(whoami)/job_mapred.sh" \
     #     -u "$(id -u)" \
     #     -p 9870:9870  \
@@ -52,7 +37,17 @@ docker network create hadoop-network
     #     hadoop-build \
     #     /bin/bash
 
-
+    # docker run -i -t -d \
+    #     -v "/home/$(whoami)/thesis/install/container/script/job_mapred.sh:/home/$(whoami)/job_mapred.sh" \
+    #     -u "$(id -u)" \
+    #     -p 9870:9870  \
+    #     -p 8088:8088  \
+    #     -p 19888:19888 \
+    #     --name master \
+    #     --hostname master \
+    #     --network hadoop-network \
+    #     hadoop-build_v1 \
+    #     /bin/bash
 
     ### Note: add --device flag
 
@@ -62,26 +57,14 @@ docker network create hadoop-network
 
     # Loop over VFIO array elements starting from the second on (the first one is for the master container)
     #for i in "${!VFIO[@]:1}";
-    for i in {0..1}
-    do
+    #for i in {0..1}; do
         # Run hadoop slave containers
-        echo "[INFO] Run slave container"
-        docker run -i -t -d \
-            -v "/home/$(whoami)/hadoop:/home/$(whoami)/hadoop" \
-            -v "/home/$(whoami)/.m2:/home/$(whoami)/.m2" \
-            -v "/home/$(whoami)/.gnupg:/home/$(whoami)/.gnupg" \
-            -v "/home/$(whoami)/thesis/build/container/script/hadoop_daemons.sh:/home/$(whoami)/hadoop_daemons.sh" \
-            -u "$(id -u)" \
-            --name slave-$i \
-            --hostname slave-$i \
-            --network hadoop-network \
-            hadoop-build \
-            /bin/bash
-
+        #echo "[INFO] Run slave container"
         # docker run -i -t -d \
         #     -v "/home/$(whoami)/hadoop:/home/$(whoami)/hadoop" \
         #     -v "/home/$(whoami)/.m2:/home/$(whoami)/.m2" \
         #     -v "/home/$(whoami)/.gnupg:/home/$(whoami)/.gnupg" \
+        #     -v "/home/$(whoami)/thesis/build/container/script/hadoop_daemons.sh:/home/$(whoami)/hadoop_daemons.sh" \
         #     -u "$(id -u)" \
         #     --name slave-$i \
         #     --hostname slave-$i \
@@ -89,27 +72,31 @@ docker network create hadoop-network
         #     hadoop-build \
         #     /bin/bash
 
+        # docker run -i -t -d \
+        #     -u "$(id -u)" \
+        #     --name slave-$i \
+        #     --hostname slave-$i \
+        #     --network hadoop-network \
+        #     hadoop-build_v1 \
+        #     /bin/bash
 
         ### Note: add --device="${VFIO[$i]}"
 
-    done
+    #done
 
 # If master already exist but is not running
 # elif [ -z "$master_running" ]; then 
 
-#     echo "##############################"
-#     echo "[INFO] Start master container"
-#     echo "##############################"
-#     docker start hadoop-master
+    echo "[INFO] Start master container"
+    docker start hadoop-master
 
-#     # Check for existing slave containers
-#     slave_containers=$(docker ps -a --filter "name=hadoop-slave-" --format "{{.Names}}")
+    # Check for existing slave containers
+    slaves=$(docker ps -a --filter "name=slave-" --format "{{.Names}}")
 
-#     for s in $slave_containers;
-#         do
-#             echo "[INFO] Start $s"
-#             docker start "$s"
-#         done
+    for s in $slave_containers; do
+            echo "[INFO] Start $s"
+            docker start "$s"
+    done
 # fi
 
 # echo "[INFO] Start master daemons"

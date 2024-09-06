@@ -16,20 +16,35 @@ $ source script/hadoop_container_build.sh
 
 > Note: Set the correct paths 
 
+## Start ssh into slave
+    * docker exec slave-0 /bin/bash -c "sudo service ssh start"
+
+## Copy file 
+* hadoop tar.gz archive
+    * docker cp /home/$(whoami)/hadoop/hadoop-dist/target/hadoop-3.3.5.tar.gz master:/home/$(whoami)/
+    * docker exec master /bin/bash -c "tar -xzf hadoop-3.3.5.tar.gz -C /home/\$(whoami)"
+    * for --> slave container
+* hadoop_config
+    * for file in /home/spena/thesis/install/container/hadoop_config/*; do
+        docker cp "$file" master:/home/spena/hadoop-3.3.5/etc/hadoop/
+        docker cp "$file" slave-0:/home/spena/hadoop-3.3.5/etc/hadoop/
+        docker cp "$file" slave-1:/home/spena/hadoop-3.3.5/etc/hadoop/
+       done
 
 ## Passphraseless ssh
-* Set password on slave container (add to dockerfile)
-    * echo "user:newpassword" | sudo chpasswd
+* Set password on slave container (added to dockerfile)
+    * echo "spena:spena" | sudo chpasswd
 * Start ssh in both master and slave container
     * sudo service ssh start
+* Set PDSH_RCMD_TYPE=ssh in master container
+    * echo 'export PDSH_RCMD_TYPE=ssh' >> ~/.bashrc
+    * source ~/.bashrc
 * Generate public ssh key on master container
     * ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
 * Copy public key to master    
     * cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 * Copy public key to slave
     * ssh-copy-id user@slave
-* Set PDSH_RCMD_TYPE=ssh in master container (not necessary ???)
-    * echo 'export PDSH_RCMD_TYPE=ssh' >> ~/.bashrc
 
 
 

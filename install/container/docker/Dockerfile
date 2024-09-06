@@ -190,7 +190,6 @@ RUN rm -f /var/log/faillog /var/log/lastlog \
     # The user will use sudo without password
     && echo "${USER_NAME} ALL=NOPASSWD: ALL" > "/etc/sudoers.d/hadoop-build-${USER_ID}"
 
-
 # Set the user password 
 RUN echo "${USER_NAME}:${USER_NAME}" | chpasswd
 
@@ -201,13 +200,10 @@ RUN echo "${USER_NAME}:${USER_NAME}" | chpasswd
 
 # Set HOME environment variable
 ENV HOME /home/${USER_NAME}
-ENV HADOOP_HOME /home/${USER_NAME}/hadoop/hadoop-dist/target/hadoop-3.3.5
+#ENV HADOOP_HOME /home/${USER_NAME}/hadoop/hadoop-dist/target/hadoop-3.3.5
+ENV HADOOP_HOME /home/${USER_NAME}/hadoop-3.3.5
 
-# Copy and extract tar.gz archive
-COPY home/${USER_NAME}/hadoop/hadoop-dist/target/hadoop-3.3.5.tar.gz /home/${USER_NAME}
-RUN tar -xzf hadoop-3.3.5.tar.gz -C /home/${USER_NAME}
-
-### Expose daemons ports
+### Expose ports
 # NameNode: 9870
 # ResourceManager: 8088
 # MapReduce JobHistory Server: 19888
