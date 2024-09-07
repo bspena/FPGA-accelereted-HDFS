@@ -211,4 +211,4 @@ EXPOSE 9870 8088 19888
 
 WORKDIR /home/${USER_NAME}
 
-#CMD [ "/bin/bash"]
+CMD [ "/bin/bash"]

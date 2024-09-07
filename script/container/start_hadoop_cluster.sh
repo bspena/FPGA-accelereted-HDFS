@@ -9,7 +9,7 @@
 ###########################
 # Create a hadoop network to connect master and slave containers
 # echo "[INFO] Create docker network"
-# docker network create hadoop-network
+docker network create hadoop-network
 
 # Check if master container already exist
 # master_exist=$(docker ps -a --filter "name=hadoop-master" --format "{{.Names}}")
@@ -47,7 +47,7 @@
     #     --hostname master \
     #     --network hadoop-network \
     #     hadoop-build_v1 \
-    #     /bin/bash
+    #     /bin/bash -c "sudo service ssh start && exec /bin/bash"
 
     ### Note: add --device flag
 
@@ -72,31 +72,31 @@
         #     hadoop-build \
         #     /bin/bash
 
-        # docker run -i -t -d \
-        #     -u "$(id -u)" \
-        #     --name slave-$i \
-        #     --hostname slave-$i \
-        #     --network hadoop-network \
-        #     hadoop-build_v1 \
-        #     /bin/bash
+    #     docker run -i -t -d \
+    #         -u "$(id -u)" \
+    #         --name slave-$i \
+    #         --hostname slave-$i \
+    #         --network hadoop-network \
+    #         hadoop-build_v1 \
+    #         /bin/bash -c "sudo service ssh start && exec /bin/bash"
 
-        ### Note: add --device="${VFIO[$i]}"
+    #     ## Note: add --device="${VFIO[$i]}"
 
-    #done
+    # done
 
 # If master already exist but is not running
 # elif [ -z "$master_running" ]; then 
 
-    echo "[INFO] Start master container"
-    docker start hadoop-master
+    # echo "[INFO] Start master container"
+    # docker start hadoop-master
 
-    # Check for existing slave containers
-    slaves=$(docker ps -a --filter "name=slave-" --format "{{.Names}}")
+    # # Check for existing slave containers
+    # slaves=$(docker ps -a --filter "name=slave-" --format "{{.Names}}")
 
-    for s in $slave_containers; do
-            echo "[INFO] Start $s"
-            docker start "$s"
-    done
+    # for s in $slave_containers; do
+    #         echo "[INFO] Start $s"
+    #         docker start "$s"
+    # done
 # fi
 
 # echo "[INFO] Start master daemons"
@@ -114,4 +114,16 @@
 
 
 
+slaves=$(docker ps --filter "name=slave-" --format "{{.Names}}")
 
+for file in /home/$(whoami)/thesis/install/container/hadoop_config/*; do
+
+    if [ "$(basename "$file")" = "workers" ]; then
+        docker cp "$file" master:/home/$(whoami)/hadoop-3.3.5/etc/hadoop/
+    else
+
+        for s in $slaves; do
+            docker cp "$file" "$s"-0:/home/$(whoami)/hadoop-3.3.5/etc/hadoop/
+        done
+    fi
+done
