@@ -1,8 +1,6 @@
 echo "[INFO] Create docker network"
 docker network create hadoop-network
 
-############## USE DOCKER RUN
-
 echo "[INFO] Create master container"
 docker run -i -t -d \
     -u "$(id -u)" \
@@ -22,7 +20,7 @@ docker run -i -t -d \
 
 for i in {0..1}; do
 
-    echo "[INFO] Run slave-$i container"
+    echo "[INFO] Create slave-$i container"
     docker run -i -t -d \
         -u "$(id -u)" \
         --name slave-$i \
@@ -32,23 +30,27 @@ for i in {0..1}; do
         /bin/bash -c "sudo service ssh start && exec /bin/bash"
 
     ### Note: add --device="${VFIO[$i]}"
-
 done
 
 
-echo "[INFO] Copy hadoop archive"
+echo "[INFO] Copy hadoop archive to containers"
 docker cp /home/$(whoami)/hadoop/hadoop-dist/target/hadoop-3.3.5.tar.gz master:/home/$(whoami)/
 docker exec master /bin/bash -c "tar -xzf hadoop-3.3.5.tar.gz -C /home/\$(whoami)"
 
 slaves=$(docker ps --filter "name=slave-" --format "{{.Names}}")
+
 for s in $slaves; do
     docker cp /home/$(whoami)/hadoop/hadoop-dist/target/hadoop-3.3.5.tar.gz "$s":/home/$(whoami)/
     docker exec "$s" /bin/bash -c "tar -xzf hadoop-3.3.5.tar.gz -C /home/\$(whoami)"
 done
 
-echo "[INFO] Setup passphraseless ssh"
-docker cp /home/$(whoami)/thesis/install/container/script/ssh_no_pass.sh master:/home/$(whoami)/
-docker exec master /bin/bash -c "source ssh_no_pass.sh"
+echo "[INFO] Copy utility scripts into master container"
+docker cp /home/$(whoami)/thesis/install/container/script/container_utility master:/home/$(whoami)/utility
 
+echo "[INFO] Setup passphraseless ssh"
+docker exec master /bin/bash -c "source utility/ssh_no_pass.sh"
+
+echo "[INFO] Create workers file"
+source ./script/create_workers_file.sh
 
 docker stop $(docker ps -a -q)

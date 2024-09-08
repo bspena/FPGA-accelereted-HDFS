@@ -9,8 +9,6 @@
 3) [Build the Hadoop Container](build/container/README.md)
 
 # To Do
-* Test build_docker_cluster.sh
-* Create script to copy hadoop tar.gz archive into container
-* Create in dinamically way hadoop-3.3.5/etc/hadoop/workers file
+* Repo clean up from useless comments
 * Import intel-ofs-hitek repository 
     * Import Dockerfile from intel-ofs-hitek repository into container directory

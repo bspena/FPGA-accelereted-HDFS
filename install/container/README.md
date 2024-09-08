@@ -8,6 +8,10 @@
 * Podman version 3.4.4 ???
 * Kubernetes version ???
 
+
+* source script/create_docker_cluster.sh 
+* ssh-copy-id user@slave into master for each slave (start master and slave containers)
+
 ## Docker
 * To build docker image with hadoop, run:
 ```bash

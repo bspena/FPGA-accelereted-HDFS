@@ -7,3 +7,4 @@ install/container/lxc/meta.tar.xz
 install/container/lxc/rootfs.tar.xz
 install/container/script/hadoop_daemons.sh
 install/container/hadoop_config/workers
+install/container/hadoop_config/old_workers
