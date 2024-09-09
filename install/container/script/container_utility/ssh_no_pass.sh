@@ -1,6 +1,3 @@
-#echo "[INFO] Start ssh service"
-#sudo service ssh start
-
 echo "[INFO] Set PDSH_RCMD_TYPE environment variable"
 echo 'export PDSH_RCMD_TYPE=ssh' >> ~/.bashrc
 source ~/.bashrc

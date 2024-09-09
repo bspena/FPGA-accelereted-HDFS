@@ -21,7 +21,7 @@
 FROM ubuntu:jammy
 
 #######
-# Hadoop 3.3.5
+# Hadoop
 #######
 
 WORKDIR /root
@@ -32,6 +32,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ARG USER_NAME
 ARG USER_ID
 ARG GROUP_ID
+ARG HADOOP_VERSION=3.3.5
 
 #####
 # Disable suggests/recommends
@@ -193,15 +194,15 @@ RUN rm -f /var/log/faillog /var/log/lastlog \
 # Set the user password 
 RUN echo "${USER_NAME}:${USER_NAME}" | chpasswd
 
-# Setup passphraseless ssh
-# RUN ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa \
-#     && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys \
-#     && chmod 0600 ~/.ssh/authorized_keys
+# Copy and extract hadoop archive
+COPY hadoop-${HADOOP_VERSION}.tar.gz /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz
+#RUN cp /home/${USER_NAME}/thesis/install/container/docker/hadoop-*.tar.gz /home/${USER_NAME}/
+RUN tar -xzf /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz -C /home/${USER_NAME}/
 
 # Set HOME environment variable
 ENV HOME /home/${USER_NAME}
 #ENV HADOOP_HOME /home/${USER_NAME}/hadoop/hadoop-dist/target/hadoop-3.3.5
-ENV HADOOP_HOME /home/${USER_NAME}/hadoop-3.3.5
+ENV HADOOP_HOME /home/${USER_NAME}/hadoop-${HADOOP_VERSION}
 
 ### Expose ports
 # NameNode: 9870

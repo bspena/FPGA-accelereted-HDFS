@@ -1,10 +1,12 @@
 install/container/target/
+install/container/output
 install/container/old_config/
 install/container/docker/my_Dockerfile
 install/container/docker/docker-compose.yml
-install/container/output
+install/container/docker/hadoop-*
 install/container/lxc/meta.tar.xz
 install/container/lxc/rootfs.tar.xz
 install/container/script/hadoop_daemons.sh
 install/container/hadoop_config/workers
 install/container/hadoop_config/old_workers
+script/container
