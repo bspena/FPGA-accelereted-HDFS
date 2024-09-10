@@ -18,13 +18,9 @@ $ source script/create_docker_cluster.sh
 ```bash
 $ docker attach master
 ```
-* Setup passphraseless ssh
+* Setup passphraseless ssh (it will ask the container user password)
 ```bash
 $ source script/ssh_no_pass.sh
-```
-* Copy public ssh key in each slave container i-th :
- ```bash
-$ ssh-copy-id user@slave-i
 ```
 
 > Note: 

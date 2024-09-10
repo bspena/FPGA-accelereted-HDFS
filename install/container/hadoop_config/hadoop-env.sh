@@ -55,7 +55,7 @@ export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 # Location of Hadoop.  By default, Hadoop will attempt to determine
 # this location based upon its execution path.
-export HADOOP_HOME=/home/spena/hadoop-3.3.5
+export HADOOP_HOME=$HOME/hadoop-3.3.5
 
 # Location of Hadoop's configuration information.  i.e., where this
 # file is living. If this is not defined, Hadoop will attempt to
@@ -124,7 +124,7 @@ export HADOOP_OS_TYPE=${HADOOP_OS_TYPE:-$(uname -s)}
 # This variable should ideally only be used as a short-cut,
 # interactive way for temporary additions on the command line.
 # export HADOOP_CLASSPATH="/some/cool/path/on/your/machine"
-export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:/home/spena/hadoop-3.3.5/share/hadoop/tools/lib/junit-4.13.2.jar
+export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$HADOOP_HOME/share/hadoop/tools/lib/junit-4.13.2.jar
 
 # Should HADOOP_CLASSPATH be first in the official CLASSPATH?
 # export HADOOP_USER_CLASSPATH_FIRST="yes"

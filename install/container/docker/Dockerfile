@@ -17,7 +17,6 @@
 # Dockerfile for installing the necessary dependencies for building Hadoop.
 # See BUILDING.txt.
 
-#FROM ubuntu:bionic
 FROM ubuntu:jammy
 
 #######
@@ -32,7 +31,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ARG USER_NAME
 ARG USER_ID
 ARG GROUP_ID
-ARG HADOOP_VERSION=3.3.5
+ARG HADOOP_VERSION=3.4.0
 
 #####
 # Disable suggests/recommends
@@ -196,12 +195,10 @@ RUN echo "${USER_NAME}:${USER_NAME}" | chpasswd
 
 # Copy and extract hadoop archive
 COPY hadoop-${HADOOP_VERSION}.tar.gz /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz
-#RUN cp /home/${USER_NAME}/thesis/install/container/docker/hadoop-*.tar.gz /home/${USER_NAME}/
 RUN tar -xzf /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz -C /home/${USER_NAME}/
 
 # Set HOME environment variable
 ENV HOME /home/${USER_NAME}
-#ENV HADOOP_HOME /home/${USER_NAME}/hadoop/hadoop-dist/target/hadoop-3.3.5
 ENV HADOOP_HOME /home/${USER_NAME}/hadoop-${HADOOP_VERSION}
 
 ### Expose ports

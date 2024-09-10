@@ -6,7 +6,7 @@ docker build \
     --build-arg USER_NAME="${USER}" \
     --build-arg USER_ID="$(id -u)" \
     --build-arg GROUP_ID="$(id -g)" \
-    -t hadoop-build_v2 \
+    -t hadoop-image \
     /home/$(whoami)/thesis/install/container/docker/
 
 # Crete docker containers

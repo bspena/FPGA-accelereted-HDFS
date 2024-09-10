@@ -1,7 +1,7 @@
 # Hadoop
 
 ## Install
-* To install and build `Hadoop 3.3.5` from the [official repository](https://github.com/apache/hadoop.git), run:
+* To install and build `Hadoop 3.4.0` from the [official repository](https://github.com/apache/hadoop.git), run:
 ```bash
 $ source hadoop_build.sh
 ```
@@ -18,5 +18,5 @@ $ source hadoop_build.sh
     * Uncomment `HADOOP_LOG_DIR` environment variable
     * Set `HADOOP_CLASSPATH` environment variable as follow
     ```bash
-    export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:/home/$(whoami)/hadoop/hadoop-dist/target/hadoop-3.3.5/share/hadoop/tools/lib/junit-4.13.2.jar
+    export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$HADOOP_HOME/share/hadoop/tools/lib/junit-4.13.2.jar
     ```
