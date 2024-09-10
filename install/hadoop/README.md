@@ -20,3 +20,7 @@ $ source hadoop_build.sh
     ```bash
     export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$HADOOP_HOME/share/hadoop/tools/lib/junit-4.13.2.jar
     ```
+
+
+* sudo apt-get install libboost-date-time-dev
+* sudo apt-get install libboost-program-options-dev
