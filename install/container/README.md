@@ -12,7 +12,7 @@
 ## Docker
 * Create docker master/slave containers:
 ```bash
-$ source script/create_docker_cluster.sh
+$ source script/create_docker.sh
 ```
 * Attach to master container:
 ```bash

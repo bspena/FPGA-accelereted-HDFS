@@ -15,7 +15,7 @@ docker run -i -t -d \
     hadoop-image \
     /bin/bash -c "sudo service ssh start && exec /bin/bash"
 
-    ### Note: add --device flag
+    ### Note: add --device=/dev/vfio/<iommu_group>
 
 #opae.io ls | sort | grep -v ".0]" | grep vfio | sed 0000:00:00.0
 
@@ -32,6 +32,7 @@ for i in {0..1}; do
         /bin/bash -c "sudo service ssh start && exec /bin/bash"
 
     ### Note: add --device="${VFIO[$i]}"
+    # --device=/dev/vfio/<iommu_group>
 done
 
 echo "[INFO] Create workers file"

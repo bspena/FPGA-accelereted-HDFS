@@ -19,9 +19,9 @@
 
 FROM ubuntu:jammy
 
-#######
+########
 # Hadoop
-#######
+########
 
 WORKDIR /root
 
@@ -212,5 +212,33 @@ ENV HADOOP_YARN_HOME=$HADOOP_HOME
 EXPOSE 9870 8088 19888
 
 WORKDIR /home/${USER_NAME}
+
+
+##########
+# Opae SDK
+##########
+
+# Prerequisites
+RUN apt-get update \ 
+    &&  sudo apt-get install -y python3 python3-pip python3-jsonschema  python3-dev git gcc g++ make cmake uuid-dev \
+    libjson-c-dev libhwloc-dev libtbb-dev libedit-dev libudev-dev linuxptp pandoc \
+    devscripts debhelper doxygen libcli11-dev libspdlog-dev libsystemd-dev libcap-dev python3-pyyaml-env-tag \
+    # librpm-dev python3-sphinx  python3-virtualenv  podman
+    
+RUN pip3 install jsonschema virtualenv pyyaml pybind11 \
+    && sudo pip3 install Pybind11==2.10.0 \
+    && sudo pip3 install setuptools==59.6.0 --prefix=/usr
+    # pip3 install --upgrade --prefix=/usr pip setuptools pybind11
+
+# Copy patches files
+COPY hitek_release /home/${USER_NAME}/hitek_release
+
+# Build opae sdk
+RUN git clone https://github.com/OFS/opae-sdk.git \
+    && cd opae-sdk \
+    && git checkout tags/2.8.0-1 -b nc220 \
+    && git apply /home/${USER_NAME}/hitek_release/AG_C220_NC220_OFS_Release_v1_0_2024-01-22/htk_ofs_nc220/opae-sdk-nc220.patch \
+    && ./create \
+    && sudo dpkg -i opae*.deb
 
 CMD [ "/bin/bash"]
