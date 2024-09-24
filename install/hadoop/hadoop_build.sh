@@ -48,7 +48,7 @@ git clone https://github.com/apache/hadoop.git --branch rel/release-3.4.0 --sing
 echo 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64' >> ~/.bashrc
 
 # Build Hadoop 3.4.0
-cd  ~/hadoop
+cd ~/hadoop
 mvn package -Pdist,native -DskipTests -Dtar
 
 # Set environment variables

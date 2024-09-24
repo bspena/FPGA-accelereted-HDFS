@@ -4,9 +4,9 @@
 * Ubuntu 22.04 LTS
 
 ## Enviroment Setup ???
-1) [Install Intel OFS on the host machine](build/intel_OFS/README.md)
-2) [Install Hadoop on the host machine](build/hadoop/README.md)
-3) [Build the Hadoop Container](build/container/README.md)
+1) [Install Intel OFS on the host machine](install/intel_OFS/README.md)
+2) [Install Hadoop on the host machine](install/hadoop/README.md)
+3) [Build the Hadoop Container](install/container/README.md)
 
 # To Do
 * Repo clean up from useless comments
