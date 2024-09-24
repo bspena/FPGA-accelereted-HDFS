@@ -6,7 +6,7 @@
 $ source hadoop_build.sh
 ```
 
-> Note: Hadoop build with maven might fail due to incompatibility of the node version. Go to `/home/$(whoami)/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-applications/hadoop-yarn-applications-catalog/hadoop-yarn-applications-catalog-webapp/pom.xml file` and set node and yarn version as follow:
+> Note: Hadoop build with maven might fail due to incompatibility of the node version. Go to '~/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-applications/hadoop-yarn-applications-catalog/hadoop-yarn-applications-catalog-webapp/pom.xml file` and set node and yarn version as follow:
 >```xml
 ><nodeVersion>v14.15.0</nodeVersion>
 ><yarnVersion>v1.22.5</yarnVersion>

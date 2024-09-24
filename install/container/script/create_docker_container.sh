@@ -7,8 +7,8 @@ docker run -i -t -d \
     -p 9870:9870  \
     -p 8088:8088  \
     -p 19888:19888 \
-    -v "/home/$(whoami)/thesis/install/container/script/container_utility:/home/$(whoami)/script" \
-    -v "/home/$(whoami)/thesis/install/container/hadoop_config:/home/$(whoami)/hadoop_config" \
+    -v "~/thesis/install/container/script/container_utility: ~/script" \
+    -v "~/thesis/install/container/hadoop_config: ~/hadoop_config" \
     --name master \
     --hostname master \
     --network hadoop-network \
@@ -24,7 +24,7 @@ for i in {0..1}; do
     echo "[INFO] Create slave-$i container"
     docker run -i -t -d \
         -u "$(id -u)" \
-        -v "/home/$(whoami)/thesis/install/container/hadoop_config:/home/$(whoami)/hadoop_config" \
+        -v "~/thesis/install/container/hadoop_config: ~/hadoop_config" \
         --name slave-$i \
         --hostname slave-$i \
         --network hadoop-network \

@@ -11,7 +11,7 @@ sudo apt-get -y install maven
 sudo apt-get -y install build-essential autoconf automake libtool cmake zlib1g-dev pkg-config libssl-dev libsasl2-dev
 
 # Protocol Buffers 3.7.1 (required to build native code)
-cd /home/$(whoami)
+cd ~/
 curl -L -s -S https://github.com/protocolbuffers/protobuf/releases/download/v3.7.1/protobuf-java-3.7.1.tar.gz -o protobuf-3.7.1.tar.gz
 mkdir protobuf-3.7-src
 tar xzf protobuf-3.7.1.tar.gz --strip-components 1 -C protobuf-3.7-src && cd protobuf-3.7-src
@@ -41,18 +41,18 @@ sudo apt-get install -y ssh pdsh
 #chmod 0600 ~/.ssh/authorized_keys
 
 # Hadoop 3.4.0
-cd /home/$(whoami)
+cd ~/
 git clone https://github.com/apache/hadoop.git --branch rel/release-3.4.0 --single-branch
 
 # Set JAVA_HOME environment variable
 echo 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64' >> ~/.bashrc
 
 # Build Hadoop 3.4.0
-cd /home/$(whoami)/hadoop
+cd  ~/hadoop
 mvn package -Pdist,native -DskipTests -Dtar
 
 # Set environment variables
-echo 'export HADOOP_HOME=/home/$(whoami)/hadoop/hadoop-dist/target/hadoop-3.4.0' >> ~/.bashrc
+echo 'export HADOOP_HOME= ~/hadoop/hadoop-dist/target/hadoop-3.4.0' >> ~/.bashrc
 echo 'export HADOOP_HDFS_HOME="$HADOOP_HOME"' >> ~/.bashrc
 echo 'export HADOOP_MAPRED_HOME="$HADOOP_HOME"' >> ~/.bashrc
 echo 'export HADOOP_YARN_HOME="$HADOOP_HOME"' >> ~/.bashrc

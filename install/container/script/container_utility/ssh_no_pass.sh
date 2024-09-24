@@ -9,7 +9,7 @@ echo "[INFO] Copy public key"
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
 echo "[INFO] Copy public key in slave containers"
-cat /home/$(whoami)/hadoop_config/workers | xargs -I {} bash -c '
+cat ~/hadoop_config/workers | xargs -I {} bash -c '
     ssh $(whoami)@"{}" "mkdir -p ~/.ssh && chmod 700 ~/.ssh"
     scp ~/.ssh/authorized_keys $(whoami)@"{}":~/.ssh/
     ssh $(whoami)@"{}" "chmod 600 ~/.ssh/authorized_keys"
