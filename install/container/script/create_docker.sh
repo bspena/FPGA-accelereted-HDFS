@@ -1,5 +1,5 @@
 echo "[INFO] Copy hadoop archive into container/dcoker directory"
-cp  ~/hadoop/hadoop-dist/target/hadoop-*.tar.gz  ~/thesis/install/container/docker
+#cp  ~/hadoop/hadoop-dist/target/hadoop-*.tar.gz  ~/thesis/install/container/docker
 
 echo "[INFO] Build docker image with hadoop"
 docker build \
@@ -10,4 +10,4 @@ docker build \
      ~/thesis/install/container/docker/
 
 # Crete docker containers
-source ./script/create_docker_container.sh
+#source ./script/create_docker_container.sh

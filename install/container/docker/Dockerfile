@@ -194,8 +194,8 @@ RUN rm -f /var/log/faillog /var/log/lastlog \
 RUN echo "${USER_NAME}:${USER_NAME}" | chpasswd
 
 # Copy and extract hadoop archive
-COPY hadoop-${HADOOP_VERSION}.tar.gz /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz
-RUN tar -xzf /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz -C /home/${USER_NAME}/
+#COPY hadoop-${HADOOP_VERSION}.tar.gz /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz
+#RUN tar -xzf /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz -C /home/${USER_NAME}/
 
 # Set HOME environment variable
 ENV HOME /home/${USER_NAME}
@@ -222,7 +222,7 @@ WORKDIR /home/${USER_NAME}
 RUN apt-get update \ 
     &&  sudo apt-get install -y python3 python3-pip python3-jsonschema  python3-dev git gcc g++ make cmake uuid-dev \
     libjson-c-dev libhwloc-dev libtbb-dev libedit-dev libudev-dev linuxptp pandoc \
-    devscripts debhelper doxygen libcli11-dev libspdlog-dev libsystemd-dev libcap-dev python3-pyyaml-env-tag \
+    devscripts debhelper doxygen libcli11-dev libspdlog-dev libsystemd-dev libcap-dev python3-pyyaml-env-tag
     # librpm-dev python3-sphinx  python3-virtualenv  podman
     
 RUN pip3 install jsonschema virtualenv pyyaml pybind11 \
@@ -237,7 +237,8 @@ COPY hitek_release /home/${USER_NAME}/hitek_release
 RUN git clone https://github.com/OFS/opae-sdk.git \
     && cd opae-sdk \
     && git checkout tags/2.8.0-1 -b nc220 \
-    && git apply /home/${USER_NAME}/hitek_release/AG_C220_NC220_OFS_Release_v1_0_2024-01-22/htk_ofs_nc220/opae-sdk-nc220.patch \
+    && git apply /home/${USER_NAME}/hitek_release/AG_C220_NC220_OFS_Release_v1_0_2024-01-22/htk_ofs_nc220/patches/opae-sdk-nc220.patch \
+    && cd /home/${USER_NAME}/opae-sdk/packaging/opae/deb \
     && ./create \
     && sudo dpkg -i opae*.deb
 
