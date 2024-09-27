@@ -10,7 +10,7 @@
 
 
 ## Docker
-* Create docker master/slave containers:
+* Build docker image and run docker master/slave containers:
 ```bash
 $ source script/create_docker.sh
 ```
@@ -26,7 +26,6 @@ $ source script/ssh_no_pass.sh
 > Note: 
 > * Set the right paths 
 > * Set the hadoop version into dockerfile
-
 
 ## LXC
 * Hadoop
@@ -87,3 +86,16 @@ sudo update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
 sudo dockerd &
  
 > Note: It showes on the virtual machine
+
+
+# Docker + VFIO
+
+## Privileged contaier
+* Error while launching make opae.io_bind_all
+    * Error saved in error.txt --> missing modprobe
+    * modprobe: FATAL: Module vfio-pci not found in directory /lib/modules/6.8.0-45-generic --> missing /lib/modules dir
+    * chown: missing operand after ‘/etc/opae/’ --> problem with $USER in opae.io_bind.sh
+
+## No-Privileged contaier
+* Error while launching make opae.io_bind_all
+    * [Errno 30] Read-only file system: '/sys/bus/pci/devices/0000:01:00.0/sriov_numvfs' --> 
