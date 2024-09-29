@@ -12,7 +12,7 @@
 ## Docker
 * Build docker image and run docker master/slave containers:
 ```bash
-$ source script/create_docker.sh
+$ source script/create_docker_image.sh
 ```
 * Attach to master container:
 ```bash
@@ -90,12 +90,21 @@ sudo dockerd &
 
 # Docker + VFIO
 
-## Privileged contaier
+## Privileged contaier (binding in container)
 * Error while launching make opae.io_bind_all
     * Error saved in error.txt --> missing modprobe
     * modprobe: FATAL: Module vfio-pci not found in directory /lib/modules/6.8.0-45-generic --> missing /lib/modules dir
     * chown: missing operand after ‘/etc/opae/’ --> problem with $USER in opae.io_bind.sh
+* fpgainfo port 
+    * does not show acceleratos
+* HEM 
+    * error accelerator not found
 
 ## No-Privileged contaier
+### Binding in container
 * Error while launching make opae.io_bind_all
-    * [Errno 30] Read-only file system: '/sys/bus/pci/devices/0000:01:00.0/sriov_numvfs' --> 
+    * [Errno 30] Read-only file system: '/sys/bus/pci/devices/0000:01:00.0/sriov_numvfs'
+
+### Multi Container
+*  Error fpgainfo phy (https://ofs.github.io/ofs-2024.2-1/hw/iseries_devkit/user_guides/ug_qs_ofs_iseries/ug_qs_ofs_iseries/#table-7-accelerator-pfvf-and-guid-mappings)
+    * phy group info is not supported - Feature unavailable (missing HSSI information)
