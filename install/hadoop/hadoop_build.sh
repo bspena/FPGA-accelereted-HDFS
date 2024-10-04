@@ -8,7 +8,7 @@ pip3 install pandas==2.2.2
 sudo apt-get -y install maven
 
 # Native libraries
-sudo apt-get -y install build-essential autoconf automake libtool cmake zlib1g-dev pkg-config libssl-dev libsasl2-dev
+sudo apt-get -y install build-essential autoconf automake libtool cmake zlib1g-dev pkg-config libssl-dev libsasl2-dev libboost-date-time-dev libboost-program-options-dev
 
 # Protocol Buffers 3.7.1 (required to build native code)
 cd ~/
@@ -34,11 +34,6 @@ sudo apt-get install -y libzstd1-dev
 
 # SSH and PDSH
 sudo apt-get install -y ssh pdsh
-
-# Setup passphraseless ssh
-#ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
-#cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
-#chmod 0600 ~/.ssh/authorized_keys
 
 # Hadoop 3.4.0
 cd ~/

@@ -8,6 +8,11 @@
 2) [Install Hadoop on the host machine](install/hadoop/README.md)
 3) [Build the Hadoop Container](install/container/README.md)
 
+## Test Exectution
+* Write test_list csv file
+* Access to master container
+* Start test
+
 # To Do
 * Repo clean up from useless comments
 * Import intel-ofs-hitek repository 

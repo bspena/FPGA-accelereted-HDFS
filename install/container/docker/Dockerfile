@@ -178,8 +178,6 @@ RUN curl -L -o hugo.deb https://github.com/gohugoio/hugo/releases/download/v0.58
 #RUN chmod 755 /root/hadoop_env_checks.sh
 # hadolint ignore=SC2016
 #RUN echo '${HOME}/hadoop_env_checks.sh' >> /root/.bashrc
-
-
 ####################################
 
 
@@ -194,8 +192,8 @@ RUN rm -f /var/log/faillog /var/log/lastlog \
 RUN echo "${USER_NAME}:${USER_NAME}" | chpasswd
 
 # Copy and extract hadoop archive
-#COPY hadoop-${HADOOP_VERSION}.tar.gz /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz
-#RUN tar -xzf /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz -C /home/${USER_NAME}/
+COPY hadoop-${HADOOP_VERSION}.tar.gz /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz
+RUN tar -xzf /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz -C /home/${USER_NAME}/
 
 # Set HOME environment variable
 ENV HOME /home/${USER_NAME}

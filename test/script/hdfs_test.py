@@ -1,5 +1,5 @@
-import hadoop_test_config as conf                       # Variables module
-import hadoop_test_utils as func                         # Functions module
+import hdfs_test_config as conf                       # Variables module
+import hdfs_test_utils as func                         # Functions module
 import os
 
 if __name__=='__main__':
