@@ -2,7 +2,7 @@ import os
 import pandas
 import numpy as np
 from matplotlib import pyplot as plt
-import oneapi_test_config as config
+import hdfs_test_config as config
 
 # Find measurements of central tendency
 def find_measurements_ct(df, df_column, n):

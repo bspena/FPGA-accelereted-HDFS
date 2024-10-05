@@ -9,4 +9,7 @@ install/container/lxc/rootfs.tar.xz
 install/container/script/hadoop_daemons.sh
 install/container/hadoop_config/workers
 install/container/hadoop_config/old_workers
-script/container
+test/script/my_python
+test/script/__pycache__
+test/logs
+test/test_results
