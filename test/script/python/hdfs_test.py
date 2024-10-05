@@ -28,9 +28,11 @@ if __name__=='__main__':
         print("[INFO] Running test n. " + i.split('test')[1] + "/" + str(df_test_list.shape[0]) )
         print("##########################")
 
+        #print(row)
+
         # # Configure cluster
-        # print("[STEP 2] Cluster Configuration")
-        # utils.configCluster( row )
+        print("[STEP 2] Cluster Configuration")
+        utils.configCluster( row )
         
         # #Start cluster
         # print("[STEP 3] Start the cluster")

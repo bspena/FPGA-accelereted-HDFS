@@ -8,7 +8,7 @@ docker run -i -t -d \
     -p 9870:9870  \
     -p 8088:8088  \
     -p 19888:19888 \
-    -v "~/thesis/install/container/script/container_utility:~/script" \
+    -v "~/thesis/install/container/script/ssh_no_pass.sh:~/ssh_no_pass.sh" \
     -v "~/thesis/install/container/hadoop_config:~/hadoop_config" \
     -v "~/thesis/test:~/test" \
     --name master \

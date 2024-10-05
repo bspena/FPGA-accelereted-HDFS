@@ -40,9 +40,13 @@ df_test_result_columns = columns_mapred_commands + columns_dfsio_logs
 # Get HADOOP_HOME from env
 HADOOP_HOME = os.environ['HADOOP_HOME']
 # Hadoop configuration files
-path_hdfs_site       = HADOOP_HOME + '/etc/hadoop/hdfs-site.xml'
-path_mapred_site     = HADOOP_HOME + '/etc/hadoop/mapred-site.xml'
-path_yarn_site       = HADOOP_HOME + '/etc/hadoop/yarn-site.xml'
+# path_hdfs_site       = HADOOP_HOME + '/etc/hadoop/hdfs-site.xml'
+# path_mapred_site     = HADOOP_HOME + '/etc/hadoop/mapred-site.xml'
+# path_yarn_site       = HADOOP_HOME + '/etc/hadoop/yarn-site.xml'
+path_hdfs_site       = '~/thesis/install/container/hadoop_config/hdfs-site.xml'
+path_mapred_site     = '~/thesis/install/container/hadoop_config/mapred-site.xml'
+path_yarn_site       = '~/thesis/install/container/hadoop_config/yarn-site.xml'
+
 
 # HTTP addresses
 # TODO: import from hdfs-site.xml
@@ -72,7 +76,7 @@ path_teragen_jar = HADOOP_HOME + '/<path-to>/hadoop-mapreduce-examples-3.4.0.jar
 
 # TODO: what to do with this?
 # String array with the special parameters needed for the cluster configuration in psuedo-distributed mode
-dont_touch_parameters = []
+#dont_touch_parameters = []
 # dont_touch_parameters = ['dfs.replication','mapreduce.framework.name','mapreduce.application.classpath','yarn.nodemanager.aux-services','yarn.nodemanager.env-whitelist']
 # From old cluster
 # dont_touch_parameters = [

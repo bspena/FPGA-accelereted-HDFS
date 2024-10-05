@@ -20,7 +20,7 @@ $ docker attach master
 ```
 * Setup passphraseless ssh (it will ask the container user password)
 ```bash
-$ source script/ssh_no_pass.sh
+$ source ssh_no_pass.sh
 ```
 
 > Note: 

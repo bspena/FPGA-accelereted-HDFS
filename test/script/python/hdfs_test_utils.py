@@ -98,40 +98,47 @@ def initTest():
 # 2. Config cluster #
 #####################
 
-# Update the xml file
-def configCluster_update_xml(file, row, tuple_format):    
-    tree = xmlET.parse(file)                                            # Parse the XML file
-    root = tree.getroot()  
+# Update site xml files
+def configCluster_update_xml(file_path, row, tuple_format):    
+    # tree = xmlET.parse(file)                                            # Parse the XML file
+    # root = tree.getroot()  
 
-    for property in root.findall('property'):                           # For each property under root                    
-        name = property.find('name').text                               # Find the tags with the parameters configured for the pseudo-distributed mode 
-        if name not in config.dont_touch_parameters:                    # Excluding config.dont_touch_parameters
-            root.remove(property)                                       # Remove the previous tags
+    # for property in root.findall('property'):                           # For each property under root                    
+    #     name = property.find('name').text                               # Find the tags with the parameters configured for the pseudo-distributed mode 
+    #     if name not in config.dont_touch_parameters:                    # Excluding config.dont_touch_parameters
+    #         root.remove(property)                                       # Remove the previous tags
+
+    # for t in tuple_format:
+    #     try:
+    #         property   = xmlET.Element('property')                       # Create property, name and value elements
+    #         name       = xmlET.Element('name')
+    #         value      = xmlET.Element('value')
+    #         name.text  = t                                               # Set the new name
+    #         value.text = str(row[t])                                     # Set the new value
+    #         root.append(property)                                        # Add the new elements to the root element
+    #         property.append(name)
+    #         property.append(value)
+    #     except:
+    #         # Handle exception by skipping property
+    #         print_warning("Column " + t + " not found in " + config.path_test_list + ". Skipping property setup")
+    
+    # xmlET.indent(tree, space='    ', level=0)                           # Indent the xml file
+    #                                                                     # level = 0 means that you are starting the indentation from the root
+    # tree.write(file, encoding="utf-8", xml_declaration=True)            # Write on xml file
 
     for t in tuple_format:
-        try:
-            property   = xmlET.Element('property')                       # Create property, name and value elements
-            name       = xmlET.Element('name')
-            value      = xmlET.Element('value')
-            name.text  = t                                               # Set the new name
-            value.text = str(row[t])                                     # Set the new value
-            root.append(property)                                        # Add the new elements to the root element
-            property.append(name)
-            property.append(value)
-        except:
-            # Handle exception by skipping property
-            print_warning("Column " + t + " not found in " + config.path_test_list + ". Skipping property setup")
-    
-    xmlET.indent(tree, space='    ', level=0)                           # Indent the xml file
-                                                                        # level = 0 means that you are starting the indentation from the root
-    tree.write(file, encoding="utf-8", xml_declaration=True)            # Write on xml file
-
+        value = str(row[t])
+        update_cmd = (
+                    '~/thesis/test/script/bash/update_site_xml.sh ' 
+                    + file_path + ' ' + t + ' ' + value
+                    )
+        os.system(update_cmd)
 
 # Update cluster configuration
 def configCluster( row ):
     configCluster_update_xml( config.path_hdfs_site  , row, config.hdfs_t   )   # Configure hdfs-site.xml
     configCluster_update_xml( config.path_mapred_site, row, config.mapred_t )   # Configure mapred-site.xml
-    configCluster_update_xml( config.path_yarn_site  , row, config.yarn_t   )   # Configure yarn-site.xml
+    #configCluster_update_xml( config.path_yarn_site  , row, config.yarn_t   )   # Configure yarn-site.xml
 
 
 ####################
@@ -332,3 +339,4 @@ def saveResults(path_test_result, df_test_result, df_mapred_commands, df_dfsio_l
     df_test_result = pandas.concat([df_mapred_commands, df_dfsio_logs], axis=1)    
     # Write to csv 
     df_test_result.to_csv(path_test_result,index= False)
+    # Plot the results

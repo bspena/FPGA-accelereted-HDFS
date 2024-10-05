@@ -59,7 +59,7 @@ RUN apt-get -q update \
         locales \
         make \
         pinentry-curses pkg-config python3 python3-pip python3-pkg-resources \
-        python3-setuptools python3-wheel rsync shellcheck software-properties-common sudo valgrind \
+        python3-setuptools python3-wheel matplotlib rsync shellcheck software-properties-common sudo valgrind \
         zlib1g-dev ssh pdsh \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*

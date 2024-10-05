@@ -10,6 +10,6 @@ install/container/script/hadoop_daemons.sh
 install/container/hadoop_config/workers
 install/container/hadoop_config/old_workers
 test/script/my_python
-test/script/__pycache__
+test/script/python/__pycache__
 test/logs
 test/test_results
