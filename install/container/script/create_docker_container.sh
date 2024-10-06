@@ -8,9 +8,9 @@ docker run -i -t -d \
     -p 9870:9870  \
     -p 8088:8088  \
     -p 19888:19888 \
-    -v "~/thesis/install/container/script/ssh_no_pass.sh:~/ssh_no_pass.sh" \
-    -v "~/thesis/install/container/hadoop_config:~/hadoop_config" \
-    -v "~/thesis/test:~/test" \
+    -v "${INSTALL_CONTAINER_DIR}/script/ssh_no_pass.sh:/home/$(whoami)/ssh_no_pass.sh" \
+    -v "${INSTALL_CONTAINER_DIR}/hadoop_config:/home/$(whoami)/hadoop_config" \
+    -v "${REPO_DIR}/test:/home/$(whoami)/test" \
     --name master \
     --hostname master \
     --network hadoop-network \
@@ -24,7 +24,7 @@ for i in {0..1}; do
     echo "[INFO] Create slave-$i container"
     docker run -i -t -d \
         -u "$(id -u)" \
-        -v "~/thesis/install/container/hadoop_config: ~/hadoop_config" \
+        -v "${INSTALL_CONTAINER_DIR}/hadoop_config:/home/$(whoami)/hadoop_config" \
         --name slave-$i \
         --hostname slave-$i \
         --network hadoop-network \
@@ -37,12 +37,12 @@ echo "[INFO] Create workers file"
 
 # Create workers file
 #touch  ~/thesis/install/container/hadoop_config/workers
->  ~/thesis/install/container/hadoop_config/workers
+>  ${INSTALL_CONTAINER_DIR}/hadoop_config/workers
 
 # Add slave containers name to workers file
 slaves=$(docker ps -a --filter "name=slave-" --format "{{.Names}}")
 for s in $slaves; do
-    echo $s >>  ~/thesis/install/container/hadoop_config/workers
+    echo $s >>  ${INSTALL_CONTAINER_DIR}/hadoop_config/workers
 done
 
 

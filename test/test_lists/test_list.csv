@@ -1,4 +1,2 @@
 dfs.datanode.handler.count,mapreduce.map.cpu.vcores,dfsio.operation,dfsio.nrFiles,dfsio.fileSize
 14,1,write,10,100MB
-18,5,write,20,80MB
-20,4,read,10,4MB

@@ -1,22 +1,19 @@
 # Hadoop Container
 
-## ????
-* Docker version 27.0.3
-* Docker Compose version 2.29.1
-* LXC version 5.0.0
-* Distrobuilder ????
-* Podman version 3.4.4 ???
-* Kubernetes version ???
-
-
 ## Docker
-* Build docker image and run docker master/slave containers:
+* Build docker image:
 ```bash
-$ source script/create_docker_image.sh
+$ source install/container/script/create_docker_image.sh
 ```
-* Attach to master container:
+* Run docker master/slave containers:
+```bash
+$ source install/container/script/create_docker_container.sh
+```
+* Access to master container:
 ```bash
 $ docker attach master
+or
+$ ssh -p 1022 user@localhost
 ```
 * Setup passphraseless ssh (it will ask the container user password)
 ```bash
@@ -24,8 +21,8 @@ $ source ssh_no_pass.sh
 ```
 
 > Note: 
-> * Set the right paths 
 > * Set the hadoop version into dockerfile
+> * Inside the Dockerfile, the user and the password are the same as the host user
 
 ## LXC
 * Hadoop

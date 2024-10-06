@@ -94,8 +94,15 @@ def initTest():
     return initTest_create_dataframe()
 
 
+##########################
+# 2. Stop hadoop daemons #
+##########################
+def stopDaemons():
+    os.system('~/test/script/bash/stop_hadoop_daemons.sh')
+
+
 #####################
-# 2. Config cluster #
+# 3. Config cluster #
 #####################
 
 # Update site xml files
@@ -129,7 +136,7 @@ def configCluster_update_xml(file_path, row, tuple_format):
     for t in tuple_format:
         value = str(row[t])
         update_cmd = (
-                    '~/thesis/test/script/bash/update_site_xml.sh ' 
+                    '~/test/script/bash/update_site_xml.sh ' 
                     + file_path + ' ' + t + ' ' + value
                     )
         os.system(update_cmd)
@@ -140,16 +147,19 @@ def configCluster( row ):
     configCluster_update_xml( config.path_mapred_site, row, config.mapred_t )   # Configure mapred-site.xml
     #configCluster_update_xml( config.path_yarn_site  , row, config.yarn_t   )   # Configure yarn-site.xml
 
+    # Copy hadoop configuration
+    os.system('~/test/script/bash/copy_hadoop_config.sh')
+
 
 ####################
-# 3. Start cluster #
+# 4. Start cluster #
 ####################
-def startCluster():
-    os.system('./start_hadoop_cluster.sh')
+def startDaemons():
+    os.system('~/test/script/bash/start_hadoop_daemons.sh')
 
 
 ##################
-# 4. Online test #
+# 5. Online test #
 ##################
 
 # Wrap os.system
@@ -259,7 +269,7 @@ def onlineTest (row):
 
 
 ###################
-# 5. Offline-test #
+# 6. Offline-test #
 ###################
 
 # Function to read response variables from mapreduce commands
@@ -269,13 +279,15 @@ def offlineTest_mapred_commands(index, df_mapred_commands):
     job_id_cmd = '$HADOOP_HOME/bin/mapred job -list all | grep "job_"'
     job_id_sub = subprocess.run(job_id_cmd, shell = True ,capture_output=True)
     job_id = job_id_sub.stdout.decode().split('\t')[0]
-    print("job_id:" + job_id)
+    #print("job_id:" + job_id)
 
     # Number of map tasks
     map_number_cmd = '$HADOOP_HOME/bin/mapred job -status ' + job_id + ' | grep "Number of maps"'
     map_number_sub = subprocess.run(map_number_cmd, shell = True ,capture_output=True)
-    print("map_number_sub:" + str(map_number_sub))
+    #print("map_number_sub:" + str(map_number_sub))
     map_number = int(map_number_sub.stdout.decode().split(':')[1])
+
+    # Note: I can pick the numer of reducers as well 
 
     # CPU time spent by MapReduce Framework, map tasks and reduce tasks
     cpu_time_cmd = '$HADOOP_HOME/bin/mapred job -history ' + job_id + ' | grep "CPU time spent"'
@@ -287,16 +299,27 @@ def offlineTest_mapred_commands(index, df_mapred_commands):
     # Save on the dataframe row the reponse variables
     # TODO: Assignment style requires much attention to ordering in the rigth-hand expression.
     #       Using dictionary-based syntax, matching config.columns_mapred_commands would prevent potential errors
-    df_mapred_commands.loc[df_mapred_commands.index[index], config.columns_mapred_commands] = [map_number,cpu_time_map,cpu_time_red,cpu_time_tot]
+    #df_mapred_commands.loc[df_mapred_commands.index[index], config.columns_mapred_commands] = [map_number,cpu_time_map,cpu_time_red,cpu_time_tot]
+    df_mapred_commands.loc[df_mapred_commands.index[index], config.columns_mapred_commands] = {
+        'maps.number': map_number,
+        'cpu.time.map.task': cpu_time_map,
+        'cpu.time.reduce.tasks': cpu_time_red,
+        'cpu.time.tot': cpu_time_tot
+    }
 
 
 # Function to read response variables from TestDFSIO log file
 def offlineTest_TestDFSIO_logs(index, df_dfsio_logs):
 
-    with open(config.path_test_dfsio_logs, 'r') as file:
-        lines = file.readlines()                                                            # Lines list
+    # Expand the path
+    expanded_path = os.path.expanduser(config.path_test_dfsio_logs)
+
+    with open(expanded_path, 'r') as file:
+        # Lines list
+        lines = file.readlines()
     
-    throughput = float(lines[4].split(':')[1].strip())                                      # Strip remove any leading, and trailing whitespaces
+    # Strip remove any leading, and trailing whitespaces
+    throughput = float(lines[4].split(':')[1].strip())
     average_io = float(lines[5].split(':')[1].strip())
 
     # Save on the dataframe row the reponse variables
@@ -314,7 +337,7 @@ def offlineTest(index, df_mapred_commands,  df_dfsio_logs):
 
 
 ###############
-# 6. Clean up #
+# 7. Clean up #
 ###############
 
 # Function to clean up the TestDFSIO log file
@@ -330,7 +353,7 @@ def cleanUp(path_test_dfsio_logs):
 
 
 ###################
-# 7. Save results #
+# 8. Save results #
 ###################
 
 # Function to save the response variables in test_result.csv
