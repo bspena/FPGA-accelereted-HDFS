@@ -1,4 +1,4 @@
-# Thesis
+# Virtualized FPGA-acceleration of Distributed File Systems with SR-IOV and Containerizartion}
 
 ## Version Summary
 * Ubuntu 22.04 LTS
@@ -11,9 +11,8 @@
 ```bash
 $ source settings.sh
 ```
-1) [Install Intel OFS on the host machine](install/SYCL_AFU/README.md)
-2) [Install Hadoop on the host machine](install/hadoop/README.md)
-3) [Build the Hadoop Container](install/container/README.md)
+1) [Install Hadoop on the host machine](install/hadoop/README.md)
+2) [Build the Hadoop Container](install/container/README.md)
 
 
 ## Test Exectution

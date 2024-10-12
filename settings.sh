@@ -1,5 +1,8 @@
 # Set Repo directory
-export REPO_DIR=$(pwd)
+export REPO_ROOT=$(pwd)
 
-# Set Container installation directory
-export INSTALL_CONTAINER_DIR=${REPO_DIR}/install/container
+# Set installation directory
+export INSTALL_ROOT=${REPO_ROOT}/install
+
+# Set Container directory
+export DEPLOY_CONTAINER_ROOT=${REPO_ROOT}/deploy_container

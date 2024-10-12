@@ -11,8 +11,7 @@ docker run -i -t -d \
     -p 9870:9870  \
     -p 8088:8088  \
     -p 19888:19888 \
-    -v "${INSTALL_CONTAINER_DIR}/script/ssh_no_pass.sh:/home/$(whoami)/ssh_no_pass.sh" \
-    -v "${INSTALL_CONTAINER_DIR}/hadoop_config:/home/$(whoami)/hadoop_config" \
+    -v "${DEPLOY_CONTAINER_ROOT}/utility:/home/$(whoami)/utility" \
     -v "${REPO_DIR}/test:/home/$(whoami)/test" \
     --device=/dev/vfio/vfio \
     --device=/dev/dfl-fme.0 \
@@ -32,7 +31,7 @@ do
     echo "[INFO] Create slave-$i container"
     docker run -i -t -d \
         -u "$(id -u)" \
-        -v "${INSTALL_CONTAINER_DIR}/hadoop_config:/home/$(whoami)/hadoop_config" \
+        -v "${DEPLOY_CONTAINER_ROOT}/utility:/home/$(whoami)/utility" \
         --device=/dev/vfio/vfio \
         --device=/dev/dfl-fme.0 \
         --device=/dev/dfl-port.0 \
@@ -49,10 +48,10 @@ done
 
 
 # Create workers file
->  ${INSTALL_CONTAINER_DIR}/hadoop_config/workers
+>  ${INSTALL_CONTAINER_DIR}/utility/hadoop_config/workers
 
 # Add slave containers name to workers file
 slaves=$(docker ps -a --filter "name=slave-" --format "{{.Names}}")
 for s in $slaves; do
-    echo $s >>  ${INSTALL_CONTAINER_DIR}/hadoop_config/workers
+    echo $s >>  ${INSTALL_CONTAINER_DIR}/utility/hadoop_config/workers
 done

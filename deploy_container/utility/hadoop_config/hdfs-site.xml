@@ -10,8 +10,4 @@
     <value>master:8020</value>
     <description>Address of the NameNode Remote Procedure Call server</description>
   </property>
-  <property id="0">
-    <name>dfs.datanode.handler.count</name>
-    <value>14</value>
-  </property>
 </configuration>
