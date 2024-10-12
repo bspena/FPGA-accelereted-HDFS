@@ -1,3 +1,6 @@
+# Define the array of devices
+devices=($(ls -d /dev/vfio/[0-9]*))
+
 echo "[INFO] Create docker network"
 docker network create hadoop-network
 
@@ -11,32 +14,41 @@ docker run -i -t -d \
     -v "${INSTALL_CONTAINER_DIR}/script/ssh_no_pass.sh:/home/$(whoami)/ssh_no_pass.sh" \
     -v "${INSTALL_CONTAINER_DIR}/hadoop_config:/home/$(whoami)/hadoop_config" \
     -v "${REPO_DIR}/test:/home/$(whoami)/test" \
+    --device=/dev/vfio/vfio \
+    --device=/dev/dfl-fme.0 \
+    --device=/dev/dfl-port.0 \
+    --device="${devices[0]}" \
     --name master \
     --hostname master \
     --network hadoop-network \
     hadoop-image \
     /bin/bash -c "sudo service ssh start && exec /bin/bash"
 
-# opae.io ls | sort | grep -v ".0]" | grep vfio | sed 0000:00:00.0
-# --device="${VFIO[$i]}"
+i=0
+j=1
 
-for i in {0..1}; do
+while [ "$i" -lt "$1" ] && [ "$j" -lt "${#devices[@]}" ];
+do
     echo "[INFO] Create slave-$i container"
     docker run -i -t -d \
         -u "$(id -u)" \
         -v "${INSTALL_CONTAINER_DIR}/hadoop_config:/home/$(whoami)/hadoop_config" \
+        --device=/dev/vfio/vfio \
+        --device=/dev/dfl-fme.0 \
+        --device=/dev/dfl-port.0 \
+        --device="${devices[$j]}" \
         --name slave-$i \
         --hostname slave-$i \
         --network hadoop-network \
         hadoop-image \
         /bin/bash -c "sudo service ssh start && exec /bin/bash"
+
+    ((i++))
+    ((j++))
 done
 
-echo "[INFO] Create workers file"
-# source ./script/create_workers_file.sh
 
 # Create workers file
-#touch  ~/thesis/install/container/hadoop_config/workers
 >  ${INSTALL_CONTAINER_DIR}/hadoop_config/workers
 
 # Add slave containers name to workers file
@@ -44,52 +56,3 @@ slaves=$(docker ps -a --filter "name=slave-" --format "{{.Names}}")
 for s in $slaves; do
     echo $s >>  ${INSTALL_CONTAINER_DIR}/hadoop_config/workers
 done
-
-
-###################################################
-# NON-PRIVILEGED CONTAINER (binding in host) #
-###################################################
-# docker run -i -t -d \
-#     -u "$(id -u)" \
-#     --name lpbk_2 \
-#     --hostname lpbk_2 \
-#     --device=/dev/vfio/13 \
-#     --device=/dev/vfio/vfio \
-#     --device=/dev/dfl-fme.0 \
-#     --device=/dev/dfl-port.0 \
-#     hadoop-image \
-#     /bin/bash -c "sudo service ssh start && exec /bin/bash"
-
-
-
-###############################################
-# PRIVILEGED CONTAINER (binding in container) #
-###############################################
-# docker run --privileged -i -t -d \
-#     -u "$(id -u)" \
-#     -p 1022:22 \
-#     --name master \
-#     --hostname master \
-#     -v "/home/bspena/SYCL_AFU:/home/bspena/SYCL_AFU" \
-#     -v "/home/bspena/thesis/install/container/script/setup.sh:/home/bspena/setup.sh" \
-#     -v "/lib/modules/6.8.0-45-generic:/lib/modules/6.8.0-45-generic" \
-#     hadoop-image \
-#     /bin/bash -c "sudo service ssh start && exec /bin/bash"
-
-###################################################
-# NON-PRIVILEGED CONTAINER (binding in container) #
-###################################################
-# docker run -i -t -d \
-#     -u "$(id -u)" \
-#   --cap-add=SYS_ADMIN \
-#     --name np_cont \
-#     --hostname np_cont \
-#     --device=/dev/vfio/vfio \
-#     --device=/dev/dfl-fme.0 \
-#     --device=/dev/dfl-port.0 \
-#     -v "/home/bspena/SYCL_AFU:/home/bspena/SYCL_AFU" \
-#     -v "/home/bspena/thesis/install/container/script/setup.sh:/home/bspena/setup.sh" \
-#     -v "/sys/bus/pci/devices:/sys/bus/pci/devices" \
-#     -v "/lib/modules/:/lib/modules" \
-#     hadoop-image \
-#     /bin/bash -c "sudo service ssh start && exec /bin/bash"

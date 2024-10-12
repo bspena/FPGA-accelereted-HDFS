@@ -35,9 +35,10 @@ sudo apt-get install -y libzstd1-dev
 # SSH and PDSH
 sudo apt-get install -y ssh pdsh
 
-# Hadoop 3.4.0
+# Hadoop-Opae 3.4.0
 cd ~/
-git clone https://github.com/apache/hadoop.git --branch rel/release-3.4.0 --single-branch
+#git clone https://github.com/apache/hadoop.git --branch rel/release-3.4.0 --single-branch
+git clone https://github.com/MaistoV/hadoop-OPAE.git --branch ... --single-branch
 
 # Set JAVA_HOME environment variable
 echo 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64' >> ~/.bashrc

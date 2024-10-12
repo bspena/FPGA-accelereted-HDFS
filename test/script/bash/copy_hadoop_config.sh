@@ -3,6 +3,9 @@ cp ~/hadoop_config/* $HADOOP_HOME/etc/hadoop/
 
 
 echo "[INFO] Copy hadoop configuration into slave containers"
+
+## user readarray --> variable --> loop 
+
 cat  ~/hadoop_config/workers | xargs -I {} bash -c '
     ssh $(whoami)@"{}" "cp  ~/hadoop_config/* $HADOOP_HOME/etc/hadoop/"
 '
