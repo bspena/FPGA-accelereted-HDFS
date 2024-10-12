@@ -17,12 +17,11 @@
 # Dockerfile for installing the necessary dependencies for building Hadoop.
 # See BUILDING.txt.
 
-#FROM ubuntu:bionic
 FROM ubuntu:jammy
 
-#######
-# Hadoop 3.3.5
-#######
+###############
+# Hadoop-Opae #
+###############
 
 WORKDIR /root
 
@@ -32,6 +31,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ARG USER_NAME
 ARG USER_ID
 ARG GROUP_ID
+ARG HADOOP_VERSION=3.3.5
 
 #####
 # Disable suggests/recommends
@@ -61,6 +61,8 @@ RUN apt-get -q update \
         pinentry-curses pkg-config python3 python3-pip python3-pkg-resources \
         python3-setuptools python3-wheel rsync shellcheck software-properties-common sudo valgrind \
         zlib1g-dev ssh pdsh \
+    && pip3 install matplotlib \
+    && pip3 install pandas \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -178,8 +180,6 @@ RUN curl -L -o hugo.deb https://github.com/gohugoio/hugo/releases/download/v0.58
 #RUN chmod 755 /root/hadoop_env_checks.sh
 # hadolint ignore=SC2016
 #RUN echo '${HOME}/hadoop_env_checks.sh' >> /root/.bashrc
-
-
 ####################################
 
 
@@ -190,21 +190,63 @@ RUN rm -f /var/log/faillog /var/log/lastlog \
     # The user will use sudo without password
     && echo "${USER_NAME} ALL=NOPASSWD: ALL" > "/etc/sudoers.d/hadoop-build-${USER_ID}"
 
-# Setup passphraseless ssh
-RUN ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa \
-    && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys \
-    && chmod 0600 ~/.ssh/authorized_keys
+# Set the user password 
+RUN echo "${USER_NAME}:${USER_NAME}" | chpasswd
+
+# Copy and extract hadoop archive
+COPY hadoop-${HADOOP_VERSION}.tar.gz /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz
+RUN tar -xzf /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz -C /home/${USER_NAME}/
+RUN rm /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz
 
 # Set HOME environment variable
 ENV HOME /home/${USER_NAME}
-ENV HADOOP_HOME /home/${USER_NAME}/hadoop/hadoop-dist/target/hadoop-3.3.5
+ENV HADOOP_HOME /home/${USER_NAME}/hadoop-${HADOOP_VERSION}
+ENV HADOOP_COMMON_HOME=$HADOOP_HOME
+ENV HADOOP_HDFS_HOME=$HADOOP_HOME
+ENV HADOOP_MAPRED_HOME=$HADOOP_HOME
+ENV HADOOP_YARN_HOME=$HADOOP_HOME
 
-### Expose daemons ports
+### Expose ports
 # NameNode: 9870
 # ResourceManager: 8088
 # MapReduce JobHistory Server: 19888
 EXPOSE 9870 8088 19888
 
+# Apache Active MQ
+# RUN wget https://archive.apache.org/dist/activemq/5.16.6/apache-activemq-5.16.6-bin.tar.gz
+
+
 WORKDIR /home/${USER_NAME}
 
-#CMD [ "/bin/bash"]
+
+##########
+# Opae SDK
+##########
+
+# Prerequisites
+RUN apt-get update \ 
+    &&  sudo apt-get install -y python3 python3-pip python3-jsonschema  python3-dev git gcc g++ make cmake uuid-dev \
+    libjson-c-dev libhwloc-dev libtbb-dev libedit-dev libudev-dev linuxptp pandoc \
+    devscripts debhelper doxygen libcli11-dev libspdlog-dev libsystemd-dev libcap-dev python3-pyyaml-env-tag
+    # librpm-dev python3-sphinx  python3-virtualenv  podman
+    
+RUN pip3 install jsonschema virtualenv pyyaml pybind11 \
+    && sudo pip3 install Pybind11==2.10.0 \
+    && sudo pip3 install setuptools==59.6.0 --prefix=/usr
+    # pip3 install --upgrade --prefix=/usr pip setuptools pybind11
+
+# Copy patches files
+COPY hitek_release /home/${USER_NAME}/hitek_release
+
+# Build opae sdk
+RUN git clone https://github.com/OFS/opae-sdk.git \
+    && cd opae-sdk \
+    && git checkout tags/2.8.0-1 -b nc220 \
+    && git apply /home/${USER_NAME}/hitek_release/AG_C220_NC220_OFS_Release_v1_0_2024-01-22/htk_ofs_nc220/patches/opae-sdk-nc220.patch \
+    && cd /home/${USER_NAME}/opae-sdk/packaging/opae/deb \
+    && ./create \
+    && sudo dpkg -i opae*.deb
+
+WORKDIR /home/${USER_NAME}
+
+CMD [ "/bin/bash"]
