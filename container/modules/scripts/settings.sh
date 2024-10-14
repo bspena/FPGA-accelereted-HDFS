@@ -6,6 +6,7 @@
 
 export MODULES_ROOT=/home/hadoop/modules
 export HADOOP_USER=hadoop
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 # Demo user --> host user ???
 #DEMO_USER=demo

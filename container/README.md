@@ -23,3 +23,13 @@ $ source ssh_no_pass.sh
 > Note: 
 > * Set the hadoop version into dockerfile.
 > * Inside the Dockerfile, the user and the password are the same as the host user.
+
+
+# Deploy
+* settings
+* build image
+* deploy container
+* settings
+* ssh no pass
+* install modules
+* init demo

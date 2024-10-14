@@ -5,9 +5,11 @@ container/modules/hadoop/config/workers
 container/modules/hadoop/hadoop-*.tar.gz
 container/modules/jms_provider/activemq/apache-activemq-*
 container/modules/vfproxy/*.jar
-container/modules/vfproxy/*.so
+container/modules/vfproxy/native/*.so
 
-# Temporary directories
+# Temporary directories and logs
+container/modules/logs
+container/modules/hadoop/recovery/logs
 test/script/__pycache__
 test/logs
 test/test_results

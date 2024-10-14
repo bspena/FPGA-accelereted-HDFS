@@ -1,5 +1,5 @@
 echo "[COPY CONFIG] Copy hadoop configuration into master"
-cp ~/hadoop_config/* $HADOOP_HOME/etc/hadoop/
+cp ${HADOOP_ROOT}/config/* $HADOOP_HOME/etc/hadoop/
 
 
 #echo "[INFO] Copy hadoop configuration into slave containers"

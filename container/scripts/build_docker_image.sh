@@ -6,8 +6,7 @@ docker build \
     --build-arg USER_ID="$(id -u)" \
     --build-arg GROUP_ID="$(id -g)" \
     -t hadoop-image \
-    ${CONTAINER_MODULES_ROOT}/docker/
-
+    ${CONTAINER_ROOT}/docker/
 
 cp  ~/hadoop-OPAE/hadoop-dist/target/hadoop-*.tar.gz  ${CONTAINER_MODULES_ROOT}/hadoop
 
