@@ -1,4 +1,13 @@
-deploy_container/utility/hadoop_config/workers
+# Config files
+container/modules/hadoop/config/workers
+
+# Download files
+container/modules/hadoop/hadoop-*.tar.gz
+container/modules/jms_provider/activemq/apache-activemq-*
+container/modules/vfproxy/*.jar
+container/modules/vfproxy/*.so
+
+# Temporary directories
 test/script/__pycache__
 test/logs
 test/test_results
