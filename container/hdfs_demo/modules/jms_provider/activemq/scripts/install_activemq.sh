@@ -48,7 +48,7 @@ mv ${HADOOP_HOME}/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar \
 
 
 for ip in "${slaves_ip_list[@]}"; do
-    echo "[INSTALL HADOOP] Installing ActiveMQ on on $ip"
+    echo "[INSTALL ACTIVEMQ] Installing ActiveMQ on on $ip"
     ssh ${HADOOP_USER}@$ip "tar xf ${ACTIVEMQ_TARGZ} -C ${ACTIVEMQ_ROOT} && \
     cp ${ACTIVEMQ_JAR} ${HADOOP_HOME}/share/hadoop/hdfs/ && \
     mv ${HADOOP_HOME}/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar \

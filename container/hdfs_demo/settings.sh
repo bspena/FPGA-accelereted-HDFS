@@ -4,7 +4,7 @@
 # Target users and directories #
 ################################
 
-export MODULES_ROOT=/home/hadoop/modules
+export MODULES_ROOT=/home/hadoop/hdfs_demo/modules
 export HADOOP_USER=hadoop
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 

@@ -14,7 +14,7 @@ docker run -i -t -d \
     -p 9870:9870  \
     -p 8088:8088  \
     -p 19888:19888 \
-    -v "${CONTAINER_MODULES_ROOT}:/home/${CONTAINER_USER}/modules" \
+    -v "${HDFS_DEMO_ROOT}:/home/${CONTAINER_USER}/hdfs_demo" \
     -v "${REPO_DIR}/test:/home/$(whoami)/test" \
     --device=/dev/vfio/vfio \
     --device=/dev/dfl-fme.0 \
@@ -34,7 +34,7 @@ do
     echo "[DEPLOY DOCKER CONTAINER] Create slave-$i container"
     docker run -i -t -d \
         -u "$(id -u)" \
-        -v "${CONTAINER_MODULES_ROOT}:/home/${CONTAINER_USER}/modules" \
+        -v "${HDFS_DEMO_ROOT}:/home/${CONTAINER_USER}/hdfs_demo" \
         --device=/dev/vfio/vfio \
         --device=/dev/dfl-fme.0 \
         --device=/dev/dfl-port.0 \

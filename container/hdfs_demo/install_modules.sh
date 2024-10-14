@@ -71,11 +71,7 @@
 source ${HADOOP_ROOT}/scripts/install_hadoop.sh 
 
 # Install VFProxy
-#source ${VFP_ROOT}/scripts/install_vfp.sh
-##############
-# NOTE: install_vfp bash script copy vfp-client-site.xml to ${HADOOP_HOME}/etc/hadoop, I have a script that copy 
-#       site xml files in the same directory
-##############
+source ${VFP_ROOT}/scripts/install_vfp.sh
 
 # Install ActiveMQ
 source ${ACTIVEMQ_ROOT}/scripts/install_activemq.sh

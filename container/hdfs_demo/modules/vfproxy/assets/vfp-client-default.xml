@@ -1,0 +1,24 @@
+<configuration>
+    <!-- This is does not depend on VFPClient but on en/decodingState  -->
+    <!-- <property>
+        <name>dfs.datanode.vfp-client.cell-length</name>
+        <value>1048576</value>
+        <description>
+        Cell length in bytes
+        </description>
+    </property> -->
+    <property>
+        <name>dfs.datanode.vfp-client.receiveTimeoutMillisec</name>
+        <value>10000</value>
+        <description>
+        VFP message timeout
+        </description>
+    </property>
+    <property>
+        <name>dfs.datanode.vfp-client.sbdf-array</name>
+        <value>0000:8a:00.1</value>
+        <description>
+        Available VFs addresses
+        </description>
+    </property>
+</configuration>
