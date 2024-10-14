@@ -38,7 +38,13 @@ sudo apt-get install -y ssh pdsh
 # Hadoop-Opae 3.4.0
 cd ~/
 #git clone https://github.com/apache/hadoop.git --branch rel/release-3.4.0 --single-branch
-git clone https://github.com/MaistoV/hadoop-OPAE.git --branch ... --single-branch
+git clone https://github.com/MaistoV/hadoop-OPAE.git --branch hdfs_vf_integration --single-branch
+
+cd hadoop-OPAE/dependencies/vfproxy
+mkdir -p dependencies && cd dependencies && mkdir -p vfproxy
+cd ../..
+ln -s /home/bspena/JMS/vfproxy.jar dependencies/vfproxy/vfproxy.jar
+source dependencies/vfproxy/install.sh
 
 # Set JAVA_HOME environment variable
 echo 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64' >> ~/.bashrc

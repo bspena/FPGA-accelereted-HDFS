@@ -28,10 +28,10 @@ WORKDIR /root
 # The commands within the Dockerfile are executed with bash
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-ARG USER_NAME
+#ARG USER_NAME
 ARG USER_ID
 ARG GROUP_ID
-ARG HADOOP_VERSION=3.3.5
+#ARG HADOOP_VERSION=3.3.5
 
 #####
 # Disable suggests/recommends
@@ -54,17 +54,15 @@ RUN apt-get -q update \
     && apt-get -q install -y --no-install-recommends \
         apt-utils bats build-essential bzip2 clang cmake curl doxygen fuse g++ gcc git gnupg-agent \
         libbz2-dev libcurl4-openssl-dev libfuse-dev libprotobuf-dev libprotoc-dev libsasl2-dev \
-        libsnappy-dev libssl-dev libsnappy-dev libtool \
-        #libzstd1-dev \
-        locales \
-        make \
-        pinentry-curses pkg-config python3 python3-pip python3-pkg-resources \
-        python3-setuptools python3-wheel rsync shellcheck software-properties-common sudo valgrind \
-        zlib1g-dev ssh pdsh \
+        libsnappy-dev libssl-dev libsnappy-dev libtool locales make pinentry-curses pkg-config \
+        python3 python3-pip python3-pkg-resources python3-setuptools python3-wheel rsync shellcheck \
+        software-properties-common sudo valgrind zlib1g-dev ssh pdsh psmisc \
     && pip3 install matplotlib \
     && pip3 install pandas \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+    #libzstd1-dev \
 
 RUN locale-gen en_US.UTF-8
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
@@ -185,26 +183,26 @@ RUN curl -L -o hugo.deb https://github.com/gohugoio/hugo/releases/download/v0.58
 
 # Remove log files and add both group and user
 RUN rm -f /var/log/faillog /var/log/lastlog \
-    && groupadd --non-unique -g ${GROUP_ID} ${USER_NAME} \
-    && useradd -g ${GROUP_ID} -u ${USER_ID} -k /root -m ${USER_NAME} -d /home/${USER_NAME} \
+    && groupadd --non-unique -g ${GROUP_ID} hadoop \
+    && useradd -g ${GROUP_ID} -u ${USER_ID} -k /root -m hadoop -d /home/hadoop \
     # The user will use sudo without password
-    && echo "${USER_NAME} ALL=NOPASSWD: ALL" > "/etc/sudoers.d/hadoop-build-${USER_ID}"
+    && echo "hadoop ALL=NOPASSWD: ALL" > "/etc/sudoers.d/hadoop-build-${USER_ID}"
 
 # Set the user password 
-RUN echo "${USER_NAME}:${USER_NAME}" | chpasswd
+RUN echo "hadoop:hadoop" | chpasswd
 
 # Copy and extract hadoop archive
-COPY hadoop-${HADOOP_VERSION}.tar.gz /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz
-RUN tar -xzf /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz -C /home/${USER_NAME}/
-RUN rm /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz
+# COPY hadoop-${HADOOP_VERSION}.tar.gz /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz
+# RUN tar -xzf /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz -C /home/${USER_NAME}/
+# RUN rm /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz
 
-# Set HOME environment variable
-ENV HOME /home/${USER_NAME}
-ENV HADOOP_HOME /home/${USER_NAME}/hadoop-${HADOOP_VERSION}
-ENV HADOOP_COMMON_HOME=$HADOOP_HOME
-ENV HADOOP_HDFS_HOME=$HADOOP_HOME
-ENV HADOOP_MAPRED_HOME=$HADOOP_HOME
-ENV HADOOP_YARN_HOME=$HADOOP_HOME
+# # Set HOME environment variable
+# ENV HOME /home/${USER_NAME}
+# ENV HADOOP_HOME /home/${USER_NAME}/hadoop-${HADOOP_VERSION}
+# ENV HADOOP_COMMON_HOME=$HADOOP_HOME
+# ENV HADOOP_HDFS_HOME=$HADOOP_HOME
+# ENV HADOOP_MAPRED_HOME=$HADOOP_HOME
+# ENV HADOOP_YARN_HOME=$HADOOP_HOME
 
 ### Expose ports
 # NameNode: 9870
@@ -236,17 +234,17 @@ RUN pip3 install jsonschema virtualenv pyyaml pybind11 \
     # pip3 install --upgrade --prefix=/usr pip setuptools pybind11
 
 # Copy patches files
-COPY hitek_release /home/${USER_NAME}/hitek_release
+COPY hitek_release /home/hadoop/hitek_release
 
 # Build opae sdk
 RUN git clone https://github.com/OFS/opae-sdk.git \
     && cd opae-sdk \
     && git checkout tags/2.8.0-1 -b nc220 \
-    && git apply /home/${USER_NAME}/hitek_release/AG_C220_NC220_OFS_Release_v1_0_2024-01-22/htk_ofs_nc220/patches/opae-sdk-nc220.patch \
-    && cd /home/${USER_NAME}/opae-sdk/packaging/opae/deb \
+    && git apply /home/hadoop/hitek_release/AG_C220_NC220_OFS_Release_v1_0_2024-01-22/htk_ofs_nc220/patches/opae-sdk-nc220.patch \
+    && cd /home/hadoop/opae-sdk/packaging/opae/deb \
     && ./create \
     && sudo dpkg -i opae*.deb
 
-WORKDIR /home/${USER_NAME}
+WORKDIR /home/hadoop
 
 CMD [ "/bin/bash"]
