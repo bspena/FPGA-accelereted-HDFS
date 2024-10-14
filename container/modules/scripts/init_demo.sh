@@ -256,28 +256,28 @@ if [[ $CODER_IMPL == "FPGA" ]]; then
 fi
 
 # - Only for distributed mode
-# if [ ${DISTRIBUTED_MODE} -eq 1 ]; then
-#     # - Cleanse Hadoop
-#     #source ${HADOOP_ROOT}/recovery/hadoop_recovery.sh
+if [ ${DISTRIBUTED_MODE} -eq 1 ]; then
+    # - Cleanse Hadoop
+    #source ${HADOOP_ROOT}/recovery/hadoop_recovery.sh
 
-#     source ${HADOOP_ROOT}/recovery/hadoop_recovery.sh
+    source ${HADOOP_ROOT}/recovery/hadoop_recovery.sh
     
-#     # - Start Hadoop
-#     echo "[DEMO INIT] Starting Hadoop (HDFS and YARN)"
-#     #${SSH_HADOOP_MASTER} start-dfs.sh
-#     # ${SSH_HADOOP_MASTER} hdfs dfsadmin -report | grep -i "Live datanodes"
-#     # ${SSH_HADOOP_MASTER} start-yarn.sh
-#     # ${SSH_HADOOP_MASTER} yarn node -list | grep RUNNING
+    # - Start Hadoop
+    echo "[DEMO INIT] Starting Hadoop (HDFS and YARN)"
+    #${SSH_HADOOP_MASTER} start-dfs.sh
+    # ${SSH_HADOOP_MASTER} hdfs dfsadmin -report | grep -i "Live datanodes"
+    # ${SSH_HADOOP_MASTER} start-yarn.sh
+    # ${SSH_HADOOP_MASTER} yarn node -list | grep RUNNING
 
-#     ${HADOOP_HOME}/sbin/start-dfs.sh
-#     ${HADOOP_HOME}/bin/hdfs dfsadmin -report | grep -i "Live datanodes"
-#     ${HADOOP_HOME}/sbin/start-yarn.sh
-#     ${HADOOP_HOME}/bin/yarn node -list | grep RUNNING
-# fi
+    ${HADOOP_HOME}/sbin/start-dfs.sh
+    ${HADOOP_HOME}/bin/hdfs dfsadmin -report | grep -i "Live datanodes"
+    ${HADOOP_HOME}/sbin/start-yarn.sh
+    ${HADOOP_HOME}/bin/yarn node -list | grep RUNNING
+fi
 
-# # - Enable EC
-# echo "[DEMO INIT] Launch EC policy setup"
-# #EC_ENABLE_SCRIPT=${HADOOP_ROOT}/ec/enable_ec_policies.sh
-# #${SSH_HADOOP_MASTER} source ${EC_ENABLE_SCRIPT}
+# - Enable EC
+echo "[DEMO INIT] Launch EC policy setup"
+#EC_ENABLE_SCRIPT=${HADOOP_ROOT}/ec/enable_ec_policies.sh
+#${SSH_HADOOP_MASTER} source ${EC_ENABLE_SCRIPT}
 
-# source ${HADOOP_ROOT}/ec/enable_ec_policies.sh
+source ${HADOOP_ROOT}/ec/enable_ec_policies.sh

@@ -73,3 +73,5 @@ for sbdf in "${sbdf_list[@]}"; do
     # Sleep between launches
     sleep 0.5
 done
+
+export SBDFs_COMMA_SEPARATED=$( echo $sbdf_list | sed "s/ /,/g" )
