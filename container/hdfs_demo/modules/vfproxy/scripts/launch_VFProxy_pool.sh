@@ -33,18 +33,10 @@ fi
 
 iommugroups=($(ls -d /dev/vfio/[0-9]*))
 
-# for i in "${iommugroups[@]}"; do 
-#     echo "$(basename $i)"
-# done
-
 for iommugroup in "${iommugroups[@]}"; do
     num=$(basename $iommugroup)
     sbdf_list=($(ls /sys/kernel/iommu_groups/$num/devices/))
 done
-
-# for i in "${sbdf_list[@]}"; do
-#     echo "$i"
-# done
 
 # VFP environment
 unset VFP_DEBUG

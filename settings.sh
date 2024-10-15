@@ -13,3 +13,4 @@ export ACTIVEMQ_ROOT=${MODULES_ROOT}/jms_provider/activemq
 
 
 export CONTAINER_USER=hadoop
+export HADOOP_CONTAINER_ROOT=/home/${CONTAINER_USER}

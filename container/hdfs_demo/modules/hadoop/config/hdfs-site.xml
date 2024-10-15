@@ -10,4 +10,13 @@
     <value>master:8020</value>
     <description>Address of the NameNode Remote Procedure Call server</description>
   </property>
+  <property>
+        <name>dfs.namenode.name.dir</name>
+        <value>file:/home/hadoop/hadoop_storage/disk1/hdfs/namenode</value>
+    </property>
+    <property>
+        <name>dfs.datanode.data.dir</name>
+        <value>/home/hadoop/hadoop_storage/disk2/hdfs/datanode</value>
+        <description>Determines where on the local filesystem an DFS data node should store its blocks.</description>
+    </property>
 </configuration>

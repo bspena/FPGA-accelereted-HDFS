@@ -3,9 +3,10 @@ container/hdfs_demo/modules/hadoop/config/workers
 
 # Download files
 container/hdfs_demo/modules/hadoop/hadoop-*.tar.gz
-container/hdfs_demo/modules/jms_provider/activemq/apache-activemq-*
+container/docker_volumes
 container/hdfs_demo/modules/vfproxy/*.jar
 container/hdfs_demo/modules/vfproxy/native
+container/hdfs_demo/modules/jms_provider/activemq/apache-activemq*
 
 # Temporary directories and logs
 container/hdfs_demo/modules/logs

@@ -4,8 +4,11 @@
 # Target users and directories #
 ################################
 
-export MODULES_ROOT=/home/hadoop/hdfs_demo/modules
 export HADOOP_USER=hadoop
+export HADOOP_USER_HOME=/home/${HADOOP_USER}
+export HDFS_DEMO=/home/${HADOOP_USER}/hdfs_demo
+export CONTAINER_VOLUME=/home/${HADOOP_USER}/container_volume 
+export MODULES_ROOT=${HDFS_DEMO}/modules
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 # Demo user --> host user ???
@@ -78,9 +81,9 @@ readarray -t slaves_ip_list < ${HADOOP_ROOT}/config/workers
 # ActiveMQ
 export ACTIVEMQ_VERSION=5.16.6
 export ACTIVEMQ_ROOT=${MODULES_ROOT}/jms_provider/activemq
-export ACTIVEMQ_INSTALL=${ACTIVEMQ_ROOT}/apache-activemq-${ACTIVEMQ_VERSION}
-export ACTIVEMQ_JAR=${ACTIVEMQ_INSTALL}/activemq-all-${ACTIVEMQ_VERSION}.jar
 export ACTIVEMQ_TARGZ=${ACTIVEMQ_ROOT}/apache-activemq-${ACTIVEMQ_VERSION}-bin.tar.gz
+export ACTIVEMQ_INSTALL=${CONTAINER_VOLUME}/apache-activemq-${ACTIVEMQ_VERSION}
+export ACTIVEMQ_JAR=${ACTIVEMQ_INSTALL}/activemq-all-${ACTIVEMQ_VERSION}.jar
 
 # VFProxy
 export VFP_INSTALL=${MODULES_ROOT}/vfproxy

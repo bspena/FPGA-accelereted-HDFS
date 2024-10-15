@@ -149,27 +149,16 @@ fi
 
 # - Stop Hadoop
 echo "[DEMO INIT] Stopping Hadoop deamons (if any)"
-# ${SSH_HADOOP_MASTER} stop-yarn.sh
-# ${SSH_HADOOP_MASTER} stop-dfs.sh
-
 ${HADOOP_HOME}/sbin/stop-dfs.sh
 ${HADOOP_HOME}/sbin/stop-yarn.sh
 
 
-# For each node
-# - Release VFs (if any bound)
-# - Bind VFs
 # - Launch ActiveMQ + VFPs
 if [[ $CODER_IMPL == "FPGA" ]]; then
     # Kill all Java processes, including VFPs and ActiveMQ
     # NOTE: this might be overkill, but works for a demo
-    # for ip in "${all_nodes_ips[@]}"; do
-    #     echo "[DEMO INIT] Killing all Java processes on $ip"
-    #     SSH_HADOOP_CMD="ssh ${HADOOP_USER}@$ip"
-    #     ${SSH_HADOOP_CMD} killall java
-    # done
 
-    echo "[DEMO INIT] Kill all java processes on master"
+    echo "[DEMO INIT] Killing all java processes on master"
     killall java
 
     for ip in "${slaves_ip_list[@]}"; do
@@ -177,75 +166,31 @@ if [[ $CODER_IMPL == "FPGA" ]]; then
         ssh ${HADOOP_USER}@$ip "killall java"
     done
 
-    # echo "[DEMO INIT] Configuring FPGAs"
-    # for ip in "${all_nodes_ips[@]}"; do
-    #     # SSH commands
-    #     SSH_DEMO_CMD="ssh ${DEMO_USER}@$ip"
-
-    #     # - Release VFs (if any bound)
-    #     ${SSH_DEMO_CMD} source ${FPGA_ROOT}/setup/opae.io/opae.io_release.sh
-    #     # - Powercycle PACs
-    #     # NOTE: Send this one in background to (kinda) chain operations
-    #     ${SSH_DEMO_CMD} source ${FPGA_ROOT}/setup/powercycle/set_fpga_RS.sh ${RS_SCHEMA} &
-    # done
-    # # wait for children
-    # wait
-
-    # - Bind VFs
-    # for ip in "${all_nodes_ips[@]}"; do
-    #     # SSH commands
-    #     SSH_DEMO_CMD="ssh ${DEMO_USER}@$ip"
-        
-    #     # - Bind VFs
-    #     # NOTE: Send this one in background
-    #     ${SSH_DEMO_CMD} source ${FPGA_ROOT}/setup/opae.io/opae.io_bind.sh ${NUM_VFs} &
-    # done
-    # # wait for children
-    # wait
-
     # Launch VFP
-
     source ${ACTIVEMQ_ROOT}/scripts/stop_activemq.sh > /dev/null
+
+    #echo "[LAUNCH ACTIVEMQ] Launching ActiveMQ on master"
     source ${ACTIVEMQ_ROOT}/scripts/launch_activemq.sh > /dev/null
 
-    # for ip in "${all_nodes_ips[@]}"; do
-    #     # SSH commands
-    #     SSH_HADOOP_CMD="ssh ${HADOOP_USER}@$ip"
-    #     # - Stop and re-launch ActiveMQ
-    #     echo "[DEMO INIT] Launching ActiveMQ on $ip"
-    #     ${SSH_HADOOP_CMD} source ${ACTIVEMQ_ROOT}/scripts/stop_activemq.sh > /dev/null
-    #     ${SSH_HADOOP_CMD} source ${ACTIVEMQ_ROOT}/scripts/launch_activemq.sh > /dev/null
+    # for ip in "${slaves_ip_list[@]}"; do
+    #     echo "[LAUNCH ACTIVEMQ]] Launching ActiveMQ on $ip"
+    #     ssh ${HADOOP_USER}@$ip "bash -c 'source ${HDFS_DEMO}/settings.sh && \
+    #                             source ${ACTIVEMQ_ROOT}/scripts/launch_activemq.sh'"
     # done
+
     # Heuristic sleep for JMSProvider safety
     sleep 2
 
     #echo "[DEMO INIT] Launching VFProxying on master"
     echo "[DEMO INIT] Launching VFProxying on master"
-    source ${VFP_INSTALL}/scripts/launch_VFProxy_pool.sh $RS_SCHEMA $CELL_LENGTH
+    source ${VFP_INSTALL}/scripts/launch_VFProxy_pool.sh $RS_SCHEMA $CELL_LENGTH > /dev/null
 
     for ip in "${slaves_ip_list[@]}"; do
         echo "[DEMO INIT] Launching VFProxying on $ip"
-        ssh ${HADOOP_USER}@$ip "bash -c 'source ${MODULES_ROOT}/scripts/settings.sh && \
+        ssh ${HADOOP_USER}@$ip "bash -c 'source ${HDFS_DEMO}/settings.sh && \
                                         source ${VFP_INSTALL}/scripts/launch_VFProxy_pool.sh \
-                                        $RS_SCHEMA $CELL_LENGTH'"
+                                        $RS_SCHEMA $CELL_LENGTH'" > /dev/null
     done
-
-    # for ip in "${all_nodes_ips[@]}"; do
-    #     # SSH commands
-    #     SSH_HADOOP_CMD="ssh ${HADOOP_USER}@$ip"
-    #     # - Launch VFProxying
-    #     echo "[DEMO INIT] Launching VFProxying on $ip"
-    #     ${SSH_HADOOP_CMD} \
-    #         source ${VFP_INSTALL}/scripts/launch_VFProxy_pool.sh \
-    #         $NUM_VFs $RS_SCHEMA $CELL_LENGTH &
-    # done
-    # # Wait for children
-    # wait
-
-    # - Verify
-    # for ip in "${slaves_ip_list[@]}"; do
-    #     ${SSH_HADOOP_CMD} "echo [DEMO INIT \$(hostname)] Jps; jps" | egrep "DEMO INIT|activemq|VFProxy"
-    # done
 
     echo "[DEMO INIT master] Jps:" 
     jps | egrep "DEMO INIT|activemq|VFProxy"
@@ -264,11 +209,6 @@ if [ ${DISTRIBUTED_MODE} -eq 1 ]; then
     
     # - Start Hadoop
     echo "[DEMO INIT] Starting Hadoop (HDFS and YARN)"
-    #${SSH_HADOOP_MASTER} start-dfs.sh
-    # ${SSH_HADOOP_MASTER} hdfs dfsadmin -report | grep -i "Live datanodes"
-    # ${SSH_HADOOP_MASTER} start-yarn.sh
-    # ${SSH_HADOOP_MASTER} yarn node -list | grep RUNNING
-
     ${HADOOP_HOME}/sbin/start-dfs.sh
     ${HADOOP_HOME}/bin/hdfs dfsadmin -report | grep -i "Live datanodes"
     ${HADOOP_HOME}/sbin/start-yarn.sh
@@ -277,7 +217,4 @@ fi
 
 # - Enable EC
 echo "[DEMO INIT] Launch EC policy setup"
-#EC_ENABLE_SCRIPT=${HADOOP_ROOT}/ec/enable_ec_policies.sh
-#${SSH_HADOOP_MASTER} source ${EC_ENABLE_SCRIPT}
-
 source ${HADOOP_ROOT}/ec/enable_ec_policies.sh
