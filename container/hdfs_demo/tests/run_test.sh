@@ -14,7 +14,7 @@
 # Local variables #
 ###################
 #TEST_DIR=${DEMO_ROOT}/tests
-TEST_DIR=${DEMO_ROOT}/tests
+TEST_DIR=${HDFS_DEMO}/tests
 USAGE="[RUN TEST] Missing arguments:
 \$1: Target experiment, in:
     all         Run, in sequence: ec, vpf, dfsio, terasort

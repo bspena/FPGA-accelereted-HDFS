@@ -191,6 +191,28 @@ RUN rm -f /var/log/faillog /var/log/lastlog \
 # Set the user password 
 RUN echo "hadoop:hadoop" | chpasswd
 
+################################################################
+RUN apt-get install -y openssh-server \
+    && mkdir /var/run/sshd
+
+# Create .ssh directory and its privilegies
+RUN mkdir -p /home/hadoop/.ssh \
+    && chmod 700 /home/hadoop/.ssh
+
+# Create SSH key and add it to authorized_keys fila
+RUN ssh-keygen -t rsa -f /home/hadoop/.ssh/id_rsa -q -N "" \
+    && cat /home/hadoop/.ssh/id_rsa.pub >> /home/hadoop/.ssh/authorized_keys \
+    && chmod 600 /home/hadoop/.ssh/authorized_keys \
+    # Set hadoop user as .ssh owner
+    && chown -R hadoop:hadoop /home/hadoop/.ssh
+
+# Login without password
+RUN sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config \
+    && echo "PermitRootLogin prohibit-password" >> /etc/ssh/sshd_config \
+    && echo "PubkeyAuthentication yes" >> /etc/ssh/sshd_config
+
+################################################################
+
 # Copy and extract hadoop archive
 # COPY hadoop-${HADOOP_VERSION}.tar.gz /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz
 # RUN tar -xzf /home/${USER_NAME}/hadoop-${HADOOP_VERSION}.tar.gz -C /home/${USER_NAME}/

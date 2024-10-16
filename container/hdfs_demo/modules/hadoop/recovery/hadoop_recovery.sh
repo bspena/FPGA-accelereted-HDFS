@@ -11,14 +11,16 @@ ${HADOOP_HOME}/sbin/stop-yarn.sh
 ${HADOOP_HOME}/bin/mapred --daemon stop historyserver
 
 # Directories to remove
-rm_dirs="/home/hadoop/hadoop_storage/disk1/* /home/hadoop/hadoop_storage/disk2/* /tmp/hadoop-*"
+rm_dirs_master="/home/hadoop/hadoop_storage/disk1/* /tmp/hadoop-*"
 
-echo "[HADOOP RECOVERY] Removing directories ($rm_dirs) from master"
-rm -rf $rm_dirs
+rm_dirs_slaves="/home/hadoop/hadoop_storage/disk2/* /tmp/hadoop-*"
+
+echo "[HADOOP RECOVERY] Removing directories ($rm_dirs_master) from master"
+rm -rf $rm_dirs_master
 
 for ip in "${slaves_ip_list[@]}"; do
-    echo "[HADOOP RECOVERY] Removing directories ($rm_dirs) from $ip"
-    ssh ${HADOOP_USER}@$ip "rm -rf $rm_dirs"
+    echo "[HADOOP RECOVERY] Removing directories ($rm_dirs_slaves) from $ip"
+    ssh ${HADOOP_USER}@$ip "rm -rf $rm_dirs_slaves"
 done
 
 # Prepare log file info

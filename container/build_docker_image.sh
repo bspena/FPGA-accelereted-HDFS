@@ -5,7 +5,7 @@ echo "[BUILD DOCKER IMAGE] Build docker image with hadoop"
 docker build \
     --build-arg USER_ID="$(id -u)" \
     --build-arg GROUP_ID="$(id -g)" \
-    -t hadoop-image-2 \
+    -t hadoop-image-3 \
     ${CONTAINER_ROOT}/docker/
 
 # cp  ~/hadoop-OPAE/hadoop-dist/target/hadoop-*.tar.gz  ${HADOOP_ROOT}

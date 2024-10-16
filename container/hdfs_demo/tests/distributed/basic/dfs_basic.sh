@@ -29,10 +29,10 @@ READ_BACK_FILE_NAME=tmpfile.readback
 
 # Prepare directory
 echo "[DFS BASIC] Prepare directory on DFS"
-hdfs dfs -mkdir $DFS_DIR
-hdfs dfs -rm $DFS_DIR/*
+${HADOOP_HOME}/bin/hdfs dfs -mkdir $DFS_DIR
+${HADOOP_HOME}/bin/hdfs dfs -rm $DFS_DIR/*
 # Set EC policy (assume enabled)
-hdfs ec -setPolicy -path $DFS_DIR -policy $POLICY
+${HADOOP_HOME}/bin/hdfs ec -setPolicy -path $DFS_DIR -policy $POLICY
 
 # Prepare test file
 echo "[DFS BASIC] Prepare input file"
@@ -40,12 +40,12 @@ dd if=/dev/urandom of=$SOURCE_FILE_NAME bs=$SIZE count=1
 
 # Copy file to DFS
 echo "[DFS BASIC] Copy file to DFS"
-hdfs dfs -put -f $SOURCE_FILE_NAME $DFS_DIR
-hdfs dfs -ls $DFS_DIR
+${HADOOP_HOME}/bin/hdfs dfs -put -f $SOURCE_FILE_NAME $DFS_DIR
+${HADOOP_HOME}/bin/hdfs dfs -ls $DFS_DIR
 
 # Read back from DFS
 echo "[DFS BASIC] Read back file to DFS"
-hdfs dfs -get -f $DFS_FILE_NAME $READ_BACK_FILE_NAME
+${HADOOP_HOME}/bin/hdfs dfs -get -f $DFS_FILE_NAME $READ_BACK_FILE_NAME
 
 # Compare files (hashes)
 echo "[DFS BASIC] Compare files"
@@ -60,4 +60,4 @@ fi
 # Clean up
 echo "[DFS BASIC] Cleaning up"
 rm -rvf $SOURCE_FILE_NAME $READ_BACK_FILE_NAME
-hdfs dfs -rm -f $DFS_FILE_NAME
+${HADOOP_HOME}/bin/hdfs dfs -rm -f $DFS_FILE_NAME

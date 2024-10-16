@@ -197,11 +197,9 @@ if [[ $CODER_IMPL == "FPGA" ]]; then
 
         # Flag -f put SSH session in background
         # The source of the settings file is a workaround (aka o' pzzott)
-        ssh -f ${HADOOP_USER}@$ip "bash -c 'source ${VFP_INSTALL}/scripts/launch_VFProxy_pool.sh \
+        ssh -f ${HADOOP_USER}@$ip "bash -c 'source ${HDFS_DEMO}/settings.sh && \
+                                            source ${VFP_INSTALL}/scripts/launch_VFProxy_pool.sh \
                                                     $RS_SCHEMA $CELL_LENGTH'" 
-
-        # ssh ${HADOOP_USER}@$ip "nohup bash ${VFP_INSTALL}/scripts/launch_VFProxy_pool.sh \
-        #                                 $RS_SCHEMA $CELL_LENGTH > /dev/null 2>&1 &" 
 
         # echo "ramem"
     done

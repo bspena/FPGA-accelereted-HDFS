@@ -1,50 +1,29 @@
 # Arguments:
 #   Number of slave containers
 
+
+NUMBER_SLAVE_CONTAINERS=$1
+if [ "$NUMBER_SLAVE_CONTAINERS" == "" ]; then
+    echo "[ERROR] Expected number of slave containers"
+    return 1
+fi
+
 # Creat docker containers volumes directory
 mkdir -p ${CONTAINER_ROOT}/docker_volumes
 
-# Define the array of devices
+# Array of iommugroups
 iommugroups=($(ls -d /dev/vfio/[0-9]*))
+
+# Master iommugroups and SBDF
 iommugroup_master=$(basename ${iommugroups[0]})
 sbdf_master=($(ls /sys/kernel/iommu_groups/$iommugroup_master/devices/))
 
 echo "[DEPLOY DOCKER CONTAINER] Create docker network"
 docker network create hadoop-network > /dev/null
 
-mkdir -p ${CONTAINER_ROOT}/docker_volumes/master
-
-echo "[DEPLOY DOCKER CONTAINER] Create master container with:"
-echo "                          SBDF: $sbdf_master"
-echo "                          IOMMU_GROUP: $iommugroup_master"
-docker run -i -t -d \
-    -u "$(id -u)" \
-    -p 1022:22 \
-    -p 9870:9870  \
-    -p 8088:8088  \
-    -p 19888:19888 \
-    -v "${HDFS_DEMO_ROOT}:${HADOOP_CONTAINER_HOME}/hdfs_demo" \
-    -v "${HDFS_DEMO_ROOT}/bashrc:/home/hadoop/.bashrc" \
-    -v "${CONTAINER_ROOT}/docker_volumes/master:${HADOOP_CONTAINER_HOME}/container_volume" \
-    -v "${REPO_DIR}/test:/home/$(whoami)/test" \
-    --mount type=tmpfs,destination=/dev/hugepages,tmpfs-size=1G,tmpfs-mode=1770 \
-    --ulimit memlock=-1:-1 \
-    --device=/dev/vfio/vfio \
-    --device=/dev/dfl-fme.0 \
-    --device=/dev/dfl-port.0 \
-    --device="${iommugroups[0]}" \
-    --name master \
-    --hostname master \
-    --network hadoop-network \
-    hadoop-image-2 \
-    /bin/bash -c "source /home/hadoop/.bashrc && sudo service ssh start && exec /bin/bash" > /dev/null
-
-
 i=0
 j=1
 
-#  ./sycl_rs_erasure -f 0000:01:00.3 -l 1048576
-# ;: 3: cannot create /home/hadoop/container_volume/apache-activemq-5.16.6//data/activemq.pid: Permission denied
 
 while [ "$i" -lt "$1" ] && [ "$j" -lt "${#iommugroups[@]}" ];
 do
@@ -59,7 +38,7 @@ do
         -u "$(id -u)" \
         -v "${HDFS_DEMO_ROOT}:${HADOOP_CONTAINER_HOME}/hdfs_demo" \
         -v "${HDFS_DEMO_ROOT}/bashrc:/home/hadoop/.bashrc" \
-        -v "${CONTAINER_ROOT}/docker_volumes/slave-$i:${HADOOP_CONTAINER_HOME}/container_volume" \
+        -v "${DOCKER_VOLUMES}/slave-$i:${HADOOP_CONTAINER_HOME}/container_volume" \
         --mount type=tmpfs,destination=/dev/hugepages,tmpfs-size=1G,tmpfs-mode=1770 \
         --ulimit memlock=-1:-1 \
         --device=/dev/vfio/vfio \
@@ -69,7 +48,7 @@ do
         --name slave-$i \
         --hostname slave-$i \
         --network hadoop-network \
-        hadoop-image-2 \
+        hadoop-image-3 \
         /bin/bash -c "source /home/hadoop/.bashrc && sudo service ssh start && exec /bin/bash" > /dev/null
 
     ((i++))
@@ -85,3 +64,32 @@ slaves=$(docker ps -a --filter "name=slave-" --format "{{.Names}}")
 for s in $slaves; do
     echo $s >>  ${HADOOP_ROOT}/assets/workers
 done
+
+#  ./sycl_rs_erasure -f 0000:01:00.3 -l 1048576
+
+
+mkdir -p ${CONTAINER_ROOT}/docker_volumes/master
+
+echo "[DEPLOY DOCKER CONTAINER] Create master container with:"
+echo "                          SBDF: $sbdf_master"
+echo "                          IOMMU_GROUP: $iommugroup_master"
+docker run -i -t -d \
+    -u "$(id -u)" \
+    -p 1022:22 \
+    -p 9870:9870  \
+    -p 8088:8088  \
+    -p 19888:19888 \
+    -v "${HDFS_DEMO_ROOT}:${HADOOP_CONTAINER_HOME}/hdfs_demo" \
+    -v "${HDFS_DEMO_ROOT}/bashrc:/home/hadoop/.bashrc" \
+    -v "${DOCKER_VOLUMES}/master:${HADOOP_CONTAINER_HOME}/container_volume" \
+    --mount type=tmpfs,destination=/dev/hugepages,tmpfs-size=1G,tmpfs-mode=1770 \
+    --ulimit memlock=-1:-1 \
+    --device=/dev/vfio/vfio \
+    --device=/dev/dfl-fme.0 \
+    --device=/dev/dfl-port.0 \
+    --device="${iommugroups[0]}" \
+    --name master \
+    --hostname master \
+    --network hadoop-network \
+    hadoop-image-3 \
+    /bin/bash -c "source /home/hadoop/.bashrc && sudo service ssh start && exec /bin/bash" > /dev/null

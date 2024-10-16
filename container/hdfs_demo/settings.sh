@@ -6,7 +6,7 @@
 
 export HADOOP_USER=hadoop
 export HADOOP_USER_HOME=/home/${HADOOP_USER}
-export HDFS_DEMO=/home/${HADOOP_USER}/hdfs_demo
+export HDFS_DEMO=${HADOOP_USER_HOME}/hdfs_demo
 export CONTAINER_VOLUME=/home/${HADOOP_USER}/container_volume 
 export MODULES_ROOT=${HDFS_DEMO}/modules
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
