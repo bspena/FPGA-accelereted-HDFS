@@ -12,4 +12,4 @@ echo "[BUILD DOCKER IMAGE] Build docker image with hadoop"
 
 wget -P ${ACTIVEMQ_ROOT} https://archive.apache.org/dist/activemq/5.16.6/apache-activemq-5.16.6-bin.tar.gz
 
-source ${CONTAINER_ROOT}/deploy_docker_container.sh $1
+source ${CONTAINER_ROOT}/run_docker_container.sh $1

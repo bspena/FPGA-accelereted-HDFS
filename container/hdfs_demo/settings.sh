@@ -76,7 +76,7 @@ export HADOOP_YARN_HOME=${HADOOP_HOME}
 # Hadoop (installed)
 export HADOOP_LOGS=${HADOOP_HOME}/logs
 
-readarray -t slaves_ip_list < ${HADOOP_ROOT}/config/workers
+readarray -t slaves_ip_list < ${HADOOP_ROOT}/assets/workers
 
 # ActiveMQ
 export ACTIVEMQ_VERSION=5.16.6

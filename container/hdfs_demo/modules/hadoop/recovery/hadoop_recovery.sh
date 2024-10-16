@@ -8,6 +8,7 @@
 echo "[HADOOP RECOVERY] Stopping Hadoop deamons (if any)"
 ${HADOOP_HOME}/sbin/stop-dfs.sh
 ${HADOOP_HOME}/sbin/stop-yarn.sh
+${HADOOP_HOME}/bin/mapred --daemon stop historyserver
 
 # Directories to remove
 rm_dirs="/home/hadoop/hadoop_storage/disk1/* /home/hadoop/hadoop_storage/disk2/* /tmp/hadoop-*"

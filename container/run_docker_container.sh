@@ -76,10 +76,10 @@ done
 
 
 # Create workers file
->  ${HADOOP_ROOT}/config/workers
+>  ${HADOOP_ROOT}/assets/workers
 
 # Add slave containers name to workers file
 slaves=$(docker ps -a --filter "name=slave-" --format "{{.Names}}")
 for s in $slaves; do
-    echo $s >>  ${HADOOP_ROOT}/config/workers
+    echo $s >>  ${HADOOP_ROOT}/assets/workers
 done

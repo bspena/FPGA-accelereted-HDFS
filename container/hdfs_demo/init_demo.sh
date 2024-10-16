@@ -38,14 +38,14 @@ fi
 # Clean up environment
 unset RS_SCHEMA
 unset CODER_IMPL
-unset DISTRIBUTED_MODE
+#unset DISTRIBUTED_MODE
 #unset NUM_VFs
 
 # Usage message
 USAGE="Expected args:
         -r|--rs   : Codec configuration    in [RS_3_2|RS_6_3]
-        -i|--impl : Coder implementation   in [ISA-L|FPGA]
-        -d|--dist : Distributed init mode  in [0|1]"
+        -i|--impl : Coder implementation   in [ISA-L|FPGA]"
+#        -d|--dist : Distributed init mode  in [0|1]
 #        -f|--vfs  : Number of VFs          positive integer (only applies for FPGA coder)"
 
 ##############
@@ -62,10 +62,10 @@ while [ : ]; do
     -i | --impl)
         export CODER_IMPL=$2
         shift 2
-        ;;
-    -d | --dist)
-        export DISTRIBUTED_MODE=$2
-        shift 2
+    #    ;;
+    # -d | --dist)
+    #     export DISTRIBUTED_MODE=$2
+    #     shift 2
     #    ;;
     # -f | --vfs)
     #     export NUM_VFs=$2
@@ -90,9 +90,9 @@ fi
 if [[ "$CODER_IMPL" == "" ]] ; then
     export CODER_IMPL=FPGA
 fi
-if [[ "$DISTRIBUTED_MODE" == "" ]] ; then
-    export DISTRIBUTED_MODE=1
-fi
+# if [[ "$DISTRIBUTED_MODE" == "" ]] ; then
+#     export DISTRIBUTED_MODE=1
+# fi
 # if [[ "$NUM_VFs" == "" ]] ; then
 #     export NUM_VFs=1
 # fi
@@ -100,7 +100,7 @@ fi
 # Debug
 echo "[DEMO INIT] RS_SCHEMA=$RS_SCHEMA"
 echo "[DEMO INIT] CODER_IMPL=$CODER_IMPL"
-echo "[DEMO INIT] DISTRIBUTED_MODE=$DISTRIBUTED_MODE"
+#echo "[DEMO INIT] DISTRIBUTED_MODE=$DISTRIBUTED_MODE"
 #echo "[DEMO INIT] NUM_VFs=$NUM_VFs"
 
 #################
@@ -126,12 +126,12 @@ if ! [[ $CODER_IMPL =~ $coder_regex ]] ; then
 fi
 
 # DISTRIBUTED_MODE
-is_number_regex='0|1'
-if ! [[ $DISTRIBUTED_MODE =~ $is_number_regex ]] ; then
-    echo "[ERROR] Unsupported DISTRIBUTED_MODE $DISTRIBUTED_MODE"
-    echo -e "$USAGE"
-    return -1
-fi
+# is_number_regex='0|1'
+# if ! [[ $DISTRIBUTED_MODE =~ $is_number_regex ]] ; then
+#     echo "[ERROR] Unsupported DISTRIBUTED_MODE $DISTRIBUTED_MODE"
+#     echo -e "$USAGE"
+#     return -1
+# fi
 
 # NUM_VFs
 # if [[ $CODER_IMPL == "FPGA" ]]; then
@@ -151,6 +151,7 @@ fi
 echo "[DEMO INIT] Stopping Hadoop deamons (if any)"
 ${HADOOP_HOME}/sbin/stop-dfs.sh
 ${HADOOP_HOME}/sbin/stop-yarn.sh
+${HADOOP_HOME}/bin/mapred --daemon stop historyserver
 
 
 # - Launch ActiveMQ + VFPs
@@ -170,7 +171,7 @@ if [[ $CODER_IMPL == "FPGA" ]]; then
     source ${ACTIVEMQ_ROOT}/scripts/stop_activemq.sh > /dev/null
 
     #echo "[LAUNCH ACTIVEMQ] Launching ActiveMQ on master"
-    source ${ACTIVEMQ_ROOT}/scripts/launch_activemq.sh > /dev/null
+    source ${ACTIVEMQ_ROOT}/scripts/launch_activemq.sh
 
     # for ip in "${slaves_ip_list[@]}"; do
     #     echo "[LAUNCH ACTIVEMQ]] Launching ActiveMQ on $ip"
@@ -201,7 +202,7 @@ if [[ $CODER_IMPL == "FPGA" ]]; then
 fi
 
 # - Only for distributed mode
-if [ ${DISTRIBUTED_MODE} -eq 1 ]; then
+#if [ ${DISTRIBUTED_MODE} -eq 1 ]; then
     # - Cleanse Hadoop
     #source ${HADOOP_ROOT}/recovery/hadoop_recovery.sh
 
@@ -213,7 +214,8 @@ if [ ${DISTRIBUTED_MODE} -eq 1 ]; then
     ${HADOOP_HOME}/bin/hdfs dfsadmin -report | grep -i "Live datanodes"
     ${HADOOP_HOME}/sbin/start-yarn.sh
     ${HADOOP_HOME}/bin/yarn node -list | grep RUNNING
-fi
+    ${HADOOP_HOME}/bin/mapred --daemon start historyserver
+#fi
 
 # - Enable EC
 echo "[DEMO INIT] Launch EC policy setup"
