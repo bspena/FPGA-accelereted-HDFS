@@ -182,18 +182,31 @@ if [[ $CODER_IMPL == "FPGA" ]]; then
     # Heuristic sleep for JMSProvider safety
     sleep 2
 
+    echo "[DEMO INIT] Launching VFProxying"
     #echo "[DEMO INIT] Launching VFProxying on master"
-    echo "[DEMO INIT] Launching VFProxying on master"
-    source ${VFP_INSTALL}/scripts/launch_VFProxy_pool.sh $RS_SCHEMA $CELL_LENGTH > /dev/null
+    source ${VFP_INSTALL}/scripts/launch_VFProxy_pool.sh $RS_SCHEMA $CELL_LENGTH
+    #bash -x ${VFP_INSTALL}/scripts/launch_VFProxy_pool.sh $RS_SCHEMA $CELL_LENGTH
+
+    #echo "pizza"
 
     for ip in "${slaves_ip_list[@]}"; do
-        echo "[DEMO INIT] Launching VFProxying on $ip"
-        ssh ${HADOOP_USER}@$ip "bash -c 'source ${HDFS_DEMO}/settings.sh && \
-                                        source ${VFP_INSTALL}/scripts/launch_VFProxy_pool.sh \
-                                        $RS_SCHEMA $CELL_LENGTH'" > /dev/null
+        #echo "[DEMO INIT] Launching VFProxying on $ip"
+        # ssh ${HADOOP_USER}@$ip "bash -x ${HDFS_DEMO}/settings.sh && \
+        #                                 bash -x ${VFP_INSTALL}/scripts/launch_VFProxy_pool.sh \
+        #                                 $RS_SCHEMA $CELL_LENGTH" 
+
+        # Flag -f put SSH session in background
+        # The source of the settings file is a workaround (aka o' pzzott)
+        ssh -f ${HADOOP_USER}@$ip "bash -c 'source ${VFP_INSTALL}/scripts/launch_VFProxy_pool.sh \
+                                                    $RS_SCHEMA $CELL_LENGTH'" 
+
+        # ssh ${HADOOP_USER}@$ip "nohup bash ${VFP_INSTALL}/scripts/launch_VFProxy_pool.sh \
+        #                                 $RS_SCHEMA $CELL_LENGTH > /dev/null 2>&1 &" 
+
+        # echo "ramem"
     done
 
-    echo "[DEMO INIT master] Jps:" 
+    echo "[DEMO INIT master] Jps" 
     jps | egrep "DEMO INIT|activemq|VFProxy"
 
     for ip in "${slaves_ip_list[@]}"; do

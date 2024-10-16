@@ -91,22 +91,22 @@ for (( exp_index=1; exp_index<${#experiment_list[@]}; exp_index++ )); do
         runtime=$(grep "$RUNTIME_STRING" $RESULT_FILE | awk '{print $5}' )
 
         # Find jobID
-        job_id_cmd="${HADOOP_HOME}/bin/mapred job -list all | grep 'job_'"
-        job_id_output=$(eval "$job_id_cmd")
-        job_id=$(echo "$job_id_output" | awk '{print $1}')
+        # job_id_cmd="${HADOOP_HOME}/bin/mapred job -list all | grep 'job_'"
+        # job_id_output=$(eval "$job_id_cmd")
+        # job_id=$(echo "$job_id_output" | awk '{print $1}')
 
-        # Find number of map tasks
-        mappers_cmd="$HADOOP_HOME/bin/mapred job -status $job_id | grep 'Number of maps'"
-        mappers_output=$(eval "$mappers_cmd")
-        mappers=$(echo "$mappers_output" | awk -F':' '{print $2}')
-        #mappers=$(echo "$mappers_output" | awk '{print $2}')
+        # # Find number of map tasks
+        # mappers_cmd="$HADOOP_HOME/bin/mapred job -status $job_id | grep 'Number of maps'"
+        # mappers_output=$(eval "$mappers_cmd")
+        # mappers=$(echo "$mappers_output" | awk -F':' '{print $2}')
+        # #mappers=$(echo "$mappers_output" | awk '{print $2}')
 
-        # Find the cpu time
-        cpu_time_cmd = "${HADOOP_HOME}/bin/mapred job -history $job_id | grep 'CPU time spent'"
-        cpu_time_output=$(eval "$cpu_time_cmd")
-        cpu_time_map=$(echo "$cpu_time_sub" | tr -d ',' | awk -F'|' '{print $3}')
-        cpu_time_red=$(echo "$cpu_time_sub" | tr -d ',' | awk -F'|' '{print $4}')
-        cpu_time_tot=$(echo "$cpu_time_sub" | tr -d ',' | awk -F'|' '{print $5}')
+        # # Find the cpu time
+        # cpu_time_cmd = "${HADOOP_HOME}/bin/mapred job -history $job_id | grep 'CPU time spent'"
+        # cpu_time_output=$(eval "$cpu_time_cmd")
+        # cpu_time_map=$(echo "$cpu_time_sub" | tr -d ',' | awk -F'|' '{print $3}')
+        # cpu_time_red=$(echo "$cpu_time_sub" | tr -d ',' | awk -F'|' '{print $4}')
+        # cpu_time_tot=$(echo "$cpu_time_sub" | tr -d ',' | awk -F'|' '{print $5}')
 
         # Save results
         echo $dfsio_throughput,$dfsio_io_rate,$runtime >> $OUT_FILE

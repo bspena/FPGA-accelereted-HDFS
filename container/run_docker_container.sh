@@ -15,7 +15,7 @@ docker network create hadoop-network > /dev/null
 mkdir -p ${CONTAINER_ROOT}/docker_volumes/master
 
 echo "[DEPLOY DOCKER CONTAINER] Create master container with:"
-echo "                          SBD: $sbdf_master"
+echo "                          SBDF: $sbdf_master"
 echo "                          IOMMU_GROUP: $iommugroup_master"
 docker run -i -t -d \
     -u "$(id -u)" \
@@ -23,8 +23,9 @@ docker run -i -t -d \
     -p 9870:9870  \
     -p 8088:8088  \
     -p 19888:19888 \
-    -v "${HDFS_DEMO_ROOT}:${HADOOP_CONTAINER_ROOT}/hdfs_demo" \
-    -v "${CONTAINER_ROOT}/docker_volumes/master:${HADOOP_CONTAINER_ROOT}/container_volume" \
+    -v "${HDFS_DEMO_ROOT}:${HADOOP_CONTAINER_HOME}/hdfs_demo" \
+    -v "${HDFS_DEMO_ROOT}/bashrc:/home/hadoop/.bashrc" \
+    -v "${CONTAINER_ROOT}/docker_volumes/master:${HADOOP_CONTAINER_HOME}/container_volume" \
     -v "${REPO_DIR}/test:/home/$(whoami)/test" \
     --mount type=tmpfs,destination=/dev/hugepages,tmpfs-size=1G,tmpfs-mode=1770 \
     --ulimit memlock=-1:-1 \
@@ -35,8 +36,8 @@ docker run -i -t -d \
     --name master \
     --hostname master \
     --network hadoop-network \
-    hadoop-image \
-    /bin/bash -c "sudo service ssh start && exec /bin/bash" > /dev/null
+    hadoop-image-2 \
+    /bin/bash -c "source /home/hadoop/.bashrc && sudo service ssh start && exec /bin/bash" > /dev/null
 
 
 i=0
@@ -52,12 +53,13 @@ do
     mkdir -p ${CONTAINER_ROOT}/docker_volumes/slave-$i
 
     echo "[DEPLOY DOCKER CONTAINER] Create slave-$i container with:"
-    echo "                          SBD: $sbdf_slave"
+    echo "                          SBDF: $sbdf_slave"
     echo "                          IOMMU_GROUP: $iommugroup_slave"
     docker run -i -t -d \
         -u "$(id -u)" \
-        -v "${HDFS_DEMO_ROOT}:${HADOOP_CONTAINER_ROOT}/hdfs_demo" \
-        -v "${CONTAINER_ROOT}/docker_volumes/slave-$i:${HADOOP_CONTAINER_ROOT}/container_volume" \
+        -v "${HDFS_DEMO_ROOT}:${HADOOP_CONTAINER_HOME}/hdfs_demo" \
+        -v "${HDFS_DEMO_ROOT}/bashrc:/home/hadoop/.bashrc" \
+        -v "${CONTAINER_ROOT}/docker_volumes/slave-$i:${HADOOP_CONTAINER_HOME}/container_volume" \
         --mount type=tmpfs,destination=/dev/hugepages,tmpfs-size=1G,tmpfs-mode=1770 \
         --ulimit memlock=-1:-1 \
         --device=/dev/vfio/vfio \
@@ -67,8 +69,8 @@ do
         --name slave-$i \
         --hostname slave-$i \
         --network hadoop-network \
-        hadoop-image \
-        /bin/bash -c "sudo service ssh start && exec /bin/bash" > /dev/null
+        hadoop-image-2 \
+        /bin/bash -c "source /home/hadoop/.bashrc && sudo service ssh start && exec /bin/bash" > /dev/null
 
     ((i++))
     ((j++))

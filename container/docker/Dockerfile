@@ -214,7 +214,7 @@ EXPOSE 9870 8088 19888
 # RUN wget https://archive.apache.org/dist/activemq/5.16.6/apache-activemq-5.16.6-bin.tar.gz
 
 
-WORKDIR /home/${USER_NAME}
+WORKDIR /home/hadoop
 
 
 ##########

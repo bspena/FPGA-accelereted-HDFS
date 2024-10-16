@@ -64,7 +64,7 @@ export HDFS_EC_POLICIES=(
 # Tools installations #
 #######################
 
-export HADOOP_VERSION=3.4.0
+export HADOOP_VERSION=3.4.0 >> ~/.bashrc
 export HADOOP_ROOT=${MODULES_ROOT}/hadoop
 export HADOOP_HOME=/home/hadoop/hadoop-${HADOOP_VERSION}
 export HADOOP_COMMON_HOME=${HADOOP_HOME}
@@ -90,7 +90,7 @@ export VFP_INSTALL=${MODULES_ROOT}/vfproxy
 export VFP_ROOT=${VFP_INSTALL}
 export VFP_JAR=${VFP_INSTALL}/vfproxy.jar
 export VFP_NATIVE_DIR=${VFP_INSTALL}/native
-export VFP_LOG_DIR=${MODULES_ROOT}/logs/vfp
+export VFP_LOG_DIR=${CONTAINER_VOLUME}/logs/vfp
 
 # FPGA
 #export FPGA_ROOT=${DEMO_SUBMODULES_ROOT}/fpga

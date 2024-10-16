@@ -38,6 +38,8 @@ for iommugroup in "${iommugroups[@]}"; do
     sbdf_list=($(ls /sys/kernel/iommu_groups/$num/devices/))
 done
 
+export SBDFs_COMMA_SEPARATED=$( echo $sbdf_list | sed "s/ /,/g" )
+
 # VFP environment
 unset VFP_DEBUG
 unset VFP_DEBUG_ARRAY
@@ -51,10 +53,15 @@ mkdir -p ${VFP_LOG_DIR}
 export RS_K=${RS_SCHEMA:3:1}
 export RS_P=${RS_SCHEMA:5:1}
 
+
+i=0
 #for sbdf in ${SBDF_LIST}; do
 for sbdf in "${sbdf_list[@]}"; do
-    echo "[VFP POOL] Launching VFP SBDF=$sbdf, CELL_LENGTH=${CELL_LENGTH}"
+
+    iommugroup=$(basename ${iommugroups[$i]})
+    echo "[VFP POOL $(hostname)] Launching VFP SBDF=$sbdf, IOMMUGROUP=$iommugroup, CELL_LENGTH=${CELL_LENGTH}"
     # Send in background
+
     java -classpath ${ACTIVEMQ_JAR}:${VFP_JAR} \
         -Djava.library.path=${VFP_NATIVE_DIR} \
         -enableassertions \
@@ -64,6 +71,10 @@ for sbdf in "${sbdf_list[@]}"; do
          > ${VFP_LOG_DIR}/VFP_$sbdf.log &
     # Sleep between launches
     sleep 0.5
+    #sleep 2
+    #echo "lollo"
+
+    ((i++))
 done
 
-export SBDFs_COMMA_SEPARATED=$( echo $sbdf_list | sed "s/ /,/g" )
+#echo "peffffforza"
