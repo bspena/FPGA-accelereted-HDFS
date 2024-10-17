@@ -18,7 +18,7 @@ echo "[HADOOP CHECK] Expecting:" \
 # For each slaves (Datanodes)
 echo "[HADOOP CHECK] Checking running java processes on slaves"
 for ip in "${slaves_ip_list[@]}"; do
-    SSH_HADOOP_CMD="ssh ${HADOOP_USER}@$ip"
+    SSH_HADOOP_CMD="${SSH_CMD} ${HADOOP_USER}@$ip"
 
     echo "[HADOOP CHECK] Checking running java processes on slave $ip"
     ${SSH_HADOOP_CMD} jps | grep -e "NodeManager|DataNode"

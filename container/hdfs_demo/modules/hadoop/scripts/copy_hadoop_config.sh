@@ -9,5 +9,5 @@ cp ${HADOOP_ROOT}/assets/* $HADOOP_HOME/etc/hadoop/
 
 for ip in "${slaves_ip_list[@]}"; do
     echo "[COPY CONFIG] Copy Hadoop configuration in $ip"
-    ssh ${HADOOP_USER}@$ip cp  ${HADOOP_ROOT}/assets/* $HADOOP_HOME/etc/hadoop/
+    ${SSH_CMD} ${HADOOP_USER}@$ip cp  ${HADOOP_ROOT}/assets/* $HADOOP_HOME/etc/hadoop/
 done

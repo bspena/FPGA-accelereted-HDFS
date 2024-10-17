@@ -20,7 +20,7 @@ rm -rf $rm_dirs_master
 
 for ip in "${slaves_ip_list[@]}"; do
     echo "[HADOOP RECOVERY] Removing directories ($rm_dirs_slaves) from $ip"
-    ssh ${HADOOP_USER}@$ip "rm -rf $rm_dirs_slaves"
+    ${SSH_CMD} ${HADOOP_USER}@$ip "rm -rf $rm_dirs_slaves"
 done
 
 # Prepare log file info

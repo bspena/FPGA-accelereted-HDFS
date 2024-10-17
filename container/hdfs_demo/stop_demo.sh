@@ -15,7 +15,7 @@ ${HADOOP_HOME}/bin/mapred --daemon stop historyserver
 # ActiveMQ
 for ip in "${slaves_ip_list[@]}"; do
     # SSH command
-    SSH_HADOOP_CMD="ssh ${HADOOP_USER}@$ip"
+    SSH_HADOOP_CMD="${SSH_CMD} ${HADOOP_USER}@$ip"
     # Stop ActiveMQ
     # NOTE: this will also cause all attached VFPs to terminate
     echo "[DEMO STOP] Stopping ActiveMQ on $ip"
@@ -30,6 +30,6 @@ killall java
 
 for ip in "${slaves_ip_list[@]}"; do
     echo "[DEMO STOP] Killing all Java processes on $ip"
-    SSH_HADOOP_CMD="ssh ${HADOOP_USER}@$ip"
+    SSH_HADOOP_CMD="${SSH_CMD} ${HADOOP_USER}@$ip"
     ${SSH_HADOOP_CMD} killall java
 done

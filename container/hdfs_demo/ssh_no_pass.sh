@@ -17,7 +17,7 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
 for ip in "${slaves_ip_list[@]}"; do
     echo "[INFO] Copy public key in $ip"
-    ssh ${HADOOP_USER}@$ip mkdir -p ~/.ssh && chmod 700 ~/.ssh
+    ${SSH_CMD} ${HADOOP_USER}@$ip mkdir -p ~/.ssh && chmod 700 ~/.ssh
     scp ~/.ssh/authorized_keys ${HADOOP_USER}@$ip:~/.ssh/
-    ssh ${HADOOP_USER}@$ip chmod 600 ~/.ssh/authorized_keys
+    ${SSH_CMD} ${HADOOP_USER}@$ip chmod 600 ~/.ssh/authorized_keys
 done

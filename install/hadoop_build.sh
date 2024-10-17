@@ -54,7 +54,7 @@ cd ~/hadoop
 mvn package -Pdist,native -DskipTests -Dtar
 
 # Set environment variables
-echo 'export HADOOP_HOME= ~/hadoop/hadoop-dist/target/hadoop-3.4.0' >> ~/.bashrc
-echo 'export HADOOP_HDFS_HOME="$HADOOP_HOME"' >> ~/.bashrc
+echo "export HADOOP_HOME=/home/hadoop/hadoop-3.4.0" >> ~/.bashrc
+echo "export HADOOP_HDFS_HOME=$HADOOP_HOME" >> ~/.bashrc
 echo 'export HADOOP_MAPRED_HOME="$HADOOP_HOME"' >> ~/.bashrc
 echo 'export HADOOP_YARN_HOME="$HADOOP_HOME"' >> ~/.bashrc

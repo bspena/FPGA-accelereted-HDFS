@@ -8,9 +8,6 @@ if [ "$NUMBER_SLAVE_CONTAINERS" == "" ]; then
     return 1
 fi
 
-# Creat docker containers volumes directory
-mkdir -p ${CONTAINER_ROOT}/docker_volumes
-
 # Array of iommugroups
 iommugroups=($(ls -d /dev/vfio/[0-9]*))
 
@@ -29,7 +26,12 @@ while [ "$i" -lt "$1" ] && [ "$j" -lt "${#iommugroups[@]}" ];
 do
     iommugroup_slave=$(basename ${iommugroups[$j]})
     sbdf_slave=($(ls /sys/kernel/iommu_groups/$iommugroup_slave/devices/))
-    mkdir -p ${CONTAINER_ROOT}/docker_volumes/slave-$i
+    mkdir -p ${DOCKER_VOLUMES}/slave-$i
+    mkdir -p ${DOCKER_VOLUMES}/slave-$i/hadoop_storage
+
+    cp -r ${DOCKER_VOLUMES}/hadoop-${HADOOP_VERSION} ${DOCKER_VOLUMES}/slave-$i
+    cp -r ${DOCKER_VOLUMES}/hadoop_storage/disk2 ${DOCKER_VOLUMES}/slave-$i/hadoop_storage
+    cp -r ${DOCKER_VOLUMES}/apache-activemq-${ACTIVEMQ_VERSION} ${DOCKER_VOLUMES}/slave-$i
 
     echo "[DEPLOY DOCKER CONTAINER] Create slave-$i container with:"
     echo "                          SBDF: $sbdf_slave"
@@ -38,7 +40,9 @@ do
         -u "$(id -u)" \
         -v "${HDFS_DEMO_ROOT}:${HADOOP_CONTAINER_HOME}/hdfs_demo" \
         -v "${HDFS_DEMO_ROOT}/bashrc:/home/hadoop/.bashrc" \
-        -v "${DOCKER_VOLUMES}/slave-$i:${HADOOP_CONTAINER_HOME}/container_volume" \
+        -v "${DOCKER_VOLUMES}/slave-$i/hadoop-${HADOOP_VERSION}:${HADOOP_CONTAINER_HOME}/hadoop-${HADOOP_VERSION}" \
+        -v "${DOCKER_VOLUMES}/slave-$i/apache-activemq-${ACTIVEMQ_VERSION}:${HADOOP_CONTAINER_HOME}/apache-activemq-${ACTIVEMQ_VERSION}" \
+        -v "${DOCKER_VOLUMES}/slave-$i/hadoop_storage:${HADOOP_CONTAINER_HOME}/hadoop_storage" \
         --mount type=tmpfs,destination=/dev/hugepages,tmpfs-size=1G,tmpfs-mode=1770 \
         --ulimit memlock=-1:-1 \
         --device=/dev/vfio/vfio \
@@ -67,8 +71,14 @@ done
 
 #  ./sycl_rs_erasure -f 0000:01:00.3 -l 1048576
 
+mkdir -p ${DOCKER_VOLUMES}/master
+mkdir -p ${DOCKER_VOLUMES}/master/hadoop_storage
 
-mkdir -p ${CONTAINER_ROOT}/docker_volumes/master
+cp -r ${DOCKER_VOLUMES}/hadoop-${HADOOP_VERSION} ${DOCKER_VOLUMES}/master
+cp -r ${DOCKER_VOLUMES}/hadoop_storage/disk1 ${DOCKER_VOLUMES}/master/hadoop_storage
+cp -r ${DOCKER_VOLUMES}/apache-activemq-${ACTIVEMQ_VERSION} ${DOCKER_VOLUMES}/master
+
+cp ${HADOOP_ROOT}/assets/workers ${DOCKER_VOLUMES}/master/hadoop-${HADOOP_VERSION}/etc/hadoop/
 
 echo "[DEPLOY DOCKER CONTAINER] Create master container with:"
 echo "                          SBDF: $sbdf_master"
@@ -81,7 +91,9 @@ docker run -i -t -d \
     -p 19888:19888 \
     -v "${HDFS_DEMO_ROOT}:${HADOOP_CONTAINER_HOME}/hdfs_demo" \
     -v "${HDFS_DEMO_ROOT}/bashrc:/home/hadoop/.bashrc" \
-    -v "${DOCKER_VOLUMES}/master:${HADOOP_CONTAINER_HOME}/container_volume" \
+    -v "${DOCKER_VOLUMES}/master/hadoop-${HADOOP_VERSION}:${HADOOP_CONTAINER_HOME}/hadoop-${HADOOP_VERSION}" \
+    -v "${DOCKER_VOLUMES}/master/apache-activemq-${ACTIVEMQ_VERSION}:${HADOOP_CONTAINER_HOME}/apache-activemq-${ACTIVEMQ_VERSION}" \
+    -v "${DOCKER_VOLUMES}/master/hadoop_storage:${HADOOP_CONTAINER_HOME}/hadoop_storage" \
     --mount type=tmpfs,destination=/dev/hugepages,tmpfs-size=1G,tmpfs-mode=1770 \
     --ulimit memlock=-1:-1 \
     --device=/dev/vfio/vfio \

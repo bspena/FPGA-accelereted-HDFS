@@ -11,6 +11,8 @@ export CONTAINER_VOLUME=/home/${HADOOP_USER}/container_volume
 export MODULES_ROOT=${HDFS_DEMO}/modules
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
+SSH_CMD="ssh -o StrictHostKeyChecking=no"
+
 # Demo user --> host user ???
 #DEMO_USER=demo
 #DEMO_USER_HOME=/home/${DEMO_USER}
@@ -64,9 +66,9 @@ export HDFS_EC_POLICIES=(
 # Tools installations #
 #######################
 
-export HADOOP_VERSION=3.4.0 >> ~/.bashrc
+export HADOOP_VERSION=3.4.0
 export HADOOP_ROOT=${MODULES_ROOT}/hadoop
-export HADOOP_HOME=/home/hadoop/hadoop-${HADOOP_VERSION}
+export HADOOP_HOME=${HADOOP_USER_HOME}/hadoop-${HADOOP_VERSION}
 export HADOOP_COMMON_HOME=${HADOOP_HOME}
 export HADOOP_HDFS_HOME=${HADOOP_HOME}
 export HADOOP_MAPRED_HOME=${HADOOP_HOME}
@@ -82,7 +84,7 @@ readarray -t slaves_ip_list < ${HADOOP_ROOT}/assets/workers
 export ACTIVEMQ_VERSION=5.16.6
 export ACTIVEMQ_ROOT=${MODULES_ROOT}/jms_provider/activemq
 export ACTIVEMQ_TARGZ=${ACTIVEMQ_ROOT}/apache-activemq-${ACTIVEMQ_VERSION}-bin.tar.gz
-export ACTIVEMQ_INSTALL=${CONTAINER_VOLUME}/apache-activemq-${ACTIVEMQ_VERSION}
+export ACTIVEMQ_INSTALL=${HADOOP_USER_HOME}/apache-activemq-${ACTIVEMQ_VERSION}
 export ACTIVEMQ_JAR=${ACTIVEMQ_INSTALL}/activemq-all-${ACTIVEMQ_VERSION}.jar
 
 # VFProxy

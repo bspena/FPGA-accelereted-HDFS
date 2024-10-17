@@ -164,7 +164,7 @@ if [[ $CODER_IMPL == "FPGA" ]]; then
 
     for ip in "${slaves_ip_list[@]}"; do
         echo "[DEMO INIT] Killing all Java processes on $ip"
-        ssh ${HADOOP_USER}@$ip "killall java"
+        ${SSH_CMD} ${HADOOP_USER}@$ip "killall java"
     done
 
     # Launch VFP
@@ -197,7 +197,7 @@ if [[ $CODER_IMPL == "FPGA" ]]; then
 
         # Flag -f put SSH session in background
         # The source of the settings file is a workaround (aka o' pzzott)
-        ssh -f ${HADOOP_USER}@$ip "bash -c 'source ${HDFS_DEMO}/settings.sh && \
+        ${SSH_CMD} -f ${HADOOP_USER}@$ip "bash -c 'source ${HDFS_DEMO}/settings.sh && \
                                             source ${VFP_INSTALL}/scripts/launch_VFProxy_pool.sh \
                                                     $RS_SCHEMA $CELL_LENGTH'" 
 
@@ -208,15 +208,13 @@ if [[ $CODER_IMPL == "FPGA" ]]; then
     jps | egrep "DEMO INIT|activemq|VFProxy"
 
     for ip in "${slaves_ip_list[@]}"; do
-        ssh ${HADOOP_USER}@$ip "echo [DEMO INIT $ip] Jps; jps" | egrep "DEMO INIT|activemq|VFProxy"
+        ${SSH_CMD} ${HADOOP_USER}@$ip "echo [DEMO INIT $ip] Jps; jps" | egrep "DEMO INIT|activemq|VFProxy"
     done
 fi
 
 # - Only for distributed mode
 #if [ ${DISTRIBUTED_MODE} -eq 1 ]; then
     # - Cleanse Hadoop
-    #source ${HADOOP_ROOT}/recovery/hadoop_recovery.sh
-
     source ${HADOOP_ROOT}/recovery/hadoop_recovery.sh
     
     # - Start Hadoop
