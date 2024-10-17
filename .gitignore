@@ -2,14 +2,16 @@
 container/hdfs_demo/modules/hadoop/config/workers
 
 # Download files
-container/hdfs_demo/modules/hadoop/hadoop-*.tar.gz
 container/docker_volumes
+container/hdfs_demo/modules/hadoop/assets/workers
 container/hdfs_demo/modules/vfproxy/*.jar
 container/hdfs_demo/modules/vfproxy/native
-container/hdfs_demo/modules/jms_provider/activemq/apache-activemq*
+
 
 # Temporary directories and logs
 container/hdfs_demo/modules/logs
+container/hdfs_demo/tests/distributed/dfsio/logs
+container/hdfs_demo/tests/distributed/dfsio/*.csv
 container/hdfs_demo/modules/hadoop/recovery/logs
 test/script/__pycache__
 test/logs

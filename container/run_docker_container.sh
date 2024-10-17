@@ -26,9 +26,12 @@ while [ "$i" -lt "$1" ] && [ "$j" -lt "${#iommugroups[@]}" ];
 do
     iommugroup_slave=$(basename ${iommugroups[$j]})
     sbdf_slave=($(ls /sys/kernel/iommu_groups/$iommugroup_slave/devices/))
+
+    # Create volumes directroy
     mkdir -p ${DOCKER_VOLUMES}/slave-$i
     mkdir -p ${DOCKER_VOLUMES}/slave-$i/hadoop_storage
 
+    # Copy modules in each directory
     cp -r ${DOCKER_VOLUMES}/hadoop-${HADOOP_VERSION} ${DOCKER_VOLUMES}/slave-$i
     cp -r ${DOCKER_VOLUMES}/hadoop_storage/disk2 ${DOCKER_VOLUMES}/slave-$i/hadoop_storage
     cp -r ${DOCKER_VOLUMES}/apache-activemq-${ACTIVEMQ_VERSION} ${DOCKER_VOLUMES}/slave-$i
@@ -68,8 +71,6 @@ slaves=$(docker ps -a --filter "name=slave-" --format "{{.Names}}")
 for s in $slaves; do
     echo $s >>  ${HADOOP_ROOT}/assets/workers
 done
-
-#  ./sycl_rs_erasure -f 0000:01:00.3 -l 1048576
 
 mkdir -p ${DOCKER_VOLUMES}/master
 mkdir -p ${DOCKER_VOLUMES}/master/hadoop_storage

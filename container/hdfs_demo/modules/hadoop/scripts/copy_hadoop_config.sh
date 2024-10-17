@@ -1,5 +1,5 @@
 echo "[COPY CONFIG] Copy hadoop configuration into master"
-cp ${HADOOP_ROOT}/assets/* $HADOOP_HOME/etc/hadoop/
+cp -r ${HADOOP_ROOT}/assets/sites/* ${HADOOP_HOME}/etc/hadoop/
 
 
 #echo "[INFO] Copy hadoop configuration into slave containers"
@@ -9,5 +9,5 @@ cp ${HADOOP_ROOT}/assets/* $HADOOP_HOME/etc/hadoop/
 
 for ip in "${slaves_ip_list[@]}"; do
     echo "[COPY CONFIG] Copy Hadoop configuration in $ip"
-    ${SSH_CMD} ${HADOOP_USER}@$ip cp  ${HADOOP_ROOT}/assets/* $HADOOP_HOME/etc/hadoop/
+    ${SSH_CMD} ${HADOOP_USER}@$ip cp  -r ${HADOOP_ROOT}/assets/sites/* $HADOOP_HOME/etc/hadoop/
 done

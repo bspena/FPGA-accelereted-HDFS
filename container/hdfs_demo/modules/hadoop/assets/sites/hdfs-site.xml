@@ -14,9 +14,13 @@
         <name>dfs.namenode.name.dir</name>
         <value>file:/home/hadoop/hadoop_storage/disk1/hdfs/namenode</value>
     </property>
-    <property>
-        <name>dfs.datanode.data.dir</name>
-        <value>file:/home/hadoop/hadoop_storage/disk2/hdfs/datanode</value>
-        <description>Determines where on the local filesystem an DFS data node should store its blocks.</description>
-    </property>
+  <property>
+      <name>dfs.datanode.data.dir</name>
+      <value>file:/home/hadoop/hadoop_storage/disk2/hdfs/datanode</value>
+      <description>Determines where on the local filesystem an DFS data node should store its blocks.</description>
+  </property>
+  <property>
+      <name>dfs.client.socket-timeout</name>
+      <value>60000</value>
+  </property>
 </configuration>

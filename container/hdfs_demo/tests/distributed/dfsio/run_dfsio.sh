@@ -34,29 +34,32 @@ if [[ $5 != "" ]]; then
     EC_POLICY=$5
 fi
 
-JAR_FILE=\${HADOOP_INSTALL}/share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-${HADOOP_VERSION}-tests.jar 
-# echo "DFSIO command:    $COMMAND"
-# echo "Number of files:  $NR_FILES"
-# echo "File size:        $FILE_SIZE"
-# echo "Result file:      $RESULT_FILE"
-# echo "Jar file:         $JAR_FILE"
+JAR_FILE=${HADOOP_HOME}/share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-${HADOOP_VERSION}-tests.jar 
+echo "DFSIO command:    $COMMAND"
+echo "Number of files:  $NR_FILES"
+echo "File size:        $FILE_SIZE"
+echo "Result file:      $RESULT_FILE"
+echo "Jar file:         $JAR_FILE"
 
 # Prepare log directory
 mkdir -p ${DFSIO_ROOT}/logs
 
 # Compose command
 LOG_FILE=${DFSIO_ROOT}/logs/${COMMAND}_nrFiles${NR_FILES}_fileSize${FILE_SIZE}.log # TODO: differenciate between repetitions
-DFSIO_CMD="hadoop jar $JAR_FILE TestDFSIO -$COMMAND \
+DFSIO_CMD="${HADOOP_HOME}/bin/hadoop jar $JAR_FILE TestDFSIO -$COMMAND \
     -nrFiles $NR_FILES \
     -fileSize $FILE_SIZE \
     -resFile $RESULT_FILE \
     -erasureCodePolicy $EC_POLICY \
-    2>&1 | tee ${LOG_FILE} &"
+    2>&1 | tee ${LOG_FILE}"
 
 # Launch command
-${SSH_HADOOP_MASTER} ${DFSIO_CMD}
+ssh hadoop@master ${DFSIO_CMD}
+#${DFSIO_CMD}
 
 # if [[ $COMMAND != "clean" ]]; then
 #     echo "Result file: $RESULT_FILE"
 # fi
 
+
+#${HADOOP_HOME}/bin/hadoop jar ${HADOOP_HOME}/share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-${HADOOP_VERSION}-tests.jar TestDFSIO -write -erasureCodePolicy RS-3-2-1024k

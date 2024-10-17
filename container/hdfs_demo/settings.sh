@@ -94,7 +94,18 @@ export VFP_JAR=${VFP_INSTALL}/vfproxy.jar
 export VFP_NATIVE_DIR=${VFP_INSTALL}/native
 export VFP_LOG_DIR=${CONTAINER_VOLUME}/logs/vfp
 
+
 # FPGA
+iommugroups=($(ls -d /dev/vfio/[0-9]*))
+
+for iommugroup in "${iommugroups[@]}"; do
+    num=$(basename $iommugroup)
+    sbdf_list=($(ls /sys/kernel/iommu_groups/$num/devices/))
+done
+
+export SBDFs_COMMA_SEPARATED=$( echo $sbdf_list | sed "s/ /,/g" )
+
+
 #export FPGA_ROOT=${DEMO_SUBMODULES_ROOT}/fpga
 
 # Dump info

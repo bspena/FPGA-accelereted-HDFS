@@ -31,14 +31,14 @@ fi
 #     echo "$i"
 # done
 
-iommugroups=($(ls -d /dev/vfio/[0-9]*))
+# iommugroups=($(ls -d /dev/vfio/[0-9]*))
 
-for iommugroup in "${iommugroups[@]}"; do
-    num=$(basename $iommugroup)
-    sbdf_list=($(ls /sys/kernel/iommu_groups/$num/devices/))
-done
+# for iommugroup in "${iommugroups[@]}"; do
+#     num=$(basename $iommugroup)
+#     sbdf_list=($(ls /sys/kernel/iommu_groups/$num/devices/))
+# done
 
-export SBDFs_COMMA_SEPARATED=$( echo $sbdf_list | sed "s/ /,/g" )
+# export SBDFs_COMMA_SEPARATED=$( echo $sbdf_list | sed "s/ /,/g" )
 
 # VFP environment
 unset VFP_DEBUG

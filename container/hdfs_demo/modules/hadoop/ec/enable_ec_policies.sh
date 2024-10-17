@@ -23,3 +23,6 @@ done
 
 # Unset
 # ${HDFS_EC_CMD} -unsetPolicy -path $POLICY_PATH
+
+
+${HADOOP_HOME}/bin/hdfs ec -enablePolicy -policy $policy

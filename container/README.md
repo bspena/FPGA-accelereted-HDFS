@@ -28,8 +28,7 @@ $ source ssh_no_pass.sh
 # Deploy
 * settings
 * build image
-* deploy container
-* settings
-* ssh no pass
-* install modules
-* init demo
+    * deploy (install modules)
+* run docker container
+    * init demo
+    * run test

@@ -12,7 +12,7 @@ EC_POLICY=$1
 # Local variables #
 ###################
 # Root dir of measurement scripts
-DFSIO_ROOT=${DEMO_ROOT}/tests/distributed/dfsio
+DFSIO_ROOT=${HDFS_DEMO}/tests/distributed/dfsio
 # Output data directory
 DFSIO_DATA_DIR=/tmp/test_dfsio_data
 # Slave script
@@ -52,6 +52,9 @@ if [ ${#experiment_list[@]} -eq 0 ]; then
     return -1
 fi
 
+
+#echo "[QUI 1]"
+
 ##############
 # Start runs #
 ##############
@@ -76,6 +79,8 @@ for (( exp_index=1; exp_index<${#experiment_list[@]}; exp_index++ )); do
         # Result file
         RESULT_FILE=/tmp/dfsio_${FACTORS}.txt
 
+        #echo "[QUI 2]"
+
         # Launch test
         echo "[DFSIO] Running DFSIO test ${FACTORS}"
         source ${RUN_DFSIO_SCRIPT} \
@@ -84,6 +89,9 @@ for (( exp_index=1; exp_index<${#experiment_list[@]}; exp_index++ )); do
             $FILE_SIZE \
             $RESULT_FILE \
             $EC_POLICY
+
+
+        #echo "[QUI 3]"
 
         # Grep results from output file
         dfsio_throughput=$(grep "$THROUGHPUT_STRING" $RESULT_FILE | awk '{print $3}' )
