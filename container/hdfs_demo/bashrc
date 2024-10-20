@@ -101,7 +101,6 @@ fi
 
 DEMO_SETUP=/home/hadoop/hdfs_demo/settings.sh
 if [ -e $DEMO_SETUP ]; then
-    echo "eccco"
 	source $DEMO_SETUP
 fi
 export PDSH_RCMD_TYPE=ssh

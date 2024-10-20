@@ -56,6 +56,15 @@ case $EXPERIMENT_PROFILE in
             10MB 100MB 1GB 10GB
         )
         ;;
+    "BSPENA")
+        NR_FILES_list=(
+            4 8 16
+        )
+        FILE_SIZE_list=(
+            10MB 100MB 200MB 400MB
+        )
+        NUM_REPS=5
+        ;;
     *)
         printf "[ERROR] Experiment EXPERIMENT_PROFILE $1 not supported" >&2
         exit -1

@@ -20,6 +20,7 @@ docker network create hadoop-network > /dev/null
 
 i=0
 j=1
+#j=2
 
 
 while [ "$i" -lt "$1" ] && [ "$j" -lt "${#iommugroups[@]}" ];
@@ -48,6 +49,7 @@ do
         -v "${DOCKER_VOLUMES}/slave-$i/hadoop_storage:${HADOOP_CONTAINER_HOME}/hadoop_storage" \
         --mount type=tmpfs,destination=/dev/hugepages,tmpfs-size=1G,tmpfs-mode=1770 \
         --ulimit memlock=-1:-1 \
+        --memory 6g \
         --device=/dev/vfio/vfio \
         --device=/dev/dfl-fme.0 \
         --device=/dev/dfl-port.0 \
@@ -58,8 +60,11 @@ do
         hadoop-image-3 \
         /bin/bash -c "source /home/hadoop/.bashrc && sudo service ssh start && exec /bin/bash" > /dev/null
 
+        #--device="${iommugroups[$j+1]}" \
+
     ((i++))
     ((j++))
+    #((j+=2))
 done
 
 
@@ -97,6 +102,7 @@ docker run -i -t -d \
     -v "${DOCKER_VOLUMES}/master/hadoop_storage:${HADOOP_CONTAINER_HOME}/hadoop_storage" \
     --mount type=tmpfs,destination=/dev/hugepages,tmpfs-size=1G,tmpfs-mode=1770 \
     --ulimit memlock=-1:-1 \
+    --memory 6g \
     --device=/dev/vfio/vfio \
     --device=/dev/dfl-fme.0 \
     --device=/dev/dfl-port.0 \
@@ -106,3 +112,5 @@ docker run -i -t -d \
     --network hadoop-network \
     hadoop-image-3 \
     /bin/bash -c "source /home/hadoop/.bashrc && sudo service ssh start && exec /bin/bash" > /dev/null
+
+    #--device="${iommugroups[1]}" \

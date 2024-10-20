@@ -21,9 +21,11 @@ os.makedirs(plot_dir, exist_ok=True)
 
 
 DFSIO_COMMAND_list=["write", "read"]
-NR_FILES_list=[1, 2, 4, 8, 16, 32, 64,]
-FILE_SIZE_list=["10MB", "100MB", "1GB", "10GB",]
+# NR_FILES_list=[1, 2, 4, 8, 16, 32, 64,]
+# FILE_SIZE_list=["10MB", "100MB", "1GB", "10GB",]
 
+NR_FILES_list=[4,8,16]
+FILE_SIZE_list=["10MB", "100MB", "200MB","400MB"]
 
 #############
 # Read data #
