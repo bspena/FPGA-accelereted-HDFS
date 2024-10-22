@@ -1,0 +1,27 @@
+----- TestDFSIO ----- : write
+            Date & time: Thu Oct 17 18:27:37 GMT 2024
+        Number of files: 1
+ Total MBytes processed: 1
+      Throughput mb/sec: 20.4082
+ Average IO rate mb/sec: 20.4082
+  IO rate std deviation: 0.0096
+     Test exec time sec: 12.034
+
+----- TestDFSIO ----- : read
+            Date & time: Thu Oct 17 18:28:02 GMT 2024
+        Number of files: 1
+ Total MBytes processed: 1
+      Throughput mb/sec: 16.3934
+ Average IO rate mb/sec: 16.3934
+  IO rate std deviation: 0.0034
+     Test exec time sec: 12.618
+
+----- TestDFSIO ----- : read
+            Date & time: Thu Oct 17 18:28:37 GMT 2024
+        Number of files: 1
+ Total MBytes processed: 1
+      Throughput mb/sec: 16.6667
+ Average IO rate mb/sec: 16.6667
+  IO rate std deviation: 0.0038
+     Test exec time sec: 11.634
+
