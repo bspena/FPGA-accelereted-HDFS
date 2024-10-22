@@ -27,6 +27,16 @@ DFSIO_COMMAND_list=["write", "read"]
 NR_FILES_list=[4,8,16]
 FILE_SIZE_list=["10MB", "100MB", "200MB","400MB"]
 
+
+# Runtime custom yticks
+runtime_yticks = [10,15,20,25,30,35,40] 
+
+# Throughput/Average IO rate custom yticks
+y_min_exp = 1
+y_max_exp = 4
+throughput_yticks = numpy.logspace(y_min_exp, y_max_exp, num=4)
+
+
 #############
 # Read data #
 #############
@@ -84,6 +94,7 @@ for hw in range(0,len(common.hw_configs)):
 plt.figure("", figsize=common.figsize_1column)
 ax = plt.subplot(1,2,1)
 # plt.tick_params(labelbottom=False, bottom=False)
+plt.tick_params(labelbottom=False, bottom=False,labelleft=False,left=False)
 for hw in range(0,len(common.hw_configs)):
 	for rs in range(0,len(common.RS_SCHEMA_list)):
 		for cmd in range(0,len(DFSIO_COMMAND_list)):
@@ -100,9 +111,23 @@ for hw in range(0,len(common.hw_configs)):
 				# # Decorating
 				plt.xlabel("File Size")
 				plt.ylabel("s")
-				# plt.xticks(FILE_SIZE_list)
-				plt.grid(visible=True) #, which="both")
-				plt.legend()
+
+				# Custom xticks
+				plt.xticks(FILE_SIZE_list)
+
+				# Custom yticks
+				# Runtime
+				plt.yticks(runtime_yticks, fontsize=12)
+
+				# Throughput and Average IO rate
+				# plt.yscale('log')
+				# plt.yticks(throughput_yticks, fontsize=12)
+				# plt.ylim([throughput_yticks[0], throughput_yticks[-1]])
+
+				#plt.grid(visible=True) #, which="both")
+				plt.grid(which='both', axis='both', color='gray', linestyle='--', linewidth=0.7)
+
+				plt.legend(fontsize=12)
 figname = plot_dir + "/" + "dfsio" + ".png"
 plt.savefig(figname, dpi=400, bbox_inches="tight")
 print("Figure available at " + figname)

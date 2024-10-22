@@ -13,6 +13,9 @@ container/hdfs_demo/modules/logs
 container/hdfs_demo/tests/distributed/dfsio/logs
 container/hdfs_demo/tests/distributed/dfsio/*.csv
 container/hdfs_demo/modules/hadoop/recovery/logs
+container/hdfs_demo/modules/hadoop/install/assets/workers
+container/hdfs_demo/test/plots/__pycache__
+container/hdfs_demo/test/plots/output_plots
 test/script/__pycache__
 test/logs
 test/test_results

@@ -103,16 +103,3 @@ DEMO_SETUP=/home/hadoop/hdfs_demo/settings.sh
 if [ -e $DEMO_SETUP ]; then
 	source $DEMO_SETUP
 fi
-export PDSH_RCMD_TYPE=ssh
-export PDSH_RCMD_TYPE=ssh
-export PDSH_RCMD_TYPE=ssh
-export PDSH_RCMD_TYPE=ssh
-export PDSH_RCMD_TYPE=ssh
-export PDSH_RCMD_TYPE=ssh
-export HADOOP_HOME= ~/hadoop/hadoop-dist/target/hadoop-3.4.0
-export HADOOP_HDFS_HOME=$HADOOP_HOME
-export HADOOP_HOME= /home/hadoop/hadoop-3.4.0
-export HADOOP_HDFS_HOME=$HADOOP_HOME
-export HADOOP_HOME=/home/hadoop/hadoop-3.4.0
-export HADOOP_HDFS_HOME=$HADOOP_HOME
-export HADOOP_HOME=/home/hadoop/hadoop-3.4.0
