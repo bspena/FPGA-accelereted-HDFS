@@ -1,4 +1,4 @@
-# Virtualized FPGA-acceleration of Distributed File Systems with SR-IOV and Containerizartion}
+# Virtualized FPGA-acceleration of Distributed File Systems with SR-IOV and Containerizartion
 
 ## Version Summary
 * Ubuntu 22.04 LTS
