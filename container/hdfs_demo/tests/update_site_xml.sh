@@ -1,3 +1,6 @@
+# Description: Add properties to xml site files to configure hadoop
+# Arguments:
+#   None
 
 # Remove proerpty tag with id=0
 sed '/<property id="0">/,/<\/property>/d' $1 > temp.xml

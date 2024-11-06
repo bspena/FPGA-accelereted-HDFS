@@ -1,3 +1,8 @@
+# Description: Copy hadoop configuration files into etc/hadoop/
+# Arguments:
+#   None
+
+
 echo "[COPY CONFIG] Copy hadoop configuration into master"
 cp -r ${HADOOP_ROOT}/assets/sites/* ${HADOOP_HOME}/etc/hadoop/
 

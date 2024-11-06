@@ -1,4 +1,6 @@
-
+# Description: Remove docker volumes directories
+# Arguments:
+#   None
 
 sudo rm -r ${DOCKER_VOLUMES}/master
 

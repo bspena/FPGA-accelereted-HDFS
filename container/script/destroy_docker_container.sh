@@ -1,3 +1,7 @@
+# Description: Remove docker containers
+# Arguments:
+#   None
+
 docker stop $(docker ps -a -q) > /dev/null
 echo Y | docker system prune > /dev/null
 

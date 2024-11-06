@@ -1,34 +1,33 @@
-# Hadoop Container
+# Hadoop Virtual Cluster
 
-## Docker
-* Build docker image:
+
+## Cluster Deploy <a name="deploy"></a>
 ```bash
-$ source install/container/script/create_docker_image.sh
+$ source container/scripts/build_docker_image.sh <slave_containers_num>
 ```
-* Run docker master/slave containers:
-```bash
-$ source install/container/script/create_docker_container.sh
-```
+
+## Cluster Init <a name="init"></a>
 * Access to master container:
 ```bash
 $ docker attach master
 or
 $ ssh -p 1022 user@localhost
 ```
-* Setup passphraseless ssh (it will ask the container user password):
+* Setup passphraseless ssh:
 ```bash
 $ source ssh_no_pass.sh
 ```
+* Cluster init:
+```bash
+$ source init_demo.sh
+```
 
-> Note: 
-> * Set the hadoop version into dockerfile.
-> * Inside the Dockerfile, the user and the password are the same as the host user.
-
-
-# Deploy
-* settings
-* build image
-    * deploy (install modules)
-* run docker container
-    * init demo
-    * run test
+## Cluster Clean Up
+* Remove docker volumes directories:
+```bash
+$ source container/scripts/cleanup_container_volumes.sh
+```
+* Destroy docker containers:
+```bash
+$ source container/scripts/destroy_docker_container.sh
+```

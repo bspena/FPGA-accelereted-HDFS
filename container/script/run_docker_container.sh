@@ -1,34 +1,35 @@
+# Description: Build Docker Image and create docker containers
 # Arguments:
 #   Number of slave containers
-
-
-NUMBER_SLAVE_CONTAINERS=$1
-if [ "$NUMBER_SLAVE_CONTAINERS" == "" ]; then
-    echo "[ERROR] Expected number of slave containers"
-    return 1
-fi
-
+# Local Variables
+NUM_SLAVE_CONTAINERS=$1
 # Array of iommugroups
 iommugroups=($(ls -d /dev/vfio/[0-9]*))
-
 # Master iommugroups and SBDF
 iommugroup_master=$(basename ${iommugroups[0]})
 sbdf_master=($(ls /sys/kernel/iommu_groups/$iommugroup_master/devices/))
-
-echo "[DEPLOY DOCKER CONTAINER] Create docker network"
-docker network create hadoop-network > /dev/null
-
+# While loop indeces 
 i=0
 j=1
 #j=2
 
 
-while [ "$i" -lt "$1" ] && [ "$j" -lt "${#iommugroups[@]}" ];
+# Check the number of slave containers
+if [ "$NUM_SLAVE_CONTAINERS" == "" ]; then
+    echo "[ERROR] Expected number of slave containers"
+    return 1
+fi
+
+echo "[DEPLOY DOCKER CONTAINER] Create docker network"
+docker network create hadoop-network > /dev/null
+
+
+while [ "$i" -lt "$NUM_SLAVE_CONTAINERS" ] && [ "$j" -lt "${#iommugroups[@]}" ];
 do
     iommugroup_slave=$(basename ${iommugroups[$j]})
     sbdf_slave=($(ls /sys/kernel/iommu_groups/$iommugroup_slave/devices/))
 
-    # Create volumes directroy
+    # Create volumes directroy for slave containers
     mkdir -p ${DOCKER_VOLUMES}/slave-$i
     mkdir -p ${DOCKER_VOLUMES}/slave-$i/hadoop_storage
 
@@ -77,13 +78,16 @@ for s in $slaves; do
     echo $s >>  ${HADOOP_ROOT}/assets/workers
 done
 
+# Create volumes directroy for master container
 mkdir -p ${DOCKER_VOLUMES}/master
 mkdir -p ${DOCKER_VOLUMES}/master/hadoop_storage
 
+# Copy modules in master directory
 cp -r ${DOCKER_VOLUMES}/hadoop-${HADOOP_VERSION} ${DOCKER_VOLUMES}/master
 cp -r ${DOCKER_VOLUMES}/hadoop_storage/disk1 ${DOCKER_VOLUMES}/master/hadoop_storage
 cp -r ${DOCKER_VOLUMES}/apache-activemq-${ACTIVEMQ_VERSION} ${DOCKER_VOLUMES}/master
 
+# Copy hadoop configuration
 cp ${HADOOP_ROOT}/assets/workers ${DOCKER_VOLUMES}/master/hadoop-${HADOOP_VERSION}/etc/hadoop/
 
 echo "[DEPLOY DOCKER CONTAINER] Create master container with:"
