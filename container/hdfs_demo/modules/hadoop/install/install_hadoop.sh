@@ -13,9 +13,9 @@ mkdir -p ${DOCKER_VOLUMES}/hadoop_storage/disk1
 mkdir -p ${DOCKER_VOLUMES}/hadoop_storage/disk2
 
 echo "[COPY CONFIG] Copy hadoop configuration"
-cp ${HADOOP_ROOT}/assets/sites/* ${HADOOP_VOLUME}/etc/hadoop/
-cp ${HADOOP_ROOT}/assets/hadoop-env.sh  ${HADOOP_VOLUME}/etc/hadoop/hadoop-env.sh 
-cp ${HADOOP_ROOT}/assets/workers ${HADOOP_VOLUME}/etc/hadoop/workers
+cp ${HADOOP_ROOT}/install/assets/sites/* ${HADOOP_VOLUME}/etc/hadoop/
+cp ${HADOOP_ROOT}/install/assets/hadoop-env.sh  ${HADOOP_VOLUME}/etc/hadoop/hadoop-env.sh 
+#cp ${HADOOP_ROOT}/install/assets/workers ${HADOOP_VOLUME}/etc/hadoop/workers
 
 
 

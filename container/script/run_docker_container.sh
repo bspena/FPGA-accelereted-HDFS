@@ -70,12 +70,12 @@ done
 
 
 # Create workers file
->  ${HADOOP_ROOT}/assets/workers
+>  ${HADOOP_ROOT}/install/assets/workers
 
 # Add slave containers name to workers file
 slaves=$(docker ps -a --filter "name=slave-" --format "{{.Names}}")
 for s in $slaves; do
-    echo $s >>  ${HADOOP_ROOT}/assets/workers
+    echo $s >>  ${HADOOP_ROOT}/install/assets/workers
 done
 
 # Create volumes directroy for master container
@@ -88,7 +88,7 @@ cp -r ${DOCKER_VOLUMES}/hadoop_storage/disk1 ${DOCKER_VOLUMES}/master/hadoop_sto
 cp -r ${DOCKER_VOLUMES}/apache-activemq-${ACTIVEMQ_VERSION} ${DOCKER_VOLUMES}/master
 
 # Copy hadoop configuration
-cp ${HADOOP_ROOT}/assets/workers ${DOCKER_VOLUMES}/master/hadoop-${HADOOP_VERSION}/etc/hadoop/
+cp ${HADOOP_ROOT}/install/assets/workers ${DOCKER_VOLUMES}/master/hadoop-${HADOOP_VERSION}/etc/hadoop/
 
 echo "[DEPLOY DOCKER CONTAINER] Create master container with:"
 #echo "                          SBDF: $sbdf_master"

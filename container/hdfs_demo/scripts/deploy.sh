@@ -5,7 +5,7 @@
 
 # Install Hadoop
 echo "[DEPLOY] Installing HADOOP"
-source ${HADOOP_ROOT}/scripts/install_hadoop.sh 
+source ${HADOOP_ROOT}/install/install_hadoop.sh 
 
 # Install VFProxy
 echo "[DEPLOY] Installing VFProxy"

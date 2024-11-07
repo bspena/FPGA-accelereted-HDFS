@@ -3,7 +3,7 @@
 
 ## Cluster Deploy <a name="deploy"></a>
 ```bash
-$ source container/scripts/build_docker_image.sh <slave_containers_num>
+$ source container/script/build_docker_image.sh <slave_containers_num>
 ```
 
 ## Cluster Init <a name="init"></a>

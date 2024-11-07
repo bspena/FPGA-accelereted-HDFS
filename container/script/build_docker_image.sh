@@ -15,10 +15,10 @@ docker build \
 mkdir -p ${CONTAINER_ROOT}/docker_volumes
 
 # Install Hadoop, VFProxy and Apache ActiveMq for containers
-source ${HDFS_DEMO_ROOT}/deploy.sh
+source ${HDFS_DEMO_ROOT}/scripts/deploy.sh
 
 # Create docker containers
-source ${CONTAINER_ROOT}/run_docker_container.sh $NUM_SLAVE_CONTAINERS
+source ${CONTAINER_ROOT}/script/run_docker_container.sh $NUM_SLAVE_CONTAINERS
 
 
 # cp  ~/hadoop-OPAE/hadoop-dist/target/hadoop-*.tar.gz  ${HADOOP_ROOT}
