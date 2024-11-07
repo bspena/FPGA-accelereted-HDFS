@@ -4,13 +4,13 @@
 # Local Variables
 NUM_SLAVE_CONTAINERS=$1
 # Array of iommugroups
-iommugroups=($(ls -d /dev/vfio/[0-9]*))
+#iommugroups=($(ls -d /dev/vfio/[0-9]*))
 # Master iommugroups and SBDF
-iommugroup_master=$(basename ${iommugroups[0]})
-sbdf_master=($(ls /sys/kernel/iommu_groups/$iommugroup_master/devices/))
+#iommugroup_master=$(basename ${iommugroups[0]})
+#sbdf_master=($(ls /sys/kernel/iommu_groups/$iommugroup_master/devices/))
 # While loop indeces 
 i=0
-j=1
+#j=1
 #j=2
 
 
@@ -23,11 +23,11 @@ fi
 echo "[DEPLOY DOCKER CONTAINER] Create docker network"
 docker network create hadoop-network > /dev/null
 
-
-while [ "$i" -lt "$NUM_SLAVE_CONTAINERS" ] && [ "$j" -lt "${#iommugroups[@]}" ];
+while [ "$i" -lt "$NUM_SLAVE_CONTAINERS" ];
+#while [ "$i" -lt "$NUM_SLAVE_CONTAINERS" ] && [ "$j" -lt "${#iommugroups[@]}" ];
 do
-    iommugroup_slave=$(basename ${iommugroups[$j]})
-    sbdf_slave=($(ls /sys/kernel/iommu_groups/$iommugroup_slave/devices/))
+    #iommugroup_slave=$(basename ${iommugroups[$j]})
+    #sbdf_slave=($(ls /sys/kernel/iommu_groups/$iommugroup_slave/devices/))
 
     # Create volumes directroy for slave containers
     mkdir -p ${DOCKER_VOLUMES}/slave-$i
@@ -39,8 +39,8 @@ do
     cp -r ${DOCKER_VOLUMES}/apache-activemq-${ACTIVEMQ_VERSION} ${DOCKER_VOLUMES}/slave-$i
 
     echo "[DEPLOY DOCKER CONTAINER] Create slave-$i container with:"
-    echo "                          SBDF: $sbdf_slave"
-    echo "                          IOMMU_GROUP: $iommugroup_slave"
+    #echo "                          SBDF: $sbdf_slave"
+    #echo "                          IOMMU_GROUP: $iommugroup_slave"
     docker run -i -t -d \
         -u "$(id -u)" \
         -v "${HDFS_DEMO_ROOT}:${HADOOP_CONTAINER_HOME}/hdfs_demo" \
@@ -54,17 +54,17 @@ do
         --device=/dev/vfio/vfio \
         --device=/dev/dfl-fme.0 \
         --device=/dev/dfl-port.0 \
-        --device="${iommugroups[$j]}" \
         --name slave-$i \
         --hostname slave-$i \
         --network hadoop-network \
-        hadoop-image-3 \
+        hadoop-image \
         /bin/bash -c "source /home/hadoop/.bashrc && sudo service ssh start && exec /bin/bash" > /dev/null
 
         #--device="${iommugroups[$j+1]}" \
+        #--device="${iommugroups[$j]}" \
 
     ((i++))
-    ((j++))
+    #((j++))
     #((j+=2))
 done
 
@@ -91,8 +91,8 @@ cp -r ${DOCKER_VOLUMES}/apache-activemq-${ACTIVEMQ_VERSION} ${DOCKER_VOLUMES}/ma
 cp ${HADOOP_ROOT}/assets/workers ${DOCKER_VOLUMES}/master/hadoop-${HADOOP_VERSION}/etc/hadoop/
 
 echo "[DEPLOY DOCKER CONTAINER] Create master container with:"
-echo "                          SBDF: $sbdf_master"
-echo "                          IOMMU_GROUP: $iommugroup_master"
+#echo "                          SBDF: $sbdf_master"
+#echo "                          IOMMU_GROUP: $iommugroup_master"
 docker run -i -t -d \
     -u "$(id -u)" \
     -p 1022:22 \
@@ -110,11 +110,10 @@ docker run -i -t -d \
     --device=/dev/vfio/vfio \
     --device=/dev/dfl-fme.0 \
     --device=/dev/dfl-port.0 \
-    --device="${iommugroups[0]}" \
     --name master \
     --hostname master \
     --network hadoop-network \
-    hadoop-image-3 \
+    hadoop-image \
     /bin/bash -c "source /home/hadoop/.bashrc && sudo service ssh start && exec /bin/bash" > /dev/null
 
-    #--device="${iommugroups[1]}" \
+    #--device="${iommugroups[0]}" \

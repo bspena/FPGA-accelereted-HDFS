@@ -8,7 +8,7 @@ echo "[BUILD DOCKER IMAGE] Build docker image with hadoop"
 docker build \
     --build-arg USER_ID="$(id -u)" \
     --build-arg GROUP_ID="$(id -g)" \
-    -t hadoop-image-3 \
+    -t hadoop-image \
     ${CONTAINER_ROOT}/docker/
 
 # Creat docker containers volumes directory
