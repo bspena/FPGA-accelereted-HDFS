@@ -11,6 +11,21 @@ computing capabilities of the FPGA, by exposing it as `multiple physical devices
 * Hadoop 3.4
 * Opae SDK 2.8
 
+## Repo structure
+```
+REPO/
+├── container                       # Container set up
+│   ├── docker                      # Docker container files
+│   ├── hdfs_demo
+│   │   ├── modules                 # Cluster Modules
+│   │   ├── scripts                 # Cluster-related scripts
+│   │   └── tests                   # Bash test scripts
+│   ├── README.md
+│   └── script                      # Container-related scripts
+├── install                         # Install components directory
+├── python_test                     # Python test scripts
+└──README.md                        # This file
+```
 
 ## Enviroment Setup
 1) Set enviroment variables:
