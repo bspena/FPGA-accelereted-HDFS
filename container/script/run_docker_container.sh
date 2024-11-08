@@ -1,18 +1,100 @@
 # Description: Build Docker Image and create docker containers
 # Arguments:
 #   Number of slave containers
-# Local Variables
+
+###################
+# Local Variables #
+###################
 NUM_SLAVE_CONTAINERS=$1
+
 # Array of iommugroups
 #iommugroups=($(ls -d /dev/vfio/[0-9]*))
+
 # Master iommugroups and SBDF
 #iommugroup_master=$(basename ${iommugroups[0]})
 #sbdf_master=($(ls /sys/kernel/iommu_groups/$iommugroup_master/devices/))
+
 # While loop indeces 
 i=0
 #j=1
-#j=2
 
+# Note: First iommugroup is give to master container, so j index starts from 1 
+
+
+###########################
+# Common docker run flags #
+###########################
+user_flag="-u $(id -u)"
+memory_flag="--mount type=tmpfs,destination=/dev/hugepages,tmpfs-size=1G,tmpfs-mode=1770
+             --ulimit memlock=-1:-1
+             --memory 6g"
+device_flag='--device=/dev/vfio/vfio
+             --device=/dev/dfl-fme.0
+             --device=/dev/dfl-port.0'
+network_flag='--network hadoop-network'
+image_flag='hadoop-image'
+commands="source /home/hadoop/.bashrc && sudo service ssh start && exec /bin/bash"                    
+
+# Expanding environment variables (host_path:docker_path)
+eval hdfs_demo_path="${HDFS_DEMO_ROOT}:${HADOOP_CONTAINER_HOME}/hdfs_demo"
+eval bashrc_path="${HDFS_DEMO_ROOT}/bashrc:/home/hadoop/.bashrc"
+
+common_volume_flags="-v $hdfs_demo_path
+                    -v $bashrc_path"         
+
+###########################
+# Master docker run flags #
+###########################
+# Expanding environment variables (host_path:docker_path)
+eval master_volume="${DOCKER_VOLUMES}/master:${HADOOP_CONTAINER_HOME}/container_volume"
+
+master_volume_flags="-v $master_volume"
+master_iommugroup_flag='--device="${iommugroups[0]}"'
+master_name_flag='--name master'
+master_hostname_flag='--hostname master'
+exposed_ports='-p 1022:22
+               -p 9870:9870
+               -p 8088:8088
+               -p 19888:19888'
+
+master_flags="$user_flag \
+              $exposed_ports \
+              $common_volume_flags \
+              $master_volume_flags \
+              $memory_flag \
+              $device_flag \
+              $master_name_flag \
+              $master_hostname_flag \
+              $network_flag \
+              $image_flag"
+            
+
+###########################
+# Slaves docker run flags #
+###########################
+# Expanding environment variables (host_path:docker_path)
+eval slave_volume="${DOCKER_VOLUMES}/slave-$i:${HADOOP_CONTAINER_HOME}/container_volume"
+
+slave_volume_flags="-v $slave_volume"
+slave_iommugroup_flag='--device="${iommugroups[$j]}"'
+slave_name_flag="--name slave-$i"
+slave_hostname_flag="--hostname slave-$i"
+
+slave_flags="$user_flag \
+             $common_volume_flags \
+             $slave_volume_flags \
+             $memory_flag \
+             $device_flag \
+             $slave_name_flag \
+             $slave_hostname_flag \
+             $network_flag \
+             $image_flag"
+
+
+
+##########
+# Script #
+##########
 
 # Check the number of slave containers
 if [ "$NUM_SLAVE_CONTAINERS" == "" ]; then
@@ -41,31 +123,11 @@ do
     echo "[DEPLOY DOCKER CONTAINER] Create slave-$i container with:"
     #echo "                          SBDF: $sbdf_slave"
     #echo "                          IOMMU_GROUP: $iommugroup_slave"
-    docker run -i -t -d \
-        -u "$(id -u)" \
-        -v "${HDFS_DEMO_ROOT}:${HADOOP_CONTAINER_HOME}/hdfs_demo" \
-        -v "${HDFS_DEMO_ROOT}/bashrc:/home/hadoop/.bashrc" \
-        -v "${DOCKER_VOLUMES}/slave-$i/hadoop-${HADOOP_VERSION}:${HADOOP_CONTAINER_HOME}/hadoop-${HADOOP_VERSION}" \
-        -v "${DOCKER_VOLUMES}/slave-$i/apache-activemq-${ACTIVEMQ_VERSION}:${HADOOP_CONTAINER_HOME}/apache-activemq-${ACTIVEMQ_VERSION}" \
-        -v "${DOCKER_VOLUMES}/slave-$i/hadoop_storage:${HADOOP_CONTAINER_HOME}/hadoop_storage" \
-        --mount type=tmpfs,destination=/dev/hugepages,tmpfs-size=1G,tmpfs-mode=1770 \
-        --ulimit memlock=-1:-1 \
-        --memory 6g \
-        --device=/dev/vfio/vfio \
-        --device=/dev/dfl-fme.0 \
-        --device=/dev/dfl-port.0 \
-        --name slave-$i \
-        --hostname slave-$i \
-        --network hadoop-network \
-        hadoop-image \
-        /bin/bash -c "source /home/hadoop/.bashrc && sudo service ssh start && exec /bin/bash" > /dev/null
-
-        #--device="${iommugroups[$j+1]}" \
-        #--device="${iommugroups[$j]}" \
+    docker run -i -t -d $slave_flags \
+                        /bin/bash -c "$commands" > /dev/null
 
     ((i++))
     #((j++))
-    #((j+=2))
 done
 
 
@@ -93,27 +155,5 @@ cp ${HADOOP_ROOT}/install/assets/workers ${DOCKER_VOLUMES}/master/hadoop-${HADOO
 echo "[DEPLOY DOCKER CONTAINER] Create master container with:"
 #echo "                          SBDF: $sbdf_master"
 #echo "                          IOMMU_GROUP: $iommugroup_master"
-docker run -i -t -d \
-    -u "$(id -u)" \
-    -p 1022:22 \
-    -p 9870:9870  \
-    -p 8088:8088  \
-    -p 19888:19888 \
-    -v "${HDFS_DEMO_ROOT}:${HADOOP_CONTAINER_HOME}/hdfs_demo" \
-    -v "${HDFS_DEMO_ROOT}/bashrc:/home/hadoop/.bashrc" \
-    -v "${DOCKER_VOLUMES}/master/hadoop-${HADOOP_VERSION}:${HADOOP_CONTAINER_HOME}/hadoop-${HADOOP_VERSION}" \
-    -v "${DOCKER_VOLUMES}/master/apache-activemq-${ACTIVEMQ_VERSION}:${HADOOP_CONTAINER_HOME}/apache-activemq-${ACTIVEMQ_VERSION}" \
-    -v "${DOCKER_VOLUMES}/master/hadoop_storage:${HADOOP_CONTAINER_HOME}/hadoop_storage" \
-    --mount type=tmpfs,destination=/dev/hugepages,tmpfs-size=1G,tmpfs-mode=1770 \
-    --ulimit memlock=-1:-1 \
-    --memory 6g \
-    --device=/dev/vfio/vfio \
-    --device=/dev/dfl-fme.0 \
-    --device=/dev/dfl-port.0 \
-    --name master \
-    --hostname master \
-    --network hadoop-network \
-    hadoop-image \
-    /bin/bash -c "source /home/hadoop/.bashrc && sudo service ssh start && exec /bin/bash" > /dev/null
-
-    #--device="${iommugroups[0]}" \
+docker run -i -t -d $master_flags \
+                    /bin/bash -c "$commands" > /dev/null

@@ -68,7 +68,7 @@ export HDFS_EC_POLICIES=(
 
 export HADOOP_VERSION=3.4.0
 export HADOOP_ROOT=${MODULES_ROOT}/hadoop
-export HADOOP_HOME=${HADOOP_USER_HOME}/hadoop-${HADOOP_VERSION}
+export HADOOP_HOME=${CONTAINER_VOLUME}/hadoop-${HADOOP_VERSION}
 export HADOOP_COMMON_HOME=${HADOOP_HOME}
 export HADOOP_HDFS_HOME=${HADOOP_HOME}
 export HADOOP_MAPRED_HOME=${HADOOP_HOME}
@@ -78,13 +78,13 @@ export HADOOP_YARN_HOME=${HADOOP_HOME}
 # Hadoop (installed)
 export HADOOP_LOGS=${HADOOP_HOME}/logs
 
-readarray -t slaves_ip_list < ${HADOOP_ROOT}/assets/workers
+readarray -t slaves_ip_list < ${HADOOP_ROOT}/install/assets/workers
 
 # ActiveMQ
 export ACTIVEMQ_VERSION=5.16.6
 export ACTIVEMQ_ROOT=${MODULES_ROOT}/jms_provider/activemq
 export ACTIVEMQ_TARGZ=${ACTIVEMQ_ROOT}/apache-activemq-${ACTIVEMQ_VERSION}-bin.tar.gz
-export ACTIVEMQ_INSTALL=${HADOOP_USER_HOME}/apache-activemq-${ACTIVEMQ_VERSION}
+export ACTIVEMQ_INSTALL=${CONTAINER_VOLUME}/apache-activemq-${ACTIVEMQ_VERSION}
 export ACTIVEMQ_JAR=${ACTIVEMQ_INSTALL}/activemq-all-${ACTIVEMQ_VERSION}.jar
 
 # VFProxy
@@ -96,14 +96,14 @@ export VFP_LOG_DIR=${CONTAINER_VOLUME}/logs/vfp
 
 
 # FPGA
-iommugroups=($(ls -d /dev/vfio/[0-9]*))
+# iommugroups=($(ls -d /dev/vfio/[0-9]*))
 
-for iommugroup in "${iommugroups[@]}"; do
-    num=$(basename $iommugroup)
-    sbdf_list=($(ls /sys/kernel/iommu_groups/$num/devices/))
-done
+# for iommugroup in "${iommugroups[@]}"; do
+#     num=$(basename $iommugroup)
+#     sbdf_list=($(ls /sys/kernel/iommu_groups/$num/devices/))
+# done
 
-export SBDFs_COMMA_SEPARATED=$( echo $sbdf_list | sed "s/ /,/g" )
+# export SBDFs_COMMA_SEPARATED=$( echo $sbdf_list | sed "s/ /,/g" )
 
 
 #export FPGA_ROOT=${DEMO_SUBMODULES_ROOT}/fpga

@@ -1,4 +1,8 @@
 # Virtualized FPGA-acceleration of Distributed File Systems with SR-IOV and Containerizartion
+Analysis, design and development of a `Virtual Cluster` capable of leveraging `FPGA acceleration` for the Hadoop
+Distributed File System (`HDFS`). The Virtual Cluster was implemented using `Docker Containers`, which host the Hadoop
+Daemons (background processes). `Single Root I/O Virtualization`, a hardware specification, allows the use of the parallel
+computing capabilities of the FPGA, by exposing it as `multiple physical devices`. 
 
 ## Version Summary
 * Ubuntu 22.04 LTS
